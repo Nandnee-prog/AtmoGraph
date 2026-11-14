@@ -1,0 +1,21 @@
+﻿# ---- Python ----
+.venv/
+__pycache__/
+*.pyc
+
+# ---- Secrets: ye KABHI git par push nahi karna ----
+.env
+
+# ---- Node ----
+node_modules/
+dist/
+
+# ---- Bade files: Drive/Colab se aate hain ----
+backend/models/*.pt
+data/raw/*
+!data/raw/.gitkeep
+
+# ---- OS / editor ----
+.DS_Store
+Thumbs.db
+.vscode/

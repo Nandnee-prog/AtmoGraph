@@ -1,0 +1,28 @@
+﻿# ===== AtmoGraph backend (LOCAL Windows) =====
+# Note: torch / torch-geometric yahan NAHI hain.
+# Training Colab par hoti hai; Docker mein CPU-only torch alag se install hoga (Stage 12).
+
+# --- Web API ---
+fastapi>=0.110
+uvicorn[standard]>=0.29
+python-dotenv>=1.0
+pydantic>=2.6
+
+# --- Database ---
+neo4j>=5.20
+
+# --- Data / Simulation ---
+pandas>=2.1
+numpy>=1.26
+networkx>=3.2
+faker>=24.0
+
+# --- NLP (Stage 6) ---
+spacy>=3.7
+feedparser>=6.0
+requests>=2.31
+rapidfuzz>=3.6
+
+# --- Testing ---
+pytest>=8.0
+httpx>=0.27
