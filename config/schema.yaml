@@ -1,0 +1,26 @@
+# schema.yaml  -  DATA CONTRACT (SYNTHETIC aur official, dono dataset isi se guzrenge)
+#
+# dtype            : str ya float
+# required: true   : is column mein null ho to wo row DROP hoti hai
+# allowed          : sirf ye values valid hain, baaki rows drop
+# fill             : null aaye to kis se bharna hai ("median" ya koi value)
+# add_missing_flag : true => <column>_was_missing naam ka flag column banta hai
+# min / max        : value is range mein clip hoti hai
+
+nodes:
+  node_id:     {dtype: str, required: true}
+  name:        {dtype: str, fill: "Unknown"}
+  node_type:   {dtype: str, required: true, allowed: [Supplier, Manufacturer, Port, Warehouse, Retailer]}
+  country:     {dtype: str, fill: "Unknown"}
+  region:      {dtype: str, fill: "Unknown"}
+  industry:    {dtype: str, fill: "Unknown"}
+  risk_score:  {dtype: float, fill: 0.0, min: 0.0, max: 1.0}
+  data_source: {dtype: str, fill: "UNKNOWN"}
+
+edges:
+  source:         {dtype: str, required: true}
+  target:         {dtype: str, required: true}
+  route_type:     {dtype: str, fill: "unknown"}
+  lead_time_days: {dtype: float, fill: median, add_missing_flag: true, min: 0}
+  capacity:       {dtype: float, fill: median, add_missing_flag: true, min: 0}
+  data_source:    {dtype: str, fill: "UNKNOWN"}

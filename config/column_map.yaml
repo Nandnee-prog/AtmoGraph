@@ -1,0 +1,15 @@
+# column_map.yaml
+# Official dataset ke column naam hamare naam se alag hon to yahan mapping likho.
+# Format  ->  official_naam: hamara_naam
+# Abhi synthetic data ke naam same hain, isliye mapping khaali hai.
+#
+# Example (official data aane par):
+# nodes:
+#   supplier_name: name
+#   nation: country
+# edges:
+#   from_id: source
+#   to_id: target
+
+nodes: {}
+edges: {}
