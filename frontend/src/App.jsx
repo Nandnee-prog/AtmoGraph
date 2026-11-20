@@ -6,6 +6,8 @@ import {
   Controls,
   MiniMap,
   MarkerType,
+  Handle,
+  Position,
   useNodesState,
   useEdgesState,
 } from "@xyflow/react";
@@ -13,57 +15,82 @@ import {
 import "@xyflow/react/dist/style.css";
 import "./App.css";
 
+function CustomNode({ data, selected }) {
+  return (
+    <div className={`custom-node ${data.risk} ${selected ? "selected" : ""}`}>
+      <Handle type="target" position={Position.Left} />
+
+      <div className="node-header">
+        <span className="node-icon">{data.icon}</span>
+        <span className={`risk-badge ${data.risk}`}>
+          {data.risk.toUpperCase()}
+        </span>
+      </div>
+
+      <div className="node-name">{data.label}</div>
+      <div className="node-type">{data.type}</div>
+
+      <div className="node-footer">
+        <span className="node-indicator"></span>
+        {data.status}
+      </div>
+
+      <Handle type="source" position={Position.Right} />
+    </div>
+  );
+}
+
+const nodeTypes = {
+  custom: CustomNode,
+};
+
 const initialNodes = [
   {
     id: "1",
-    position: { x: 50, y: 130 },
-    data: { label: "Supplier A\nHIGH RISK" },
-    style: {
-      background: "#451a1a",
-      color: "#fca5a5",
-      border: "1px solid #ef4444",
-      borderRadius: 10,
-      padding: 15,
-      width: 150,
+    type: "custom",
+    position: { x: 50, y: 120 },
+    data: {
+      label: "Supplier A",
+      type: "Raw Material Supplier",
+      icon: "🏭",
+      risk: "high",
+      status: "At Risk",
     },
   },
   {
     id: "2",
-    position: { x: 320, y: 130 },
-    data: { label: "Manufacturer A\nMEDIUM RISK" },
-    style: {
-      background: "#422006",
-      color: "#fdba74",
-      border: "1px solid #f97316",
-      borderRadius: 10,
-      padding: 15,
-      width: 170,
+    type: "custom",
+    position: { x: 340, y: 120 },
+    data: {
+      label: "Manufacturer A",
+      type: "Production Facility",
+      icon: "⚙️",
+      risk: "medium",
+      status: "Monitoring",
     },
   },
   {
     id: "3",
-    position: { x: 620, y: 130 },
-    data: { label: "Distributor A\nLOW RISK" },
-    style: {
-      background: "#052e16",
-      color: "#86efac",
-      border: "1px solid #22c55e",
-      borderRadius: 10,
-      padding: 15,
-      width: 150,
+    type: "custom",
+    position: { x: 650, y: 120 },
+    data: {
+      label: "Distributor A",
+      type: "Distribution Center",
+      icon: "📦",
+      risk: "low",
+      status: "Operational",
     },
   },
   {
     id: "4",
-    position: { x: 320, y: 320 },
-    data: { label: "Supplier B\nLOW RISK" },
-    style: {
-      background: "#052e16",
-      color: "#86efac",
-      border: "1px solid #22c55e",
-      borderRadius: 10,
-      padding: 15,
-      width: 150,
+    type: "custom",
+    position: { x: 340, y: 340 },
+    data: {
+      label: "Supplier B",
+      type: "Component Supplier",
+      icon: "🏗️",
+      risk: "low",
+      status: "Operational",
     },
   },
 ];
@@ -74,6 +101,7 @@ const initialEdges = [
     source: "1",
     target: "2",
     animated: true,
+    label: "Materials",
     markerEnd: { type: MarkerType.ArrowClosed },
     style: { stroke: "#ef4444", strokeWidth: 2 },
   },
@@ -82,6 +110,7 @@ const initialEdges = [
     source: "2",
     target: "3",
     animated: true,
+    label: "Products",
     markerEnd: { type: MarkerType.ArrowClosed },
     style: { stroke: "#f97316", strokeWidth: 2 },
   },
@@ -89,6 +118,7 @@ const initialEdges = [
     id: "e4-2",
     source: "4",
     target: "2",
+    label: "Components",
     markerEnd: { type: MarkerType.ArrowClosed },
     style: { stroke: "#22c55e", strokeWidth: 2 },
   },
@@ -183,11 +213,8 @@ function App() {
             <div className="panel-heading">
               <div>
                 <h3>Supply Chain Network</h3>
-                <p>
-                  Interactive supplier and distributor connections
-                </p>
+                <p>Interactive supplier and distributor connections</p>
               </div>
-
               <span className="tag">LIVE NETWORK</span>
             </div>
 
@@ -195,6 +222,7 @@ function App() {
               <ReactFlow
                 nodes={nodes}
                 edges={edges}
+                nodeTypes={nodeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
                 fitView
@@ -202,22 +230,15 @@ function App() {
                 nodesDraggable
                 nodesConnectable
                 elementsSelectable
-                defaultEdgeOptions={{
-                  type: "smoothstep",
-                }}
               >
-                <Background
-                  color="#334155"
-                  gap={20}
-                  size={1}
-                />
-
+                <Background color="#334155" gap={20} />
                 <Controls />
 
                 <MiniMap
                   nodeColor={(node) => {
-                    if (node.id === "1") return "#ef4444";
-                    if (node.id === "2") return "#f97316";
+                    const risk = node.data?.risk;
+                    if (risk === "high") return "#ef4444";
+                    if (risk === "medium") return "#f97316";
                     return "#22c55e";
                   }}
                   maskColor="rgba(10, 15, 30, 0.7)"

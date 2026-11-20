@@ -198,11 +198,102 @@ nav a:hover {
   background: #0b1120;
 }
 
-.react-flow__node {
-  white-space: pre-line;
-  font-size: 12px;
-  font-weight: 600;
-  text-align: center;
+.custom-node {
+  width: 190px;
+  padding: 13px;
+  border: 1px solid #334155;
+  border-radius: 12px;
+  background: #172338;
+  color: #e2e8f0;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.25);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.custom-node.selected {
+  border-color: #38bdf8;
+  box-shadow: 0 0 0 2px rgba(56, 189, 248, 0.25);
+}
+
+.node-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 13px;
+}
+
+.node-icon {
+  font-size: 23px;
+}
+
+.risk-badge {
+  font-size: 9px;
+  font-weight: bold;
+  padding: 5px 7px;
+  border-radius: 5px;
+}
+
+.risk-badge.high {
+  background: #451a1a;
+  color: #fca5a5;
+}
+
+.risk-badge.medium {
+  background: #422006;
+  color: #fdba74;
+}
+
+.risk-badge.low {
+  background: #052e16;
+  color: #86efac;
+}
+
+.node-name {
+  font-size: 13px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.node-type {
+  font-size: 10px;
+  color: #94a3b8;
+}
+
+.node-footer {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 10px;
+  color: #94a3b8;
+  border-top: 1px solid #334155;
+  margin-top: 12px;
+  padding-top: 10px;
+}
+
+.node-indicator {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #22c55e;
+}
+
+.custom-node.high .node-indicator {
+  background: #ef4444;
+}
+
+.custom-node.medium .node-indicator {
+  background: #f97316;
+}
+
+.react-flow__handle {
+  width: 8px;
+  height: 8px;
+  background: #38bdf8;
+  border: 1px solid #0b1120;
+}
+
+.react-flow__edge-text {
+  fill: #cbd5e1;
+  font-size: 10px;
 }
 
 .react-flow__controls button {
@@ -243,10 +334,6 @@ nav a:hover {
 
 .legend-low {
   background: #22c55e;
-}
-
-.alerts-panel h3 {
-  margin-bottom: 8px;
 }
 
 .alert-item {
