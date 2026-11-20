@@ -1,8 +1,14 @@
-@'
-body {
+
+html,
+body,
+#root {
   margin: 0;
-  font-family: Arial, sans-serif;
-  background: #0f172a;
-  color: white;
+  min-height: 100%;
+  width: 100%;
 }
-'@ | Set-Content src/index.css
+
+body {
+  font-family: Arial, sans-serif;
+  background: #0b1120;
+  color: #e2e8f0;
+}
