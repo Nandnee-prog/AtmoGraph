@@ -14,6 +14,9 @@ import {
 import "@xyflow/react/dist/style.css";
 import "./App.css";
 import Prediction from "./Prediction";
+import { LoadingSkeleton } from "./components/LoadingSkeleton";
+import { ErrorBanner } from "./components/ErrorBanner";
+import { EmptyState } from "./components/EmptyState";
 import {
   fetchNetworkGraph,
   fetchAlerts,
@@ -79,6 +82,7 @@ function App() {
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [simulation, setSimulation] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const [theme, setTheme] = useState(
@@ -93,13 +97,12 @@ function App() {
   }, [theme]);
 
   // Initial data load via API service
-  useEffect(() => {
-    let isMounted = true;
+  const loadData = useCallback(() => {
     setIsLoading(true);
+    setError(null);
 
     Promise.all([fetchNetworkGraph(), fetchAlerts()])
       .then(([graphData, alertsData]) => {
-        if (!isMounted) return;
         if (graphData && graphData.nodes) {
           setNodes(graphData.nodes);
           setEdges(graphData.edges);
@@ -113,15 +116,16 @@ function App() {
       })
       .catch((err) => {
         console.warn("API Service running in fallback mode:", err);
+        setError("Unable to connect to live telemetry API. Running in simulated fallback mode.");
       })
       .finally(() => {
-        if (isMounted) setIsLoading(false);
+        setIsLoading(false);
       });
-
-    return () => {
-      isMounted = false;
-    };
   }, [setNodes, setEdges]);
+
+  useEffect(() => {
+    loadData();
+  }, [loadData]);
 
   // Calculate live dynamic risk counts
   const riskCounts = useMemo(
@@ -376,29 +380,36 @@ function App() {
           <span className="date">ATMOGRAPH · LIVE MONITORING</span>
         </section>
 
+        {/* Error Banner if connection fails */}
+        {error && <ErrorBanner message={error} onRetry={loadData} />}
+
         {/* Summary Stat Cards */}
-        <section className="stats" aria-label="Key Performance Metrics">
-          <div className="stat-card">
-            <p>Total Suppliers</p>
-            <h2>{summary.totalSuppliers}</h2>
-            <small>Across monitored tier-1 to tier-5 networks</small>
-          </div>
-          <div className="stat-card">
-            <p>High Risk Nodes</p>
-            <h2 className="red">{riskCounts.high}</h2>
-            <small>Require immediate contingency routing</small>
-          </div>
-          <div className="stat-card">
-            <p>Active Alerts</p>
-            <h2 className="orange">{alerts.length}</h2>
-            <small>Disruption notices under triage</small>
-          </div>
-          <div className="stat-card">
-            <p>Network Health</p>
-            <h2 className="green">{summary.networkHealth}</h2>
-            <small>Overall topological graph resilience</small>
-          </div>
-        </section>
+        {isLoading ? (
+          <LoadingSkeleton count={4} />
+        ) : (
+          <section className="stats" aria-label="Key Performance Metrics">
+            <div className="stat-card">
+              <p>Total Suppliers</p>
+              <h2>{summary.totalSuppliers}</h2>
+              <small>Across monitored tier-1 to tier-5 networks</small>
+            </div>
+            <div className="stat-card">
+              <p>High Risk Nodes</p>
+              <h2 className="red">{riskCounts.high}</h2>
+              <small>Require immediate contingency routing</small>
+            </div>
+            <div className="stat-card">
+              <p>Active Alerts</p>
+              <h2 className="orange">{alerts.length}</h2>
+              <small>Disruption notices under triage</small>
+            </div>
+            <div className="stat-card">
+              <p>Network Health</p>
+              <h2 className="green">{summary.networkHealth}</h2>
+              <small>Overall topological graph resilience</small>
+            </div>
+          </section>
+        )}
 
         {/* Risk Overview & Interactive Filter Cards */}
         <section className="risk-overview" id="risk" aria-labelledby="risk-analysis-heading">
@@ -528,20 +539,13 @@ function App() {
             {/* Interactive Graph Canvas */}
             <div className="network-canvas" aria-label="Interactive Supply Chain Graph Canvas">
               {filteredNodes.length === 0 ? (
-                <div className="empty-graph-state">
-                  <span className="empty-icon">🔍</span>
-                  <h4>No matching nodes found</h4>
-                  <p>
-                    No supply chain nodes match the current filter criteria. Try
-                    clearing your search or selecting a different risk category.
-                  </p>
-                  <button
-                    className="reset-filters-btn"
-                    onClick={handleResetFilters}
-                  >
-                    Show All Nodes
-                  </button>
-                </div>
+                <EmptyState
+                  icon="🔍"
+                  title="No matching facilities found"
+                  description="No supply chain nodes match the current filter criteria. Try clearing your search or selecting a different risk category."
+                  actionText="Reset All Filters"
+                  onAction={handleResetFilters}
+                />
               ) : (
                 <ReactFlow
                   nodes={filteredNodes}
@@ -773,14 +777,11 @@ function App() {
                 </div>
               </div>
             ) : (
-              <div className="empty-details">
-                <span className="empty-icon" aria-hidden="true">◎</span>
-                <h3>No Entity Selected</h3>
-                <p>
-                  Click any supplier, plant, port, warehouse, or transport corridor
-                  in the graph to inspect detailed real-time telemetry.
-                </p>
-              </div>
+              <EmptyState
+                icon="◎"
+                title="No Entity Selected"
+                description="Click any supplier, plant, port, warehouse, or transport corridor in the graph to inspect detailed real-time telemetry."
+              />
             )}
           </div>
         </section>
