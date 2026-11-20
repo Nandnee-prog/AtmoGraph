@@ -1,4 +1,21 @@
 
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap");
+
+:root {
+  font-family: "Inter", Arial, sans-serif;
+  color-scheme: light;
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    color-scheme: dark;
+  }
+}
+
 html,
 body,
 #root {
@@ -8,7 +25,5 @@ body,
 }
 
 body {
-  font-family: Arial, sans-serif;
-  background: #0b1120;
-  color: #e2e8f0;
+  font-family: "Inter", Arial, sans-serif;
 }
