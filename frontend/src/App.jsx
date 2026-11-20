@@ -14,6 +14,7 @@ import {
 
 import "@xyflow/react/dist/style.css";
 import "./App.css";
+import Prediction from "./Prediction";
 
 function CustomNode({ data, selected }) {
   return (
@@ -428,6 +429,9 @@ function App() {
             )}
           </div>
         </section>
+
+        {/* COMMIT 6: PREDICTION COMPONENT */}
+        <Prediction />
 
         <section className="panel alerts-panel">
           <h3>Recent Alerts</h3>
