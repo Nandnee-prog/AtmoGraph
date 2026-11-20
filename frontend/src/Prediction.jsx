@@ -1,50 +1,65 @@
-
 import React, { useState } from "react";
 import "./Prediction.css";
 
 const predictionData = {
   "7 Days": [22, 28, 25, 38, 34, 45, 52],
   "14 Days": [18, 25, 22, 32, 29, 42, 48, 45, 55, 51, 63, 59, 70, 76],
-  "30 Days": [15, 20, 18, 25, 30, 28, 35, 32, 42, 40, 48, 45, 55, 52, 60, 58, 65, 62, 70, 68, 75, 72, 80, 77, 85, 82, 88, 84, 92, 95],
+  "30 Days": [
+    15, 20, 18, 25, 30, 28, 35, 32, 42, 40, 48, 45, 55, 52, 60,
+    58, 65, 62, 70, 68, 75, 72, 80, 77, 85, 82, 88, 84, 92, 95,
+  ],
 };
 
 function Prediction() {
   const [period, setPeriod] = useState("7 Days");
+  const [hoveredPoint, setHoveredPoint] = useState(null);
 
   const values = predictionData[period];
+  const chartWidth = 560;
+  const startX = 40;
+  const endX = 560;
+  const usableWidth = endX - startX;
+
   const points = values
     .map((value, index) => {
-      const x = 40 + (index * 520) / (values.length - 1);
+      const x = startX + (index * usableWidth) / (values.length - 1);
       const y = 190 - value * 1.6;
       return `${x},${y}`;
     })
     .join(" ");
 
+  const areaPoints = `${startX},190 ${points} ${endX},190`;
+
   const average = Math.round(
     values.reduce((sum, value) => sum + value, 0) / values.length
   );
+  const highest = Math.max(...values);
 
   return (
-    <section className="prediction-section">
+    <section className="prediction-section" aria-labelledby="prediction-title">
       <div className="prediction-heading">
         <div>
-          <h2>Disruption Predictions</h2>
+          <h2 id="prediction-title">Disruption Predictions</h2>
           <p>Illustrative supply-chain risk trend forecast</p>
         </div>
 
         <select
           value={period}
-          onChange={(event) => setPeriod(event.target.value)}
+          onChange={(event) => {
+            setPeriod(event.target.value);
+            setHoveredPoint(null);
+          }}
+          aria-label="Forecast horizon selection"
         >
-          <option>7 Days</option>
-          <option>14 Days</option>
-          <option>30 Days</option>
+          <option value="7 Days">7 Days Horizon</option>
+          <option value="14 Days">14 Days Horizon</option>
+          <option value="30 Days">30 Days Horizon</option>
         </select>
       </div>
 
       <div className="prediction-stats">
         <div className="prediction-stat">
-          <span>Average Risk</span>
+          <span>Average Projected Risk</span>
           <strong>{average}%</strong>
         </div>
 
@@ -54,66 +69,105 @@ function Prediction() {
         </div>
 
         <div className="prediction-stat">
-          <span>Highest Risk</span>
-          <strong className="prediction-red">
-            {Math.max(...values)}%
-          </strong>
+          <span>Peak Risk Window</span>
+          <strong className="prediction-red">{highest}%</strong>
         </div>
       </div>
 
-      <div className="prediction-chart">
-        <div className="chart-labels">
-          <span>100%</span>
-          <span>75%</span>
-          <span>50%</span>
-          <span>25%</span>
-          <span>0%</span>
+      <div className="prediction-chart-container">
+        <div className="prediction-chart">
+          <div className="chart-labels" aria-hidden="true">
+            <span>100%</span>
+            <span>75%</span>
+            <span>50%</span>
+            <span>25%</span>
+            <span>0%</span>
+          </div>
+
+          <div className="chart-svg-wrap">
+            <svg
+              viewBox="0 0 600 220"
+              role="img"
+              aria-label={`Illustrative risk trend for ${period}`}
+            >
+              <defs>
+                <linearGradient id="predictionArea" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="var(--accent)" stopOpacity="0.35" />
+                  <stop offset="100%" stopColor="var(--accent)" stopOpacity="0.0" />
+                </linearGradient>
+              </defs>
+
+              {[30, 70, 110, 150, 190].map((y) => (
+                <line
+                  key={y}
+                  x1={startX}
+                  y1={y}
+                  x2={endX}
+                  y2={y}
+                  className="chart-grid-line"
+                />
+              ))}
+
+              <polygon points={areaPoints} fill="url(#predictionArea)" />
+
+              <polyline points={points} className="chart-polyline" />
+
+              {values.map((value, index) => {
+                const x = startX + (index * usableWidth) / (values.length - 1);
+                const y = 190 - value * 1.6;
+                const isHovered = hoveredPoint && hoveredPoint.index === index;
+
+                return (
+                  <g key={index}>
+                    <circle
+                      cx={x}
+                      cy={y}
+                      r={isHovered ? 6 : 4}
+                      className={`chart-point ${isHovered ? "active" : ""}`}
+                      onMouseEnter={() =>
+                        setHoveredPoint({ index, value, day: index + 1, x, y })
+                      }
+                      onMouseLeave={() => setHoveredPoint(null)}
+                      tabIndex="0"
+                      aria-label={`Day ${index + 1}: ${value}% risk`}
+                    />
+                    {isHovered && (
+                      <g>
+                        <rect
+                          x={Math.min(Math.max(x - 36, 10), 520)}
+                          y={y - 32}
+                          width="72"
+                          height="22"
+                          rx="4"
+                          fill="var(--surface)"
+                          stroke="var(--border)"
+                          strokeWidth="1"
+                        />
+                        <text
+                          x={Math.min(Math.max(x - 36, 10), 520) + 36}
+                          y={y - 17}
+                          textAnchor="middle"
+                          fill="var(--text)"
+                          fontSize="10"
+                          fontWeight="bold"
+                        >
+                          D+{index + 1}: {value}%
+                        </text>
+                      </g>
+                    )}
+                  </g>
+                );
+              })}
+            </svg>
+          </div>
         </div>
-
-        <svg viewBox="0 0 600 220" role="img"
-          aria-label={`Illustrative risk trend for ${period}`}>
-          {[30, 70, 110, 150, 190].map((y) => (
-            <line
-              key={y}
-              x1="40"
-              y1={y}
-              x2="560"
-              y2={y}
-              stroke="#334155"
-              strokeDasharray="5 5"
-            />
-          ))}
-
-          <polyline
-            points={points}
-            fill="none"
-            stroke="#38bdf8"
-            strokeWidth="3"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-
-          {values.map((value, index) => {
-            const x = 40 + (index * 520) / (values.length - 1);
-            const y = 190 - value * 1.6;
-
-            return (
-              <circle
-                key={index}
-                cx={x}
-                cy={y}
-                r="4"
-                fill="#38bdf8"
-              />
-            );
-          })}
-        </svg>
       </div>
 
       <div className="prediction-disclaimer">
-        <span>ⓘ</span>
-        Demonstration data only. These values are not generated by
-        a trained prediction model or live backend.
+        <span>ⓘ Model Context:</span>
+        Demonstration data for development and review. Once GNN ripple prediction
+        weights are trained by the backend pipeline, this component consumes real-time
+        multi-step latency and disruption probabilities.
       </div>
     </section>
   );
