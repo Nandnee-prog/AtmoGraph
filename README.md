@@ -1,4 +1,4 @@
-﻿# AtmoGraph: Supply Chain Ripple Effect Predictor
+# AtmoGraph: Supply Chain Ripple Effect Predictor
 
 > ⚠️ **SYNTHETIC / SIMULATED DATA.** Poora supply chain graph mock hai aur
 > GNN ke delay labels ek propagation simulation se bane hain.
