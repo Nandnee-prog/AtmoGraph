@@ -1,13 +1,13 @@
 
-import React from "react";
+import React, { useMemo, useState } from "react";
 import {
   ReactFlow,
   Background,
   Controls,
   MiniMap,
-  MarkerType,
   Handle,
   Position,
+  MarkerType,
   useNodesState,
   useEdgesState,
 } from "@xyflow/react";
@@ -48,49 +48,57 @@ const initialNodes = [
   {
     id: "1",
     type: "custom",
-    position: { x: 50, y: 120 },
+    position: { x: 50, y: 100 },
     data: {
       label: "Supplier A",
       type: "Raw Material Supplier",
       icon: "🏭",
       risk: "high",
       status: "At Risk",
+      location: "India",
+      score: 89,
     },
   },
   {
     id: "2",
     type: "custom",
-    position: { x: 340, y: 120 },
+    position: { x: 340, y: 100 },
     data: {
       label: "Manufacturer A",
       type: "Production Facility",
       icon: "⚙️",
       risk: "medium",
       status: "Monitoring",
+      location: "Germany",
+      score: 56,
     },
   },
   {
     id: "3",
     type: "custom",
-    position: { x: 650, y: 120 },
+    position: { x: 650, y: 100 },
     data: {
       label: "Distributor A",
       type: "Distribution Center",
       icon: "📦",
       risk: "low",
       status: "Operational",
+      location: "Singapore",
+      score: 18,
     },
   },
   {
     id: "4",
     type: "custom",
-    position: { x: 340, y: 340 },
+    position: { x: 340, y: 320 },
     data: {
       label: "Supplier B",
       type: "Component Supplier",
       icon: "🏗️",
       risk: "low",
       status: "Operational",
+      location: "Japan",
+      score: 22,
     },
   },
 ];
@@ -130,6 +138,40 @@ function App() {
 
   const [edges, setEdges, onEdgesChange] =
     useEdgesState(initialEdges);
+
+  const [riskFilter, setRiskFilter] = useState("all");
+  const [selectedNode, setSelectedNode] = useState(null);
+
+  const riskCounts = useMemo(() => ({
+    high: nodes.filter((node) => node.data.risk === "high").length,
+    medium: nodes.filter((node) => node.data.risk === "medium").length,
+    low: nodes.filter((node) => node.data.risk === "low").length,
+  }), [nodes]);
+
+  const filteredNodes = useMemo(() => {
+    if (riskFilter === "all") return nodes;
+
+    return nodes.filter(
+      (node) => node.data.risk === riskFilter
+    );
+  }, [nodes, riskFilter]);
+
+  const visibleIds = new Set(filteredNodes.map((node) => node.id));
+
+  const filteredEdges = edges.filter(
+    (edge) =>
+      visibleIds.has(edge.source) &&
+      visibleIds.has(edge.target)
+  );
+
+  const handleFilter = (filter) => {
+    setRiskFilter(filter);
+    setSelectedNode(null);
+  };
+
+  const handleNodeClick = (_, node) => {
+    setSelectedNode(node);
+  };
 
   return (
     <div className="app">
@@ -208,23 +250,101 @@ function App() {
           </div>
         </section>
 
+        <section className="risk-overview">
+          <div className="section-title">
+            <div>
+              <h2>Risk Analysis</h2>
+              <p>Monitor and filter supply-chain risk levels</p>
+            </div>
+          </div>
+
+          <div className="risk-cards">
+            <button
+              className={`risk-card high-card ${riskFilter === "high" ? "active-risk" : ""}`}
+              onClick={() => handleFilter("high")}
+            >
+              <span>HIGH RISK</span>
+              <strong>{riskCounts.high}</strong>
+              <small>Critical attention</small>
+            </button>
+
+            <button
+              className={`risk-card medium-card ${riskFilter === "medium" ? "active-risk" : ""}`}
+              onClick={() => handleFilter("medium")}
+            >
+              <span>MEDIUM RISK</span>
+              <strong>{riskCounts.medium}</strong>
+              <small>Needs monitoring</small>
+            </button>
+
+            <button
+              className={`risk-card low-card ${riskFilter === "low" ? "active-risk" : ""}`}
+              onClick={() => handleFilter("low")}
+            >
+              <span>LOW RISK</span>
+              <strong>{riskCounts.low}</strong>
+              <small>Stable suppliers</small>
+            </button>
+
+            <button
+              className={`risk-card all-card ${riskFilter === "all" ? "active-risk" : ""}`}
+              onClick={() => handleFilter("all")}
+            >
+              <span>ALL NODES</span>
+              <strong>{nodes.length}</strong>
+              <small>Complete network</small>
+            </button>
+          </div>
+        </section>
+
         <section className="content-grid">
           <div className="panel network-panel">
             <div className="panel-heading">
               <div>
                 <h3>Supply Chain Network</h3>
-                <p>Interactive supplier and distributor connections</p>
+                <p>Filter nodes by their risk classification</p>
               </div>
-              <span className="tag">LIVE NETWORK</span>
+              <span className="tag">NETWORK ANALYSIS</span>
+            </div>
+
+            <div className="filter-toolbar">
+              <button
+                className={riskFilter === "all" ? "filter-active" : ""}
+                onClick={() => handleFilter("all")}
+              >
+                All
+              </button>
+
+              <button
+                className={riskFilter === "high" ? "filter-active" : ""}
+                onClick={() => handleFilter("high")}
+              >
+                High Risk
+              </button>
+
+              <button
+                className={riskFilter === "medium" ? "filter-active" : ""}
+                onClick={() => handleFilter("medium")}
+              >
+                Medium Risk
+              </button>
+
+              <button
+                className={riskFilter === "low" ? "filter-active" : ""}
+                onClick={() => handleFilter("low")}
+              >
+                Low Risk
+              </button>
             </div>
 
             <div className="network-canvas">
               <ReactFlow
-                nodes={nodes}
-                edges={edges}
+                nodes={filteredNodes}
+                edges={filteredEdges}
                 nodeTypes={nodeTypes}
                 onNodesChange={onNodesChange}
                 onEdgesChange={onEdgesChange}
+                onNodeClick={handleNodeClick}
                 fitView
                 fitViewOptions={{ padding: 0.2 }}
                 nodesDraggable
@@ -253,34 +373,89 @@ function App() {
             </div>
           </div>
 
-          <div className="panel alerts-panel">
-            <h3>Recent Alerts</h3>
+          <div className="panel details-panel">
+            <h3>Node Risk Details</h3>
             <p className="panel-subtitle">
-              Latest network notifications
+              Select a network node to inspect its risk information
             </p>
 
-            <div className="alert-item">
-              <span className="alert-dot high"></span>
-              <div>
-                <strong>Supplier Risk Detected</strong>
-                <p>High-risk supplier identified</p>
-              </div>
-            </div>
+            {selectedNode ? (
+              <div className="selected-details">
+                <div className="detail-icon">
+                  {selectedNode.data.icon}
+                </div>
 
-            <div className="alert-item">
-              <span className="alert-dot medium"></span>
-              <div>
-                <strong>Delivery Delay Warning</strong>
-                <p>Potential logistics disruption</p>
-              </div>
-            </div>
+                <h2>{selectedNode.data.label}</h2>
+                <p>{selectedNode.data.type}</p>
 
-            <div className="alert-item">
-              <span className="alert-dot low"></span>
-              <div>
-                <strong>Network Status Updated</strong>
-                <p>Monitoring data refreshed</p>
+                <div className={`detail-risk ${selectedNode.data.risk}`}>
+                  {selectedNode.data.risk.toUpperCase()} RISK
+                </div>
+
+                <div className="detail-row">
+                  <span>Location</span>
+                  <strong>{selectedNode.data.location}</strong>
+                </div>
+
+                <div className="detail-row">
+                  <span>Risk Score</span>
+                  <strong>{selectedNode.data.score}/100</strong>
+                </div>
+
+                <div className="detail-row">
+                  <span>Status</span>
+                  <strong>{selectedNode.data.status}</strong>
+                </div>
+
+                <div className="score-track">
+                  <div
+                    className={`score-fill ${selectedNode.data.risk}`}
+                    style={{
+                      width: `${selectedNode.data.score}%`,
+                    }}
+                  ></div>
+                </div>
               </div>
+            ) : (
+              <div className="empty-details">
+                <span>◎</span>
+                <h3>No Node Selected</h3>
+                <p>
+                  Click any supplier, manufacturer or distributor
+                  in the network to view its risk details.
+                </p>
+              </div>
+            )}
+          </div>
+        </section>
+
+        <section className="panel alerts-panel">
+          <h3>Recent Alerts</h3>
+          <p className="panel-subtitle">
+            Latest network notifications
+          </p>
+
+          <div className="alert-item">
+            <span className="alert-dot high"></span>
+            <div>
+              <strong>Supplier Risk Detected</strong>
+              <p>High-risk supplier identified</p>
+            </div>
+          </div>
+
+          <div className="alert-item">
+            <span className="alert-dot medium"></span>
+            <div>
+              <strong>Delivery Delay Warning</strong>
+              <p>Potential logistics disruption</p>
+            </div>
+          </div>
+
+          <div className="alert-item">
+            <span className="alert-dot low"></span>
+            <div>
+              <strong>Network Status Updated</strong>
+              <p>Monitoring data refreshed</p>
             </div>
           </div>
         </section>
