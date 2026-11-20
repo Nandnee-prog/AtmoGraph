@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect, useCallback } from "react";
+import React, { useMemo, useState, useEffect, useCallback, useRef } from "react";
 import {
   ReactFlow,
   Background,
@@ -40,6 +40,12 @@ function CustomNode({ data, selected }) {
       role="button"
       tabIndex={0}
       aria-label={`${data.label}, ${data.node_type || data.type}, Risk: ${data.risk}`}
+      onKeyDown={(e) => {
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          if (data.onSelect) data.onSelect();
+        }
+      }}
     >
       <Handle type="target" position={Position.Left} />
       <div className="node-header">
@@ -84,6 +90,7 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const searchInputRef = useRef(null);
 
   const [theme, setTheme] = useState(
     () => localStorage.getItem("atmograph-theme") || "system"
@@ -95,6 +102,27 @@ function App() {
     root.dataset.theme = theme;
     localStorage.setItem("atmograph-theme", theme);
   }, [theme]);
+
+  // Keyboard accessibility shortcuts (Escape to clear, / or Ctrl+K to search)
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === "Escape") {
+        setSelectedNode(null);
+        setSelectedEdge(null);
+        if (simulation) handleClearSimulation();
+      } else if (
+        (e.key === "/" || (e.ctrlKey && e.key.toLowerCase() === "k")) &&
+        document.activeElement?.tagName !== "INPUT" &&
+        document.activeElement?.tagName !== "SELECT"
+      ) {
+        e.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [simulation]);
 
   // Initial data load via API service
   const loadData = useCallback(() => {
@@ -260,6 +288,16 @@ function App() {
 
   return (
     <div className="app">
+      {/* Accessibility Skip Link */}
+      <a href="#dashboard" className="skip-link">
+        Skip to main dashboard content
+      </a>
+
+      {/* Screen Reader Live Region for Filtering Announcements */}
+      <div className="sr-only" role="status" aria-live="polite">
+        Showing {filteredNodes.length} supply chain nodes. Risk filter: {riskFilter}. Facility filter: {typeFilter}.
+      </div>
+
       {/* Mobile navigation backdrop */}
       {mobileMenuOpen && (
         <div
@@ -481,8 +519,9 @@ function App() {
               <div className="search-box">
                 <span className="search-icon" aria-hidden="true">🔍</span>
                 <input
+                  ref={searchInputRef}
                   type="text"
-                  placeholder="Search by facility name, country, or industry..."
+                  placeholder="Search by facility name, country, or industry (Press '/' to focus)..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
                   className="search-input"
