@@ -87,6 +87,7 @@ function App() {
   const [selectedNode, setSelectedNode] = useState(null);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [simulation, setSimulation] = useState(null);
+  const [rfInstance, setRfInstance] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -215,6 +216,30 @@ function App() {
         return e;
       });
   }, [edges, visibleIds, simulation, selectedEdge]);
+
+  const handleFitView = useCallback(() => {
+    if (rfInstance) {
+      rfInstance.fitView({ padding: 0.2, duration: 400 });
+    }
+  }, [rfInstance]);
+
+  const handleExportJson = useCallback(() => {
+    const exportData = {
+      nodes: filteredNodes,
+      edges: filteredEdges,
+      filter: { risk: riskFilter, type: typeFilter, search: searchQuery },
+      exportedAt: new Date().toISOString(),
+    };
+    const blob = new Blob([JSON.stringify(exportData, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+    link.download = `atmograph-topology-${riskFilter}.json`;
+    link.click();
+    URL.revokeObjectURL(url);
+  }, [filteredNodes, filteredEdges, riskFilter, typeFilter, searchQuery]);
 
   const handleFilter = (filter) => {
     setRiskFilter(filter);
@@ -575,6 +600,34 @@ function App() {
               </div>
             </div>
 
+            {/* Canvas Quick Actions Bar */}
+            <div className="canvas-action-bar" role="toolbar" aria-label="Graph Canvas Controls">
+              <button
+                className="canvas-action-btn"
+                onClick={handleFitView}
+                title="Reset camera to fit entire visible network"
+                aria-label="Fit view to all nodes"
+              >
+                ⛶ Fit View
+              </button>
+              <button
+                className={`canvas-action-btn ${riskFilter === "high" ? "active" : ""}`}
+                onClick={() => handleFilter(riskFilter === "high" ? "all" : "high")}
+                title="Focus on critical high-risk bottleneck nodes"
+                aria-label="Filter critical bottleneck nodes"
+              >
+                ⚠️ Critical Bottlenecks
+              </button>
+              <button
+                className="canvas-action-btn"
+                onClick={handleExportJson}
+                title="Export current network graph to JSON"
+                aria-label="Export topology JSON"
+              >
+                📥 Export JSON
+              </button>
+            </div>
+
             {/* Interactive Graph Canvas */}
             <div className="network-canvas" aria-label="Interactive Supply Chain Graph Canvas">
               {filteredNodes.length === 0 ? (
@@ -587,6 +640,7 @@ function App() {
                 />
               ) : (
                 <ReactFlow
+                  onInit={setRfInstance}
                   nodes={filteredNodes}
                   edges={filteredEdges}
                   nodeTypes={nodeTypes}
