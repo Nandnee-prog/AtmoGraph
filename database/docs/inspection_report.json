@@ -1,0 +1,134 @@
+{
+  "files_checked": {
+    "companies_csv": "database\\datasets\\sectivia\\raw\\sectivia-companies.csv",
+    "relations_csv": "database\\datasets\\sectivia\\raw\\sectivia-relations.csv",
+    "supply_chain_json": "database\\datasets\\sectivia\\raw\\sectivia-supply-chain.json"
+  },
+  "companies": {
+    "csv_headers": [
+      "id",
+      "ticker",
+      "name",
+      "exchange",
+      "country",
+      "sector",
+      "segment",
+      "listed",
+      "relations"
+    ],
+    "record_count": 382,
+    "unique_ids_count": 382,
+    "duplicate_ids": [],
+    "duplicate_tickers": [],
+    "missing_values_by_field": {
+      "ticker": 1,
+      "exchange": 1
+    }
+  },
+  "relations": {
+    "csv_headers": [
+      "supplier_id",
+      "supplier_ticker",
+      "supplier_name",
+      "customer_id",
+      "customer_ticker",
+      "customer_name",
+      "sector",
+      "supplier_segment",
+      "customer_segment",
+      "supplier_sector",
+      "customer_sector",
+      "what",
+      "source",
+      "url"
+    ],
+    "record_count": 556,
+    "missing_values_by_field": {
+      "sector": 162,
+      "supplier_ticker": 5
+    },
+    "self_loops": [],
+    "duplicate_supplier_customer_pairs": [],
+    "unique_directed_pairs_count": 556
+  },
+  "json_metadata": {
+    "top_keys": [
+      "name",
+      "description",
+      "url",
+      "license",
+      "licenseUrl",
+      "attribution",
+      "caveat",
+      "counts",
+      "sectors",
+      "segments",
+      "companies",
+      "relations"
+    ],
+    "declared_counts": {
+      "companies": 382,
+      "listed": 381,
+      "relations": 556,
+      "crossSectorRelations": 162,
+      "sectors": 8,
+      "segments": 61
+    },
+    "actual_json_companies_count": 382,
+    "actual_json_relations_count": 556,
+    "sectors_count": 8,
+    "segments_count": 61,
+    "sectors": [
+      {
+        "id": "ai",
+        "name": "AI & digital infrastructure"
+      },
+      {
+        "id": "energi",
+        "name": "Energy, grid & critical infrastructure"
+      },
+      {
+        "id": "forsvar",
+        "name": "Defense, security & space"
+      },
+      {
+        "id": "medicin",
+        "name": "Life science"
+      },
+      {
+        "id": "finans",
+        "name": "Banks, payments & capital markets"
+      },
+      {
+        "id": "industri",
+        "name": "Industrials & reshoring"
+      },
+      {
+        "id": "elbil",
+        "name": "EVs & batteries"
+      },
+      {
+        "id": "raavarer",
+        "name": "Materials & critical minerals"
+      }
+    ]
+  },
+  "referential_integrity": {
+    "ghost_suppliers_count": 0,
+    "ghost_suppliers": [],
+    "ghost_customers_count": 0,
+    "ghost_customers": [],
+    "company_ids_in_csv_but_not_json": [],
+    "company_ids_in_json_but_not_csv": []
+  },
+  "disruption_labels_check": {
+    "potential_fields_found": [],
+    "contains_real_disruption_labels": false,
+    "verification_statement": "CRITICAL AUDIT CONFIRMATION: The Sectivia dataset contains purely topological supply chain relationships derived from SEC EDGAR 10-K filings, 8-K statements, press releases, and company supplier lists. There are NO real disruption labels, failure flags, or operational delay ground truth values in the raw dataset. Any downstream disruption scenarios (e.g. for Member 3 GNN propagation or Member 4 Frontend) MUST be explicitly tagged as SYNTHETIC / SIMULATED."
+  },
+  "parsing_observations": [
+    "100 relations contain commas in 'what' description.",
+    "523 relations contain commas in 'source' citation.",
+    "Sector taxonomy IDs use Danish stems from original Sectivia schema: ['ai', 'elbil', 'energi', 'finans', 'forsvar', 'industri', 'medicin', 'raavarer']"
+  ]
+}
