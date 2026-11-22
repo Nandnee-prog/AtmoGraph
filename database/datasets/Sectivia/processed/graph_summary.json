@@ -1,0 +1,21 @@
+{
+  "total_companies": 382,
+  "total_relationships": 556,
+  "cross_sector_relationships": 162,
+  "sectors": [
+    "ai",
+    "elbil",
+    "energi",
+    "finans",
+    "forsvar",
+    "industri",
+    "medicin",
+    "raavarer"
+  ],
+  "countries": [
+    "Ireland",
+    "USA",
+    "United Kingdom"
+  ],
+  "referential_integrity_verified": true
+}

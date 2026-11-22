@@ -1,0 +1,174 @@
+{
+  "dataset_name": "Sectivia",
+  "provenance": {
+    "source": "SEC EDGAR 10-K & 8-K Regulatory Filings",
+    "license": "CC BY 4.0",
+    "license_url": "https://creativecommons.org/licenses/by/4.0/",
+    "attribution": "Sectivia (https://sectivia.com), CC BY 4.0",
+    "caveat": "Relationships were assembled by hand from company filings, investor presentations, product documentation and industry reporting. Each one is stated by one of the two parties or by a reliable report, and carries what is supplied and its source. Detailed supplier lists are commercially confidential almost everywhere, so no public map of this kind can be complete or fully sourced. Treat it as a researched starting point, not a register of contracts."
+  },
+  "metrics_summary": {
+    "total_companies": 382,
+    "total_relationships": 556,
+    "cross_sector_relationships": 162,
+    "expected_vs_actual": {
+      "companies": {
+        "expected": 382,
+        "actual": 382,
+        "match": true
+      },
+      "relationships": {
+        "expected": 556,
+        "actual": 556,
+        "match": true
+      },
+      "cross_sector": {
+        "expected": 162,
+        "actual": 162,
+        "match": true
+      }
+    },
+    "referential_integrity_clean": true,
+    "duplicate_company_ids": 0
+  },
+  "companies_audit": {
+    "file_name": "sectivia-companies.csv",
+    "total_records": 382,
+    "unique_ids": 382,
+    "duplicate_ids": 0,
+    "columns": [
+      "id",
+      "ticker",
+      "name",
+      "exchange",
+      "country",
+      "sector",
+      "segment",
+      "listed",
+      "relations"
+    ],
+    "null_fields": {
+      "ticker": 1,
+      "exchange": 1
+    },
+    "sectors_distribution": {
+      "ai": 89,
+      "energi": 63,
+      "finans": 56,
+      "medicin": 55,
+      "forsvar": 53,
+      "industri": 31,
+      "raavarer": 18,
+      "elbil": 17
+    },
+    "countries_distribution": {
+      "USA": 380,
+      "Ireland": 1,
+      "United Kingdom": 1
+    },
+    "private_entity_audit": {
+      "id": "spacex",
+      "name": "SpaceX",
+      "ticker_is_null": true,
+      "exchange_is_null": true,
+      "listed": false,
+      "relations": 5
+    }
+  },
+  "relations_audit": {
+    "file_name": "sectivia-relations.csv",
+    "total_records": 556,
+    "columns": [
+      "supplier_id",
+      "supplier_ticker",
+      "supplier_name",
+      "customer_id",
+      "customer_ticker",
+      "customer_name",
+      "sector",
+      "supplier_segment",
+      "customer_segment",
+      "supplier_sector",
+      "customer_sector",
+      "what",
+      "source",
+      "url"
+    ],
+    "null_fields": {
+      "supplier_ticker": 5,
+      "sector": 162
+    },
+    "cross_sector_relationships": 162,
+    "referential_integrity": {
+      "is_valid": true,
+      "dangling_suppliers_count": 0,
+      "dangling_customers_count": 0,
+      "dangling_supplier_ids": [],
+      "dangling_customer_ids": []
+    },
+    "top_suppliers_out_degree": {
+      "Amazon": 27,
+      "Nvidia": 18,
+      "Alphabet": 15,
+      "Microsoft": 15,
+      "Visa": 11,
+      "Mastercard": 9,
+      "AMD": 8,
+      "Hexcel": 7,
+      "Quanta Services": 7,
+      "Woodward": 7
+    },
+    "top_customers_in_degree": {
+      "Amazon": 21,
+      "Microsoft": 16,
+      "Meta Platforms": 15,
+      "Boeing": 15,
+      "Lockheed Martin": 15,
+      "Alphabet": 14,
+      "Apple": 12,
+      "Cencora": 9,
+      "Ford Motor": 9,
+      "RTX": 9
+    }
+  },
+  "json_audit": {
+    "file_name": "sectivia-supply-chain.json",
+    "top_level_keys": [
+      "name",
+      "description",
+      "url",
+      "license",
+      "licenseUrl",
+      "attribution",
+      "caveat",
+      "counts",
+      "sectors",
+      "segments",
+      "companies",
+      "relations"
+    ],
+    "metadata": {
+      "name": "Sectivia U.S. supply-chain graph",
+      "description": "556 mapped supplier-customer relationships between 382 companies (381 U.S.-listed) across 8 sectors. 162 of the relationships link two different sectors.",
+      "url": "https://sectivia.com/dataset/",
+      "license": "CC BY 4.0",
+      "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+      "attribution": "Sectivia (https://sectivia.com), CC BY 4.0",
+      "caveat": "Relationships were assembled by hand from company filings, investor presentations, product documentation and industry reporting. Each one is stated by one of the two parties or by a reliable report, and carries what is supplied and its source. Detailed supplier lists are commercially confidential almost everywhere, so no public map of this kind can be complete or fully sourced. Treat it as a researched starting point, not a register of contracts.",
+      "counts": {
+        "companies": 382,
+        "listed": 381,
+        "relations": 556,
+        "crossSectorRelations": 162,
+        "sectors": 8,
+        "segments": 61
+      }
+    },
+    "counts": {
+      "sectors_count": 8,
+      "segments_count": 61,
+      "companies_count": 382,
+      "relations_count": 556
+    }
+  }
+}

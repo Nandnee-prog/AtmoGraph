@@ -1,0 +1,383 @@
+id,ticker,name,exchange,country,sector,segment,listed,relations,raw_id,canonical_id,dataset_source,relations_count
+a,A,Agilent Technologies,NYSE,USA,medicin,Life science tools,True,1,a,sectivia:a,sectivia,1
+aapl,AAPL,Apple,NASDAQ,USA,ai,Devices & electronics manufacturing,True,14,aapl,sectivia:aapl,sectivia,14
+abbv,ABBV,AbbVie,NYSE,USA,medicin,Big pharma,True,4,abbv,sectivia:abbv,sectivia,4
+abt,ABT,Abbott Laboratories,NYSE,USA,medicin,Diagnostics,True,1,abt,sectivia:abt,sectivia,1
+acn,ACN,Accenture,NYSE,Ireland,ai,IT consultants & integrators,True,2,acn,sectivia:acn,sectivia,2
+adbe,ADBE,Adobe,NASDAQ,USA,ai,AI software & productivity,True,1,adbe,sectivia:adbe,sectivia,1
+adi,ADI,Analog Devices,NASDAQ,USA,ai,Chips & accelerators,True,1,adi,sectivia:adi,sectivia,1
+adsk,ADSK,Autodesk,NASDAQ,USA,ai,AI software & productivity,True,1,adsk,sectivia:adsk,sectivia,1
+aee,AEE,Ameren,NYSE,USA,energi,Utilities & power producers,True,2,aee,sectivia:aee,sectivia,2
+aep,AEP,American Electric Power,NASDAQ,USA,energi,Utilities & power producers,True,2,aep,sectivia:aep,sectivia,2
+aes,AES,AES,NYSE,USA,energi,Utilities & power producers,True,3,aes,sectivia:aes,sectivia,3
+akam,AKAM,Akamai Technologies,NASDAQ,USA,ai,Cloud platforms,True,2,akam,sectivia:akam,sectivia,2
+alab,ALAB,Astera Labs,NASDAQ,USA,ai,Data centers,True,1,alab,sectivia:alab,sectivia,1
+alb,ALB,Albemarle,NYSE,USA,raavarer,Mining & critical minerals,True,2,alb,sectivia:alb,sectivia,2
+alny,ALNY,Alnylam Pharmaceuticals,NASDAQ,USA,medicin,Biotech & innovation,True,2,alny,sectivia:alny,sectivia,2
+alsn,ALSN,Allison Transmission,NYSE,USA,elbil,Drivetrain & vehicle components,True,1,alsn,sectivia:alsn,sectivia,1
+amat,AMAT,Applied Materials,NASDAQ,USA,ai,Semiconductor equipment & IP,True,2,amat,sectivia:amat,sectivia,2
+amd,AMD,AMD,NASDAQ,USA,ai,Chips & accelerators,True,9,amd,sectivia:amd,sectivia,9
+amgn,AMGN,Amgen,NASDAQ,USA,medicin,Biotech & innovation,True,2,amgn,sectivia:amgn,sectivia,2
+amp,AMP,Ameriprise Financial,NYSE,USA,finans,Asset & alternative managers,True,1,amp,sectivia:amp,sectivia,1
+ampx,AMPX,Amprius Technologies,NYSE,USA,elbil,Battery cells & power chips,True,2,ampx,sectivia:ampx,sectivia,2
+amt,AMT,American Tower,NYSE,USA,ai,"Telecom, cable & towers",True,3,amt,sectivia:amt,sectivia,3
+amzn,AMZN,Amazon,NASDAQ,USA,ai,Cloud platforms,True,48,amzn,sectivia:amzn,sectivia,48
+anet,ANET,Arista Networks,NYSE,USA,ai,Data centers,True,3,anet,sectivia:anet,sectivia,3
+aos,AOS,A. O. Smith,NYSE,USA,industri,"Building products, HVAC & elevators",True,1,aos,sectivia:aos,sectivia,1
+apd,APD,Air Products,NYSE,USA,raavarer,Industrial gases & chemicals,True,1,apd,sectivia:apd,sectivia,1
+aph,APH,Amphenol,NYSE,USA,ai,Data centers,True,1,aph,sectivia:aph,sectivia,1
+apo,APO,Apollo Global,NYSE,USA,finans,Asset & alternative managers,True,2,apo,sectivia:apo,sectivia,2
+app,APP,AppLovin,NASDAQ,USA,ai,AI software & productivity,True,1,app,sectivia:app,sectivia,1
+ares,ARES,Ares Management,NYSE,USA,finans,Asset & alternative managers,True,1,ares,sectivia:ares,sectivia,1
+arm,ARM,Arm Holdings,NASDAQ,United Kingdom,ai,Chips & accelerators,True,6,arm,sectivia:arm,sectivia,6
+asts,ASTS,AST SpaceMobile,NASDAQ,USA,forsvar,Space industry & satellites,True,3,asts,sectivia:asts,sectivia,3
+ati,ATI,ATI,NYSE,USA,raavarer,Steel & specialty metals,True,3,ati,sectivia:ati,sectivia,3
+ato,ATO,Atmos Energy,NYSE,USA,energi,Utilities & power producers,True,2,ato,sectivia:ato,sectivia,2
+avav,AVAV,AeroVironment,NASDAQ,USA,forsvar,Drones & autonomous systems,True,1,avav,sectivia:avav,sectivia,1
+avgo,AVGO,Broadcom,NASDAQ,USA,ai,Chips & accelerators,True,5,avgo,sectivia:avgo,sectivia,5
+axon,AXON,Axon Enterprise,NASDAQ,USA,forsvar,Dual-use technology,True,1,axon,sectivia:axon,sectivia,1
+axp,AXP,American Express,NYSE,USA,finans,Payment rails & networks,True,2,axp,sectivia:axp,sectivia,2
+azo,AZO,AutoZone,NYSE,USA,elbil,Parts retail & used cars,True,1,azo,sectivia:azo,sectivia,1
+bac,BAC,Bank of America,NYSE,USA,finans,Banks,True,4,bac,sectivia:bac,sectivia,4
+bah,BAH,Booz Allen Hamilton,NYSE,USA,forsvar,Communications & defense data,True,1,bah,sectivia:bah,sectivia,1
+bax,BAX,Baxter International,NYSE,USA,medicin,Medtech & devices,True,2,bax,sectivia:bax,sectivia,2
+bdx,BDX,Becton Dickinson,NYSE,USA,medicin,Medtech & devices,True,2,bdx,sectivia:bdx,sectivia,2
+be,BE,Bloom Energy,NYSE,USA,energi,Power equipment,True,3,be,sectivia:be,sectivia,3
+ben,BEN,Franklin Templeton,NYSE,USA,finans,Asset & alternative managers,True,2,ben,sectivia:ben,sectivia,2
+bkr,BKR,Baker Hughes,NASDAQ,USA,energi,Oilfield services & equipment,True,3,bkr,sectivia:bkr,sectivia,3
+blbd,BLBD,Blue Bird,NASDAQ,USA,industri,"Machinery, engines & locomotives",True,1,blbd,sectivia:blbd,sectivia,1
+blk,BLK,BlackRock,NYSE,USA,finans,Asset & alternative managers,True,6,blk,sectivia:blk,sectivia,6
+bmrn,BMRN,BioMarin Pharmaceutical,NASDAQ,USA,medicin,Biotech & innovation,True,1,bmrn,sectivia:bmrn,sectivia,1
+bmy,BMY,Bristol Myers Squibb,NYSE,USA,medicin,Big pharma,True,2,bmy,sectivia:bmy,sectivia,2
+bny,BNY,BNY,NYSE,USA,finans,Banks,True,4,bny,sectivia:bny,sectivia,4
+boeing,BA,Boeing,NYSE,USA,forsvar,Military platforms,True,17,boeing,sectivia:boeing,sectivia,17
+br,BR,Broadridge,NYSE,USA,finans,Exchanges & market data,True,3,br,sectivia:br,sectivia,3
+bwa,BWA,BorgWarner,NYSE,USA,elbil,Drivetrain & vehicle components,True,3,bwa,sectivia:bwa,sectivia,3
+bwxt,BWXT,BWX Technologies,NYSE,USA,energi,Nuclear energy & uranium,True,1,bwxt,sectivia:bwxt,sectivia,1
+bx,BX,Blackstone,NYSE,USA,finans,Asset & alternative managers,True,2,bx,sectivia:bx,sectivia,2
+c,C,Citigroup,NYSE,USA,finans,Banks,True,2,c,sectivia:c,sectivia,2
+caci,CACI,CACI International,NYSE,USA,forsvar,Communications & defense data,True,1,caci,sectivia:caci,sectivia,1
+cah,CAH,Cardinal Health,NYSE,USA,medicin,Distribution & pharmacy infrastructure,True,7,cah,sectivia:cah,sectivia,7
+carr,CARR,Carrier Global,NYSE,USA,ai,"Cooling, power & data center infrastructure",True,1,carr,sectivia:carr,sectivia,1
+cat,CAT,Caterpillar,NYSE,USA,industri,"Machinery, engines & locomotives",True,9,cat,sectivia:cat,sectivia,9
+cboe,CBOE,Cboe Global Markets,Cboe BZX,USA,finans,Exchanges & market data,True,2,cboe,sectivia:cboe,sectivia,2
+cci,CCI,Crown Castle,NYSE,USA,ai,"Telecom, cable & towers",True,3,cci,sectivia:cci,sectivia,3
+cdns,CDNS,Cadence Design Systems,NASDAQ,USA,ai,Semiconductor equipment & IP,True,3,cdns,sectivia:cdns,sectivia,3
+cdw,CDW,CDW,NASDAQ,USA,ai,IT consultants & integrators,True,3,cdw,sectivia:cdw,sectivia,3
+ceg,CEG,Constellation Energy,NASDAQ,USA,energi,Utilities & power producers,True,1,ceg,sectivia:ceg,sectivia,1
+cf,CF,CF Industries,NYSE,USA,raavarer,Fertilizers,True,3,cf,sectivia:cf,sectivia,3
+chtr,CHTR,Charter Communications,NASDAQ,USA,ai,"Telecom, cable & towers",True,3,chtr,sectivia:chtr,sectivia,3
+ci,CI,The Cigna Group,NYSE,USA,medicin,Distribution & pharmacy infrastructure,True,4,ci,sectivia:ci,sectivia,4
+cien,CIEN,Ciena,NYSE,USA,ai,Data centers,True,2,cien,sectivia:cien,sectivia,2
+clf,CLF,Cleveland-Cliffs,NYSE,USA,raavarer,Steel & specialty metals,True,2,clf,sectivia:clf,sectivia,2
+cmcsa,CMCSA,Comcast,NASDAQ,USA,ai,"Telecom, cable & towers",True,3,cmcsa,sectivia:cmcsa,sectivia,3
+cme,CME,CME Group,NASDAQ,USA,finans,Exchanges & market data,True,3,cme,sectivia:cme,sectivia,3
+cmi,CMI,Cummins,NYSE,USA,industri,"Machinery, engines & locomotives",True,4,cmi,sectivia:cmi,sectivia,4
+cms,CMS,CMS Energy,NYSE,USA,energi,Utilities & power producers,True,1,cms,sectivia:cms,sectivia,1
+cnc,CNC,Centene,NYSE,USA,medicin,Health insurers & care providers,True,1,cnc,sectivia:cnc,sectivia,1
+cnp,CNP,CenterPoint Energy,NYSE,USA,energi,Utilities & power producers,True,2,cnp,sectivia:cnp,sectivia,2
+cof,COF,Capital One,NYSE,USA,finans,Consumer lenders & card issuers,True,4,cof,sectivia:cof,sectivia,4
+cohr,COHR,Coherent,NYSE,USA,ai,Data centers,True,1,cohr,sectivia:cohr,sectivia,1
+coin,COIN,Coinbase,NASDAQ,USA,finans,Brokers & fintech,True,2,coin,sectivia:coin,sectivia,2
+cop,COP,ConocoPhillips,NYSE,USA,energi,Oil & gas production,True,3,cop,sectivia:cop,sectivia,3
+cor,COR,Cencora,NYSE,USA,medicin,Distribution & pharmacy infrastructure,True,10,cor,sectivia:cor,sectivia,10
+cpay,CPAY,Corpay,NYSE,USA,finans,Payment rails & networks,True,1,cpay,sectivia:cpay,sectivia,1
+crdo,CRDO,Credo Technology,NASDAQ,USA,ai,Data centers,True,1,crdo,sectivia:crdo,sectivia,1
+crm,CRM,Salesforce,NYSE,USA,ai,AI software & productivity,True,4,crm,sectivia:crm,sectivia,4
+crwd,CRWD,CrowdStrike,NASDAQ,USA,forsvar,"Identity, network & endpoint",True,1,crwd,sectivia:crwd,sectivia,1
+crwv,CRWV,CoreWeave,NASDAQ,USA,ai,Cloud platforms,True,4,crwv,sectivia:crwv,sectivia,4
+csco,CSCO,Cisco,NASDAQ,USA,ai,Data centers,True,1,csco,sectivia:csco,sectivia,1
+csx,CSX,CSX,NASDAQ,USA,industri,"Rail, parcel & freight",True,3,csx,sectivia:csx,sectivia,3
+ctsh,CTSH,Cognizant,NASDAQ,USA,ai,IT consultants & integrators,True,1,ctsh,sectivia:ctsh,sectivia,1
+cvlt,CVLT,Commvault Systems,NASDAQ,USA,forsvar,Detection & response,True,1,cvlt,sectivia:cvlt,sectivia,1
+cvs,CVS,CVS Health,NYSE,USA,medicin,Distribution & pharmacy infrastructure,True,4,cvs,sectivia:cvs,sectivia,4
+cvx,CVX,Chevron,NYSE,USA,energi,Oil & gas production,True,5,cvx,sectivia:cvx,sectivia,5
+cw,CW,Curtiss-Wright,NYSE,USA,energi,Nuclear energy & uranium,True,1,cw,sectivia:cw,sectivia,1
+d,D,Dominion Energy,NYSE,USA,energi,Utilities & power producers,True,3,d,sectivia:d,sectivia,3
+dan,DAN,Dana,NYSE,USA,elbil,Drivetrain & vehicle components,True,2,dan,sectivia:dan,sectivia,2
+dco,DCO,Ducommun,NYSE,USA,forsvar,"Radar, sensors & electronics",True,4,dco,sectivia:dco,sectivia,4
+dd,DD,DuPont,NYSE,USA,industri,Components & automation,True,1,dd,sectivia:dd,sectivia,1
+ddog,DDOG,Datadog,NASDAQ,USA,ai,"Data, analytics & enterprise AI",True,1,ddog,sectivia:ddog,sectivia,1
+de,DE,Deere &,NYSE,USA,industri,"Machinery, engines & locomotives",True,2,de,sectivia:de,sectivia,2
+dell,DELL,Dell Technologies,NYSE,USA,ai,Data centers,True,6,dell,sectivia:dell,sectivia,6
+dgx,DGX,Quest Diagnostics,NYSE,USA,medicin,Diagnostics,True,1,dgx,sectivia:dgx,sectivia,1
+dhr,DHR,Danaher,NYSE,USA,medicin,Life science tools,True,1,dhr,sectivia:dhr,sectivia,1
+dlr,DLR,Digital Realty,NYSE,USA,ai,Data centers,True,1,dlr,sectivia:dlr,sectivia,1
+dow,DOW,Dow,NYSE,USA,raavarer,Industrial gases & chemicals,True,2,dow,sectivia:dow,sectivia,2
+drs,DRS,Leonardo DRS,NASDAQ,USA,forsvar,"Radar, sensors & electronics",True,1,drs,sectivia:drs,sectivia,1
+dte,DTE,DTE Energy,NYSE,USA,energi,Utilities & power producers,True,2,dte,sectivia:dte,sectivia,2
+duk,DUK,Duke Energy,NYSE,USA,energi,Utilities & power producers,True,5,duk,sectivia:duk,sectivia,5
+duol,DUOL,Duolingo,NASDAQ,USA,ai,AI software & productivity,True,1,duol,sectivia:duol,sectivia,1
+dva,DVA,DaVita,NYSE,USA,medicin,Health insurers & care providers,True,1,dva,sectivia:dva,sectivia,1
+dxcm,DXCM,DexCom,NASDAQ,USA,medicin,Diabetes & metabolic disease,True,1,dxcm,sectivia:dxcm,sectivia,1
+echo,ECHO,EchoStar,NASDAQ,USA,ai,"Telecom, cable & towers",True,3,echo,sectivia:echo,sectivia,3
+ed,ED,Consolidated Edison,NYSE,USA,energi,Utilities & power producers,True,1,ed,sectivia:ed,sectivia,1
+efx,EFX,Equifax,NYSE,USA,finans,Exchanges & market data,True,1,efx,sectivia:efx,sectivia,1
+eix,EIX,Edison International,NYSE,USA,energi,Utilities & power producers,True,1,eix,sectivia:eix,sectivia,1
+elv,ELV,Elevance Health,NYSE,USA,medicin,Health insurers & care providers,True,1,elv,sectivia:elv,sectivia,1
+enph,ENPH,Enphase Energy,NASDAQ,USA,energi,Solar & wind,True,2,enph,sectivia:enph,sectivia,2
+entg,ENTG,Entegris,NASDAQ,USA,ai,Semiconductor equipment & IP,True,1,entg,sectivia:entg,sectivia,1
+eqix,EQIX,Equinix,NASDAQ,USA,ai,Data centers,True,5,eqix,sectivia:eqix,sectivia,5
+eqt,EQT,EQT,NYSE,USA,energi,Oil & gas production,True,2,eqt,sectivia:eqt,sectivia,2
+es,ES,Eversource Energy,NYSE,USA,energi,Utilities & power producers,True,1,es,sectivia:es,sectivia,1
+estc,ESTC,Elastic,NYSE,USA,forsvar,Detection & response,True,3,estc,sectivia:estc,sectivia,3
+etn,ETN,Eaton,NYSE,USA,energi,Power equipment,True,1,etn,sectivia:etn,sectivia,1
+etr,ETR,Entergy,NYSE,USA,energi,Utilities & power producers,True,3,etr,sectivia:etr,sectivia,3
+evrg,EVRG,Evergy,NASDAQ,USA,energi,Utilities & power producers,True,2,evrg,sectivia:evrg,sectivia,2
+ew,EW,Edwards Lifesciences,NYSE,USA,medicin,Medtech & devices,True,1,ew,sectivia:ew,sectivia,1
+exc,EXC,Exelon,NASDAQ,USA,energi,Utilities & power producers,True,2,exc,sectivia:exc,sectivia,2
+exe,EXE,Expand Energy,NASDAQ,USA,energi,Oil & gas production,True,1,exe,sectivia:exe,sectivia,1
+f,F,Ford Motor,NYSE,USA,elbil,Automakers,True,9,f,sectivia:f,sectivia,9
+fang,FANG,Diamondback Energy,NASDAQ,USA,energi,Oil & gas production,True,1,fang,sectivia:fang,sectivia,1
+fcx,FCX,Freeport-McMoRan,NYSE,USA,raavarer,Mining & critical minerals,True,3,fcx,sectivia:fcx,sectivia,3
+fds,FDS,FactSet,NYSE,USA,finans,Exchanges & market data,True,1,fds,sectivia:fds,sectivia,1
+fdx,FDX,FedEx,NYSE,USA,industri,"Rail, parcel & freight",True,4,fdx,sectivia:fdx,sectivia,4
+fdxf,FDXF,FedEx Freight,NYSE,USA,industri,"Rail, parcel & freight",True,1,fdxf,sectivia:fdxf,sectivia,1
+fe,FE,FirstEnergy,NYSE,USA,energi,Utilities & power producers,True,1,fe,sectivia:fe,sectivia,1
+ferg,FERG,Ferguson Enterprises,NYSE,USA,industri,Distribution & rental,True,1,ferg,sectivia:ferg,sectivia,1
+ffiv,FFIV,F5,NASDAQ,USA,ai,Data centers,True,2,ffiv,sectivia:ffiv,sectivia,2
+fico,FICO,Fair Isaac (FICO),NYSE,USA,finans,Exchanges & market data,True,1,fico,sectivia:fico,sectivia,1
+fis,FIS,FIS,NYSE,USA,finans,Payment rails & networks,True,2,fis,sectivia:fis,sectivia,2
+fisv,FISV,Fiserv,NASDAQ,USA,finans,Payment rails & networks,True,2,fisv,sectivia:fisv,sectivia,2
+fitb,FITB,Fifth Third Bancorp,NASDAQ,USA,finans,Banks,True,1,fitb,sectivia:fitb,sectivia,1
+fix,FIX,Comfort Systems USA,NYSE,USA,ai,"Cooling, power & data center infrastructure",True,2,fix,sectivia:fix,sectivia,2
+flex,FLEX,Flex Ltd.,NASDAQ,USA,ai,Devices & electronics manufacturing,True,4,flex,sectivia:flex,sectivia,4
+fly,FLY,Firefly Aerospace,NASDAQ,USA,forsvar,Space industry & satellites,True,2,fly,sectivia:fly,sectivia,2
+form,FORM,FormFactor,NASDAQ,USA,ai,Semiconductor equipment & IP,True,1,form,sectivia:form,sectivia,1
+fslr,FSLR,First Solar,NASDAQ,USA,energi,Solar & wind,True,1,fslr,sectivia:fslr,sectivia,1
+ftnt,FTNT,Fortinet,NASDAQ,USA,forsvar,"Identity, network & endpoint",True,2,ftnt,sectivia:ftnt,sectivia,2
+gd,GD,General Dynamics,NYSE,USA,forsvar,Defense integrators,True,5,gd,sectivia:gd,sectivia,5
+gddy,GDDY,GoDaddy,NYSE,USA,ai,Cloud platforms,True,3,gddy,sectivia:gddy,sectivia,3
+ge,GE,GE Aerospace,NYSE,USA,forsvar,Dual-use technology,True,7,ge,sectivia:ge,sectivia,7
+gehc,GEHC,GE HealthCare,NASDAQ,USA,medicin,Medtech & devices,True,1,gehc,sectivia:gehc,sectivia,1
+gen,GEN,Gen Digital,NASDAQ,USA,forsvar,"Identity, network & endpoint",True,1,gen,sectivia:gen,sectivia,1
+gev,GEV,GE Vernova,NYSE,USA,energi,Power equipment,True,7,gev,sectivia:gev,sectivia,7
+gild,GILD,Gilead Sciences,NASDAQ,USA,medicin,Biotech & innovation,True,4,gild,sectivia:gild,sectivia,4
+glw,GLW,Corning,NYSE,USA,ai,Data centers,True,6,glw,sectivia:glw,sectivia,6
+gm,GM,General Motors,NYSE,USA,elbil,Automakers,True,9,gm,sectivia:gm,sectivia,9
+gnrc,GNRC,Generac,NYSE,USA,energi,Power equipment,True,1,gnrc,sectivia:gnrc,sectivia,1
+gntx,GNTX,Gentex,NASDAQ,USA,elbil,Drivetrain & vehicle components,True,2,gntx,sectivia:gntx,sectivia,2
+googl,GOOGL,Alphabet,NASDAQ,USA,ai,Cloud platforms,True,29,googl,sectivia:googl,sectivia,29
+gpc,GPC,Genuine Parts,NYSE,USA,elbil,Parts retail & used cars,True,1,gpc,sectivia:gpc,sectivia,1
+gpn,GPN,Global Payments,NYSE,USA,finans,Payment rails & networks,True,1,gpn,sectivia:gpn,sectivia,1
+gs,GS,Goldman Sachs,NYSE,USA,finans,Investment banking & trading,True,5,gs,sectivia:gs,sectivia,5
+gsat,GSAT,Globalstar,NYSE American,USA,forsvar,Space industry & satellites,True,4,gsat,sectivia:gsat,sectivia,4
+gww,GWW,W. W. Grainger,NYSE,USA,industri,Distribution & rental,True,1,gww,sectivia:gww,sectivia,1
+hal,HAL,Halliburton,NYSE,USA,energi,Oilfield services & equipment,True,2,hal,sectivia:hal,sectivia,2
+hca,HCA,HCA Healthcare,NYSE,USA,medicin,Health insurers & care providers,True,1,hca,sectivia:hca,sectivia,1
+hei,HEI,HEICO,NYSE,USA,forsvar,Military platforms,True,1,hei,sectivia:hei,sectivia,1
+hii,HII,Huntington Ingalls Industries,NYSE,USA,forsvar,Military platforms,True,2,hii,sectivia:hii,sectivia,2
+hon,HON,Honeywell,NASDAQ,USA,forsvar,Dual-use technology,True,2,hon,sectivia:hon,sectivia,2
+hona,HONA,Honeywell Aerospace,NASDAQ,USA,forsvar,Military platforms,True,6,hona,sectivia:hona,sectivia,6
+hood,HOOD,Robinhood,NASDAQ,USA,finans,Brokers & fintech,True,4,hood,sectivia:hood,sectivia,4
+hpe,HPE,HPE,NYSE,USA,ai,Data centers,True,1,hpe,sectivia:hpe,sectivia,1
+hpq,HPQ,HP,NYSE,USA,ai,Devices & electronics manufacturing,True,3,hpq,sectivia:hpq,sectivia,3
+hum,HUM,Humana,NYSE,USA,medicin,Health insurers & care providers,True,1,hum,sectivia:hum,sectivia,1
+hwm,HWM,Howmet Aerospace,NYSE,USA,forsvar,Military platforms,True,4,hwm,sectivia:hwm,sectivia,4
+hxl,HXL,Hexcel,NYSE,USA,forsvar,Military platforms,True,7,hxl,sectivia:hxl,sectivia,7
+ibkr,IBKR,Interactive Brokers,NASDAQ,USA,finans,Brokers & fintech,True,2,ibkr,sectivia:ibkr,sectivia,2
+ibm,IBM,IBM,NYSE,USA,ai,IT consultants & integrators,True,2,ibm,sectivia:ibm,sectivia,2
+ice,ICE,Intercontinental Exchange,NYSE,USA,finans,Exchanges & market data,True,6,ice,sectivia:ice,sectivia,6
+idxx,IDXX,IDEXX Laboratories,NASDAQ,USA,medicin,Diagnostics,True,1,idxx,sectivia:idxx,sectivia,1
+ilmn,ILMN,Illumina,NASDAQ,USA,medicin,Life science tools,True,1,ilmn,sectivia:ilmn,sectivia,1
+incy,INCY,Incyte,NASDAQ,USA,medicin,Biotech & innovation,True,1,incy,sectivia:incy,sectivia,1
+intc,INTC,Intel,NASDAQ,USA,ai,Chips & accelerators,True,9,intc,sectivia:intc,sectivia,9
+intu,INTU,Intuit,NASDAQ,USA,ai,AI software & productivity,True,1,intu,sectivia:intu,sectivia,1
+iqv,IQV,IQVIA Holdings,NYSE,USA,medicin,"Data, software & clinical research",True,1,iqv,sectivia:iqv,sectivia,1
+irdm,IRDM,Iridium Communications,NASDAQ,USA,forsvar,Space industry & satellites,True,5,irdm,sectivia:irdm,sectivia,5
+isrg,ISRG,Intuitive Surgical,NASDAQ,USA,medicin,Medtech & devices,True,1,isrg,sectivia:isrg,sectivia,1
+itri,ITRI,Itron,NASDAQ,USA,energi,Grid & electrification,True,3,itri,sectivia:itri,sectivia,3
+ivz,IVZ,Invesco,NYSE,USA,finans,Asset & alternative managers,True,1,ivz,sectivia:ivz,sectivia,1
+j,J,Jacobs Solutions,NYSE,USA,industri,"Water, waste & services",True,1,j,sectivia:j,sectivia,1
+jbht,JBHT,J.B. Hunt,NASDAQ,USA,industri,"Rail, parcel & freight",True,1,jbht,sectivia:jbht,sectivia,1
+jbl,JBL,Jabil,NYSE,USA,ai,Devices & electronics manufacturing,True,3,jbl,sectivia:jbl,sectivia,3
+jci,JCI,Johnson Controls,NYSE,USA,industri,"Building products, HVAC & elevators",True,1,jci,sectivia:jci,sectivia,1
+jkhy,JKHY,Jack Henry & Associates,NASDAQ,USA,finans,Payment rails & networks,True,2,jkhy,sectivia:jkhy,sectivia,2
+jnj,JNJ,Johnson & Johnson,NYSE,USA,medicin,Big pharma,True,1,jnj,sectivia:jnj,sectivia,1
+jpm,JPM,JPMorgan Chase,NYSE,USA,finans,Banks,True,6,jpm,sectivia:jpm,sectivia,6
+kd,KD,Kyndryl,NYSE,USA,ai,IT consultants & integrators,True,1,kd,sectivia:kd,sectivia,1
+key,KEY,KeyCorp,NYSE,USA,finans,Regional banks,True,1,key,sectivia:key,sectivia,1
+keys,KEYS,Keysight Technologies,NYSE,USA,ai,Semiconductor equipment & IP,True,2,keys,sectivia:keys,sectivia,2
+kkr,KKR,KKR,NYSE,USA,finans,Asset & alternative managers,True,2,kkr,sectivia:kkr,sectivia,2
+klac,KLAC,KLA,NASDAQ,USA,ai,Semiconductor equipment & IP,True,1,klac,sectivia:klac,sectivia,1
+kmi,KMI,Kinder Morgan,NYSE,USA,energi,"Pipelines, processing & refining",True,1,kmi,sectivia:kmi,sectivia,1
+krmn,KRMN,Karman Space & Defense,NYSE,USA,forsvar,Missiles & ammunition,True,1,krmn,sectivia:krmn,sectivia,1
+ktos,KTOS,Kratos Defense,NASDAQ,USA,forsvar,Drones & autonomous systems,True,1,ktos,sectivia:ktos,sectivia,1
+lcid,LCID,Lucid Group,NASDAQ,USA,elbil,Automakers,True,2,lcid,sectivia:lcid,sectivia,2
+ldos,LDOS,Leidos,NYSE,USA,forsvar,Communications & defense data,True,3,ldos,sectivia:ldos,sectivia,3
+lea,LEA,Lear,NYSE,USA,elbil,Drivetrain & vehicle components,True,2,lea,sectivia:lea,sectivia,2
+leu,LEU,Centrus Energy,NYSE American,USA,energi,Nuclear energy & uranium,True,1,leu,sectivia:leu,sectivia,1
+lh,LH,Labcorp,NYSE,USA,medicin,Diagnostics,True,1,lh,sectivia:lh,sectivia,1
+lhx,LHX,L3Harris,NYSE,USA,forsvar,Defense integrators,True,5,lhx,sectivia:lhx,sectivia,5
+lii,LII,Lennox International,NYSE,USA,industri,"Building products, HVAC & elevators",True,1,lii,sectivia:lii,sectivia,1
+lin,LIN,Linde plc,NASDAQ,USA,raavarer,Industrial gases & chemicals,True,3,lin,sectivia:lin,sectivia,3
+lite,LITE,Lumentum,NASDAQ,USA,ai,Data centers,True,4,lite,sectivia:lite,sectivia,4
+lly,LLY,Eli Lilly,NYSE,USA,medicin,Diabetes & metabolic disease,True,5,lly,sectivia:lly,sectivia,5
+lmt,LMT,Lockheed Martin,NYSE,USA,forsvar,Defense integrators,True,15,lmt,sectivia:lmt,sectivia,15
+lnt,LNT,Alliant Energy,NASDAQ,USA,energi,Utilities & power producers,True,1,lnt,sectivia:lnt,sectivia,1
+lrcx,LRCX,Lam Research,NASDAQ,USA,ai,Semiconductor equipment & IP,True,2,lrcx,sectivia:lrcx,sectivia,2
+lunr,LUNR,Intuitive Machines,NASDAQ,USA,forsvar,Space industry & satellites,True,2,lunr,sectivia:lunr,sectivia,2
+ma,MA,Mastercard,NYSE,USA,finans,Payment rails & networks,True,9,ma,sectivia:ma,sectivia,9
+mas,MAS,Masco,NYSE,USA,industri,"Building products, HVAC & elevators",True,1,mas,sectivia:mas,sectivia,1
+mchp,MCHP,Microchip Technology,NASDAQ,USA,ai,Chips & accelerators,True,1,mchp,sectivia:mchp,sectivia,1
+mck,MCK,McKesson,NYSE,USA,medicin,Distribution & pharmacy infrastructure,True,9,mck,sectivia:mck,sectivia,9
+mco,MCO,Moody’s,NYSE,USA,finans,Exchanges & market data,True,1,mco,sectivia:mco,sectivia,1
+mdb,MDB,MongoDB,NASDAQ,USA,ai,"Data, analytics & enterprise AI",True,1,mdb,sectivia:mdb,sectivia,1
+mdt,MDT,Medtronic,NYSE,USA,medicin,Medtech & devices,True,1,mdt,sectivia:mdt,sectivia,1
+meta,META,Meta Platforms,NASDAQ,USA,ai,AI software & productivity,True,15,meta,sectivia:meta,sectivia,15
+mlm,MLM,Martin Marietta Materials,NYSE,USA,raavarer,Construction materials & coatings,True,1,mlm,sectivia:mlm,sectivia,1
+mmm,MMM,3M,NYSE,USA,industri,Components & automation,True,3,mmm,sectivia:mmm,sectivia,3
+mod,MOD,Modine Manufacturing,NYSE,USA,ai,"Cooling, power & data center infrastructure",True,3,mod,sectivia:mod,sectivia,3
+mog,MOG.A,Moog,NYSE,USA,forsvar,Military platforms,True,3,mog,sectivia:mog,sectivia,3
+mos,MOS,Mosaic,NYSE,USA,raavarer,Fertilizers,True,2,mos,sectivia:mos,sectivia,2
+mp,MP,MP Materials,NYSE,USA,raavarer,Mining & critical minerals,True,2,mp,sectivia:mp,sectivia,2
+mpwr,MPWR,Monolithic Power,NASDAQ,USA,ai,Chips & accelerators,True,1,mpwr,sectivia:mpwr,sectivia,1
+mrcy,MRCY,Mercury Systems,NASDAQ,USA,forsvar,"Radar, sensors & electronics",True,6,mrcy,sectivia:mrcy,sectivia,6
+mrk,MRK,Merck & Co.,NYSE,USA,medicin,Big pharma,True,2,mrk,sectivia:mrk,sectivia,2
+mrna,MRNA,Moderna,NASDAQ,USA,medicin,Biotech & innovation,True,1,mrna,sectivia:mrna,sectivia,1
+mrvl,MRVL,Marvell,NASDAQ,USA,ai,Chips & accelerators,True,2,mrvl,sectivia:mrvl,sectivia,2
+ms,MS,Morgan Stanley,NYSE,USA,finans,Investment banking & trading,True,2,ms,sectivia:ms,sectivia,2
+msci,MSCI,MSCI,NYSE,USA,finans,Exchanges & market data,True,1,msci,sectivia:msci,sectivia,1
+msft,MSFT,Microsoft,NASDAQ,USA,ai,Cloud platforms,True,31,msft,sectivia:msft,sectivia,31
+msi,MSI,Motorola Solutions,NYSE,USA,forsvar,Dual-use technology,True,1,msi,sectivia:msi,sectivia,1
+mtz,MTZ,MasTec,NYSE,USA,energi,Grid & electrification,True,1,mtz,sectivia:mtz,sectivia,1
+mu,MU,Micron,NASDAQ,USA,ai,Chips & accelerators,True,3,mu,sectivia:mu,sectivia,3
+nbix,NBIX,Neurocrine Biosciences,NASDAQ,USA,medicin,Biotech & innovation,True,1,nbix,sectivia:nbix,sectivia,1
+ncno,NCNO,nCino,NASDAQ,USA,finans,Brokers & fintech,True,4,ncno,sectivia:ncno,sectivia,4
+ndaq,NDAQ,Nasdaq,NASDAQ,USA,finans,Exchanges & market data,True,3,ndaq,sectivia:ndaq,sectivia,3
+nee,NEE,NextEra Energy,NYSE,USA,energi,Utilities & power producers,True,5,nee,sectivia:nee,sectivia,5
+nem,NEM,Newmont,NYSE,USA,raavarer,Mining & critical minerals,True,2,nem,sectivia:nem,sectivia,2
+net,NET,Cloudflare,NYSE,USA,forsvar,"Identity, network & endpoint",True,1,net,sectivia:net,sectivia,1
+ni,NI,NiSource,NYSE,USA,energi,Utilities & power producers,True,2,ni,sectivia:ni,sectivia,2
+noc,NOC,Northrop Grumman,NYSE,USA,forsvar,Defense integrators,True,8,noc,sectivia:noc,sectivia,8
+now,NOW,ServiceNow,NYSE,USA,ai,AI software & productivity,True,1,now,sectivia:now,sectivia,1
+nrg,NRG,NRG Energy,NYSE,USA,energi,Utilities & power producers,True,2,nrg,sectivia:nrg,sectivia,2
+nsc,NSC,Norfolk Southern,NYSE,USA,industri,"Rail, parcel & freight",True,2,nsc,sectivia:nsc,sectivia,2
+ntap,NTAP,NetApp,NASDAQ,USA,ai,Data centers,True,2,ntap,sectivia:ntap,sectivia,2
+ntra,NTRA,Natera,NASDAQ,USA,medicin,Diagnostics,True,2,ntra,sectivia:ntra,sectivia,2
+ntrs,NTRS,Northern Trust,NASDAQ,USA,finans,Banks,True,1,ntrs,sectivia:ntrs,sectivia,1
+nue,NUE,Nucor,NYSE,USA,raavarer,Steel & specialty metals,True,4,nue,sectivia:nue,sectivia,4
+nvda,NVDA,Nvidia,NASDAQ,USA,ai,Chips & accelerators,True,24,nvda,sectivia:nvda,sectivia,24
+nxt,NXT,Nextpower,NASDAQ,USA,energi,Solar & wind,True,1,nxt,sectivia:nxt,sectivia,1
+oke,OKE,Oneok,NYSE,USA,energi,"Pipelines, processing & refining",True,2,oke,sectivia:oke,sectivia,2
+oklo,OKLO,Oklo,NYSE,USA,energi,Nuclear energy & uranium,True,2,oklo,sectivia:oklo,sectivia,2
+okta,OKTA,Okta,NASDAQ,USA,forsvar,"Identity, network & endpoint",True,1,okta,sectivia:okta,sectivia,1
+oln,OLN,Olin,NYSE,USA,raavarer,Industrial gases & chemicals,True,1,oln,sectivia:oln,sectivia,1
+on,ON,ON Semiconductor,NASDAQ,USA,elbil,Battery cells & power chips,True,1,on,sectivia:on,sectivia,1
+orcl,ORCL,Oracle,NYSE,USA,ai,Cloud platforms,True,6,orcl,sectivia:orcl,sectivia,6
+oxy,OXY,Occidental Petroleum,NYSE,USA,energi,Oil & gas production,True,3,oxy,sectivia:oxy,sectivia,3
+p,P,Everpure,NYSE,USA,ai,Data centers,True,1,p,sectivia:p,sectivia,1
+panw,PANW,Palo Alto Networks,NASDAQ,USA,forsvar,"Identity, network & endpoint",True,1,panw,sectivia:panw,sectivia,1
+pcar,PCAR,Paccar,NASDAQ,USA,industri,"Machinery, engines & locomotives",True,5,pcar,sectivia:pcar,sectivia,5
+pcg,PCG,PG&E,NYSE,USA,energi,Utilities & power producers,True,1,pcg,sectivia:pcg,sectivia,1
+pfe,PFE,Pfizer,NYSE,USA,medicin,Big pharma,True,5,pfe,sectivia:pfe,sectivia,5
+ph,PH,Parker Hannifin,NYSE,USA,industri,Components & automation,True,3,ph,sectivia:ph,sectivia,3
+pltr,PLTR,Palantir,NASDAQ,USA,ai,"Data, analytics & enterprise AI",True,2,pltr,sectivia:pltr,sectivia,2
+pnc,PNC,PNC Financial,NYSE,USA,finans,Banks,True,1,pnc,sectivia:pnc,sectivia,1
+pnw,PNW,Pinnacle West Capital,NYSE,USA,energi,Utilities & power producers,True,1,pnw,sectivia:pnw,sectivia,1
+podd,PODD,Insulet,NASDAQ,USA,medicin,Diabetes & metabolic disease,True,4,podd,sectivia:podd,sectivia,4
+ppl,PPL,PPL,NYSE,USA,energi,Utilities & power producers,True,1,ppl,sectivia:ppl,sectivia,1
+psx,PSX,Phillips 66,NYSE,USA,energi,"Pipelines, processing & refining",True,1,psx,sectivia:psx,sectivia,1
+ptc,PTC,PTC,NASDAQ,USA,ai,AI software & productivity,True,1,ptc,sectivia:ptc,sectivia,1
+pwr,PWR,Quanta Services,NYSE,USA,energi,Grid & electrification,True,7,pwr,sectivia:pwr,sectivia,7
+pypl,PYPL,PayPal,NASDAQ,USA,finans,Payment rails & networks,True,3,pypl,sectivia:pypl,sectivia,3
+q,Q,Qnity Electronics,NYSE,USA,ai,Semiconductor equipment & IP,True,1,q,sectivia:q,sectivia,1
+qcom,QCOM,Qualcomm,NASDAQ,USA,ai,Chips & accelerators,True,6,qcom,sectivia:qcom,sectivia,6
+qlys,QLYS,Qualys,NASDAQ,USA,forsvar,Detection & response,True,2,qlys,sectivia:qlys,sectivia,2
+qs,QS,QuantumScape,NASDAQ,USA,elbil,Battery cells & power chips,True,1,qs,sectivia:qs,sectivia,1
+rbc,RBC,RBC Bearings,NYSE,USA,industri,Components & automation,True,1,rbc,sectivia:rbc,sectivia,1
+rbrk,RBRK,Rubrik,NYSE,USA,forsvar,Detection & response,True,1,rbrk,sectivia:rbrk,sectivia,1
+rddt,RDDT,Reddit,NYSE,USA,ai,AI software & productivity,True,3,rddt,sectivia:rddt,sectivia,3
+regn,REGN,Regeneron,NASDAQ,USA,medicin,Biotech & innovation,True,3,regn,sectivia:regn,sectivia,3
+rivn,RIVN,Rivian Automotive,NASDAQ,USA,elbil,Automakers,True,2,rivn,sectivia:rivn,sectivia,2
+rjf,RJF,Raymond James Financial,NYSE,USA,finans,Brokers & fintech,True,1,rjf,sectivia:rjf,sectivia,1
+rklb,RKLB,Rocket Lab,NASDAQ,USA,forsvar,Space industry & satellites,True,1,rklb,sectivia:rklb,sectivia,1
+rok,ROK,Rockwell Automation,NYSE,USA,energi,Power equipment,True,1,rok,sectivia:rok,sectivia,1
+rop,ROP,Roper Technologies,NASDAQ,USA,industri,Components & automation,True,2,rop,sectivia:rop,sectivia,2
+rpd,RPD,Rapid7,NASDAQ,USA,forsvar,Detection & response,True,1,rpd,sectivia:rpd,sectivia,1
+rsg,RSG,Republic Services,NYSE,USA,industri,"Water, waste & services",True,1,rsg,sectivia:rsg,sectivia,1
+rtx,RTX,RTX,NYSE,USA,forsvar,Defense integrators,True,11,rtx,sectivia:rtx,sectivia,11
+run,RUN,Sunrun,NASDAQ,USA,energi,Solar & wind,True,2,run,sectivia:run,sectivia,2
+rvty,RVTY,Revvity,NYSE,USA,medicin,Life science tools,True,1,rvty,sectivia:rvty,sectivia,1
+s,S,SentinelOne,NYSE,USA,forsvar,"Identity, network & endpoint",True,1,s,sectivia:s,sectivia,1
+sail,SAIL,SailPoint,NASDAQ,USA,forsvar,"Identity, network & endpoint",True,1,sail,sectivia:sail,sectivia,1
+sbac,SBAC,SBA Communications,NASDAQ,USA,ai,"Telecom, cable & towers",True,3,sbac,sectivia:sbac,sectivia,3
+schw,SCHW,Charles Schwab,NYSE,USA,finans,Brokers & fintech,True,4,schw,sectivia:schw,sectivia,4
+shw,SHW,Sherwin-Williams,NYSE,USA,raavarer,Construction materials & coatings,True,1,shw,sectivia:shw,sectivia,1
+slb,SLB,SLB,NYSE,USA,energi,Oilfield services & equipment,True,1,slb,sectivia:slb,sectivia,1
+smci,SMCI,Super Micro,NASDAQ,USA,ai,Data centers,True,2,smci,sectivia:smci,sectivia,2
+smr,SMR,NuScale Power,NYSE,USA,energi,Nuclear energy & uranium,True,2,smr,sectivia:smr,sectivia,2
+snow,SNOW,Snowflake,NYSE,USA,ai,"Data, analytics & enterprise AI",True,2,snow,sectivia:snow,sectivia,2
+snps,SNPS,Synopsys,NASDAQ,USA,ai,Semiconductor equipment & IP,True,2,snps,sectivia:snps,sectivia,2
+so,SO,Southern Company,NYSE,USA,energi,Utilities & power producers,True,1,so,sectivia:so,sectivia,1
+solv,SOLV,Solventum,NYSE,USA,medicin,Medtech & devices,True,2,solv,sectivia:solv,sectivia,2
+spacex,,SpaceX,,USA,forsvar,Space industry & satellites,False,5,spacex,sectivia:spacex,sectivia,5
+spgi,SPGI,S&P Global,NYSE,USA,finans,Exchanges & market data,True,6,spgi,sectivia:spgi,sectivia,6
+sre,SRE,Sempra,NYSE,USA,energi,Utilities & power producers,True,3,sre,sectivia:sre,sectivia,3
+ssnc,SSNC,SS&C Technologies,NASDAQ,USA,finans,Exchanges & market data,True,3,ssnc,sectivia:ssnc,sectivia,3
+ste,STE,Steris,NYSE,USA,medicin,Medtech & devices,True,1,ste,sectivia:ste,sectivia,1
+stld,STLD,Steel Dynamics,NASDAQ,USA,raavarer,Steel & specialty metals,True,2,stld,sectivia:stld,sectivia,2
+stt,STT,State Street,NYSE,USA,finans,Banks,True,5,stt,sectivia:stt,sectivia,5
+swks,SWKS,Skyworks Solutions,NASDAQ,USA,ai,Chips & accelerators,True,2,swks,sectivia:swks,sectivia,2
+syf,SYF,Synchrony Financial,NYSE,USA,finans,Consumer lenders & card issuers,True,4,syf,sectivia:syf,sectivia,4
+t,T,AT&T,NYSE,USA,ai,"Telecom, cable & towers",True,8,t,sectivia:t,sectivia,8
+tdc,TDC,Teradata,NYSE,USA,ai,"Data, analytics & enterprise AI",True,3,tdc,sectivia:tdc,sectivia,3
+tdg,TDG,TransDigm Group,NYSE,USA,forsvar,Dual-use technology,True,1,tdg,sectivia:tdg,sectivia,1
+tdy,TDY,Teledyne Technologies,NYSE,USA,forsvar,Dual-use technology,True,3,tdy,sectivia:tdy,sectivia,3
+tech,TECH,Bio-Techne,NASDAQ,USA,medicin,Life science tools,True,1,tech,sectivia:tech,sectivia,1
+tenb,TENB,Tenable,NASDAQ,USA,forsvar,Detection & response,True,2,tenb,sectivia:tenb,sectivia,2
+ter,TER,Teradyne,NASDAQ,USA,ai,Semiconductor equipment & IP,True,1,ter,sectivia:ter,sectivia,1
+tfc,TFC,Truist Financial,NYSE,USA,finans,Regional banks,True,1,tfc,sectivia:tfc,sectivia,1
+tln,TLN,Talen Energy,NASDAQ,USA,energi,Utilities & power producers,True,1,tln,sectivia:tln,sectivia,1
+tmo,TMO,Thermo Fisher Scientific,NYSE,USA,medicin,Life science tools,True,5,tmo,sectivia:tmo,sectivia,5
+tmus,TMUS,T-Mobile US,NASDAQ,USA,ai,"Telecom, cable & towers",True,6,tmus,sectivia:tmus,sectivia,6
+tpl,TPL,Texas Pacific Land,NYSE,USA,energi,Oil & gas production,True,1,tpl,sectivia:tpl,sectivia,1
+trgp,TRGP,Targa Resources,NYSE,USA,energi,"Pipelines, processing & refining",True,2,trgp,sectivia:trgp,sectivia,2
+trmb,TRMB,Trimble,NASDAQ,USA,ai,AI software & productivity,True,2,trmb,sectivia:trmb,sectivia,2
+trow,TROW,T. Rowe Price,NASDAQ,USA,finans,Asset & alternative managers,True,2,trow,sectivia:trow,sectivia,2
+tru,TRU,TransUnion,NYSE,USA,finans,Exchanges & market data,True,2,tru,sectivia:tru,sectivia,2
+tsla,TSLA,Tesla,NASDAQ,USA,elbil,Automakers,True,7,tsla,sectivia:tsla,sectivia,7
+tt,TT,Trane Technologies,NYSE,USA,industri,"Building products, HVAC & elevators",True,2,tt,sectivia:tt,sectivia,2
+twlo,TWLO,Twilio,NYSE,USA,ai,AI software & productivity,True,1,twlo,sectivia:twlo,sectivia,1
+txn,TXN,Texas Instruments,NASDAQ,USA,ai,Chips & accelerators,True,1,txn,sectivia:txn,sectivia,1
+txt,TXT,Textron,NYSE,USA,forsvar,Military platforms,True,5,txt,sectivia:txt,sectivia,5
+tyl,TYL,Tyler Technologies,NYSE,USA,ai,AI software & productivity,True,1,tyl,sectivia:tyl,sectivia,1
+uhs,UHS,Universal Health Services,NYSE,USA,medicin,Health insurers & care providers,True,1,uhs,sectivia:uhs,sectivia,1
+unh,UNH,UnitedHealth,NYSE,USA,medicin,Distribution & pharmacy infrastructure,True,2,unh,sectivia:unh,sectivia,2
+unp,UNP,Union Pacific,NYSE,USA,industri,"Rail, parcel & freight",True,3,unp,sectivia:unp,sectivia,3
+ups,UPS,United Parcel Service,NYSE,USA,industri,"Rail, parcel & freight",True,5,ups,sectivia:ups,sectivia,5
+usar,USAR,USA Rare Earth,NASDAQ,USA,raavarer,Mining & critical minerals,True,1,usar,sectivia:usar,sectivia,1
+usb,USB,U.S. Bancorp,NYSE,USA,finans,Banks,True,3,usb,sectivia:usb,sectivia,3
+uthr,UTHR,United Therapeutics,NASDAQ,USA,medicin,Biotech & innovation,True,2,uthr,sectivia:uthr,sectivia,2
+v,V,Visa,NYSE,USA,finans,Payment rails & networks,True,11,v,sectivia:v,sectivia,11
+vc,VC,Visteon,NASDAQ,USA,elbil,Drivetrain & vehicle components,True,2,vc,sectivia:vc,sectivia,2
+veev,VEEV,Veeva Systems,NYSE,USA,medicin,"Data, software & clinical research",True,4,veev,sectivia:veev,sectivia,4
+virt,VIRT,Virtu Financial,NYSE,USA,finans,Investment banking & trading,True,2,virt,sectivia:virt,sectivia,2
+vlto,VLTO,Veralto,NYSE,USA,industri,"Water, waste & services",True,1,vlto,sectivia:vlto,sectivia,1
+vmc,VMC,Vulcan Materials,NYSE,USA,raavarer,Construction materials & coatings,True,1,vmc,sectivia:vmc,sectivia,1
+vrns,VRNS,Varonis Systems,NASDAQ,USA,forsvar,"Identity, network & endpoint",True,1,vrns,sectivia:vrns,sectivia,1
+vrsn,VRSN,Verisign,NASDAQ,USA,ai,Cloud platforms,True,1,vrsn,sectivia:vrsn,sectivia,1
+vrt,VRT,Vertiv,NYSE,USA,ai,"Cooling, power & data center infrastructure",True,1,vrt,sectivia:vrt,sectivia,1
+vrtx,VRTX,Vertex Pharmaceuticals,NASDAQ,USA,medicin,Biotech & innovation,True,2,vrtx,sectivia:vrtx,sectivia,2
+vsat,VSAT,Viasat,NASDAQ,USA,forsvar,Space industry & satellites,True,4,vsat,sectivia:vsat,sectivia,4
+vst,VST,Vistra,NYSE,USA,energi,Utilities & power producers,True,2,vst,sectivia:vst,sectivia,2
+vtrs,VTRS,Viatris,NASDAQ,USA,medicin,Big pharma,True,1,vtrs,sectivia:vtrs,sectivia,1
+vz,VZ,Verizon,NYSE,USA,ai,"Telecom, cable & towers",True,9,vz,sectivia:vz,sectivia,9
+wab,WAB,Wabtec,NYSE,USA,industri,"Machinery, engines & locomotives",True,3,wab,sectivia:wab,sectivia,3
+wat,WAT,Waters Corporation,NYSE,USA,medicin,Life science tools,True,1,wat,sectivia:wat,sectivia,1
+wday,WDAY,Workday,NASDAQ,USA,ai,AI software & productivity,True,1,wday,sectivia:wday,sectivia,1
+wec,WEC,WEC Energy Group,NYSE,USA,energi,Utilities & power producers,True,1,wec,sectivia:wec,sectivia,1
+wfc,WFC,Wells Fargo,NYSE,USA,finans,Banks,True,2,wfc,sectivia:wfc,sectivia,2
+wm,WM,Waste Management,NYSE,USA,industri,"Water, waste & services",True,1,wm,sectivia:wm,sectivia,1
+wmb,WMB,Williams Companies,NYSE,USA,energi,"Pipelines, processing & refining",True,2,wmb,sectivia:wmb,sectivia,2
+wolf,WOLF,Wolfspeed,NYSE,USA,elbil,Battery cells & power chips,True,2,wolf,sectivia:wolf,sectivia,2
+wso,WSO,Watsco,NYSE,USA,industri,Distribution & rental,True,2,wso,sectivia:wso,sectivia,2
+wst,WST,West Pharmaceutical Services,NYSE,USA,medicin,CDMO & pharma manufacturing,True,1,wst,sectivia:wst,sectivia,1
+wwd,WWD,Woodward,NASDAQ,USA,forsvar,Military platforms,True,7,wwd,sectivia:wwd,sectivia,7
+xel,XEL,Xcel Energy,NASDAQ,USA,energi,Utilities & power producers,True,4,xel,sectivia:xel,sectivia,4
+xom,XOM,ExxonMobil,NYSE,USA,energi,Oil & gas production,True,7,xom,sectivia:xom,sectivia,7
+xyz,XYZ,Block,NYSE,USA,finans,Brokers & fintech,True,2,xyz,sectivia:xyz,sectivia,2
+zbra,ZBRA,Zebra Technologies,NASDAQ,USA,industri,Components & automation,True,2,zbra,sectivia:zbra,sectivia,2
+zion,ZION,Zions Bancorporation,NASDAQ,USA,finans,Regional banks,True,1,zion,sectivia:zion,sectivia,1
+zs,ZS,Zscaler,NASDAQ,USA,forsvar,"Identity, network & endpoint",True,1,zs,sectivia:zs,sectivia,1
+zts,ZTS,Zoetis,NYSE,USA,medicin,Big pharma,True,1,zts,sectivia:zts,sectivia,1
