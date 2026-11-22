@@ -20,26 +20,41 @@ import { EmptyState } from "./components/EmptyState";
 import {
   fetchNetworkGraph,
   fetchAlerts,
+  fetchAllCompanies,
+  fetchNodeDetails,
+  buildEgoNetwork,
   simulateRippleEffect,
 } from "./services/api";
 import {
-  NODE_TYPES,
+  SECTIVIA_STATS,
+  SECTIVIA_SECTORS,
+  SECTIVIA_COMPANIES,
+  SECTIVIA_RELATIONSHIPS,
   initialSupplyChainNodes,
   initialSupplyChainEdges,
   initialAlerts,
   initialSummary,
-} from "./data/mockData";
+} from "./data/sectiviaData";
 
+/**
+ * Custom Node component styled for Sectivia corporate entities
+ * Shows company ticker/name, sector color bar, sector icon, and risk/hub status
+ */
 function CustomNode({ data, selected }) {
   const isRipple = data.isRippleAffected;
+  const sectorColor = data.sectorColor || "#38bdf8";
+
   return (
     <div
-      className={`custom-node ${data.risk} ${selected ? "selected" : ""} ${
+      className={`custom-node ${data.risk || "low"} ${selected ? "selected" : ""} ${
         isRipple ? "ripple-affected" : ""
-      }`}
+      } ${data.isRoot ? "root-node" : ""}`}
+      style={{
+        borderLeft: `4px solid ${sectorColor}`,
+      }}
       role="button"
       tabIndex={0}
-      aria-label={`${data.label}, ${data.node_type || data.type}, Risk: ${data.risk}`}
+      aria-label={`${data.name || data.label}, Sector: ${data.sectorName || data.sector}, Ticker: ${data.ticker || "Private"}`}
       onKeyDown={(e) => {
         if (e.key === "Enter" || e.key === " ") {
           e.preventDefault();
@@ -47,28 +62,60 @@ function CustomNode({ data, selected }) {
         }
       }}
     >
-      <Handle type="target" position={Position.Left} />
+      {/* Incoming edge handle: Upstream Supplier */}
+      <Handle
+        type="target"
+        position={Position.Left}
+        aria-label="Supplied By (Upstream)"
+      />
+
       <div className="node-header">
         <span className="node-icon" aria-hidden="true">
-          {data.icon || "📦"}
+          {data.sectorIcon || "🏢"}
         </span>
-        <span className={`risk-badge ${data.risk}`}>
-          {(data.risk || "low").toUpperCase()}
+        <span
+          className="sector-pill"
+          style={{
+            backgroundColor: `${sectorColor}22`,
+            color: sectorColor,
+            borderColor: `${sectorColor}55`,
+          }}
+        >
+          {data.ticker || (data.sector || "CORP").toUpperCase()}
         </span>
       </div>
-      <div className="node-name">{data.label}</div>
+
+      <div className="node-name" title={data.name}>
+        {data.label || data.name}
+      </div>
+
       <div className="node-meta">
-        <span className="node-type">{data.node_type || data.type}</span>
+        <span className="node-type" style={{ color: sectorColor }}>
+          {data.sectorName || data.sector}
+        </span>
         {data.country && (
-          <span className="node-country">· {data.country}</span>
+          <span className="node-country"> · {data.country}</span>
         )}
       </div>
+
       <div className="node-footer">
-        <span className="node-indicator"></span>
-        <span>{data.status}</span>
+        <span
+          className="node-indicator"
+          style={{ backgroundColor: sectorColor }}
+        ></span>
+        <span>
+          {data.relations_count ? `${data.relations_count} links` : data.status || "Operational"}
+        </span>
         {isRipple && <span className="ripple-badge">⚡ RIPPLE</span>}
+        {data.isRoot && <span className="root-badge">🎯 FOCUS</span>}
       </div>
-      <Handle type="source" position={Position.Right} />
+
+      {/* Outgoing edge handle: Downstream Customer */}
+      <Handle
+        type="source"
+        position={Position.Right}
+        aria-label="Supplies To (Downstream)"
+      />
     </div>
   );
 }
@@ -76,23 +123,34 @@ function CustomNode({ data, selected }) {
 const nodeTypes = { custom: CustomNode };
 
 function App() {
+  // Navigation tabs: 'overview' | 'network' | 'companies' | 'analytics' | 'about'
+  const [activeTab, setActiveTab] = useState("overview");
+
+  // Graph state
   const [nodes, setNodes, onNodesChange] = useNodesState(initialSupplyChainNodes);
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialSupplyChainEdges);
   const [alerts, setAlerts] = useState(initialAlerts);
   const [summary, setSummary] = useState(initialSummary);
+  const [stats, setStats] = useState(SECTIVIA_STATS);
 
-  const [riskFilter, setRiskFilter] = useState("all");
-  const [typeFilter, setTypeFilter] = useState("all");
+  // Filters & exploration
+  const [selectedSector, setSelectedSector] = useState("all");
+  const [crossSectorOnly, setCrossSectorOnly] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [selectedNode, setSelectedNode] = useState(null);
+  const [selectedNodeDetails, setSelectedNodeDetails] = useState(null);
   const [selectedEdge, setSelectedEdge] = useState(null);
   const [simulation, setSimulation] = useState(null);
+  const [egoNetworkActive, setEgoNetworkActive] = useState(null);
   const [rfInstance, setRfInstance] = useState(null);
+
+  // Loading & status
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const searchInputRef = useRef(null);
 
+  // Theme preference
   const [theme, setTheme] = useState(
     () => localStorage.getItem("atmograph-theme") || "system"
   );
@@ -104,11 +162,12 @@ function App() {
     localStorage.setItem("atmograph-theme", theme);
   }, [theme]);
 
-  // Keyboard accessibility shortcuts (Escape to clear, / or Ctrl+K to search)
+  // Keyboard shortcuts (Escape to clear, / or Ctrl+K to search)
   useEffect(() => {
     const handleKeyDown = (e) => {
       if (e.key === "Escape") {
         setSelectedNode(null);
+        setSelectedNodeDetails(null);
         setSelectedEdge(null);
         if (simulation) handleClearSimulation();
       } else if (
@@ -125,7 +184,7 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [simulation]);
 
-  // Initial data load via API service
+  // Load data via API service
   const loadData = useCallback(() => {
     setIsLoading(true);
     setError(null);
@@ -135,17 +194,14 @@ function App() {
         if (graphData && graphData.nodes) {
           setNodes(graphData.nodes);
           setEdges(graphData.edges);
-          if (graphData.summary) {
-            setSummary(graphData.summary);
-          }
+          if (graphData.summary) setSummary(graphData.summary);
+          if (graphData.stats) setStats(graphData.stats);
         }
-        if (alertsData) {
-          setAlerts(alertsData);
-        }
+        if (alertsData) setAlerts(alertsData);
       })
       .catch((err) => {
-        console.warn("API Service running in fallback mode:", err);
-        setError("Unable to connect to live telemetry API. Running in simulated fallback mode.");
+        console.warn("API Service running in fallback Sectivia mode:", err);
+        setError("Operating in Sectivia Baseline mode (backend server offline).");
       })
       .finally(() => {
         setIsLoading(false);
@@ -156,37 +212,36 @@ function App() {
     loadData();
   }, [loadData]);
 
-  // Calculate live dynamic risk counts
-  const riskCounts = useMemo(
-    () => ({
-      high: nodes.filter((n) => n.data?.risk === "high").length,
-      medium: nodes.filter((n) => n.data?.risk === "medium").length,
-      low: nodes.filter((n) => n.data?.risk === "low").length,
-    }),
-    [nodes]
-  );
+  // Fetch full details whenever a node is selected
+  useEffect(() => {
+    if (selectedNode) {
+      fetchNodeDetails(selectedNode.id)
+        .then((details) => setSelectedNodeDetails(details))
+        .catch(() => setSelectedNodeDetails(selectedNode.data));
+    } else {
+      setSelectedNodeDetails(null);
+    }
+  }, [selectedNode]);
 
-  // Apply multi-criteria filtering: Risk + Node Type + Search Query
+  // Apply filters: Sector + Cross-Sector + Search Query
   const filteredNodes = useMemo(() => {
     return nodes.filter((n) => {
       const data = n.data || {};
-      const matchesRisk =
-        riskFilter === "all" || data.risk === riskFilter;
-      const matchesType =
-        typeFilter === "all" ||
-        data.node_type === typeFilter ||
-        data.type === typeFilter;
+      const matchesSector =
+        selectedSector === "all" || data.sector === selectedSector;
       const query = searchQuery.trim().toLowerCase();
       const matchesSearch =
         !query ||
         (data.label && data.label.toLowerCase().includes(query)) ||
         (data.name && data.name.toLowerCase().includes(query)) ||
+        (data.ticker && data.ticker.toLowerCase().includes(query)) ||
         (data.country && data.country.toLowerCase().includes(query)) ||
-        (data.industry && data.industry.toLowerCase().includes(query));
+        (data.sectorName && data.sectorName.toLowerCase().includes(query)) ||
+        (data.segment && data.segment.toLowerCase().includes(query));
 
-      return matchesRisk && matchesType && matchesSearch;
+      return matchesSector && matchesSearch;
     });
-  }, [nodes, riskFilter, typeFilter, searchQuery]);
+  }, [nodes, selectedSector, searchQuery]);
 
   const visibleIds = useMemo(
     () => new Set(filteredNodes.map((n) => n.id)),
@@ -196,26 +251,50 @@ function App() {
   // Filter edges to only connect visible nodes
   const filteredEdges = useMemo(() => {
     return edges
-      .filter((e) => visibleIds.has(e.source) && visibleIds.has(e.target))
+      .filter((e) => {
+        const connected = visibleIds.has(e.source) && visibleIds.has(e.target);
+        if (!connected) return false;
+        if (crossSectorOnly) return e.data?.is_cross_sector;
+        return true;
+      })
       .map((e) => {
         const isRipple = simulation && simulation.rippleEdgeIds.includes(e.id);
         const isSelected = selectedEdge && selectedEdge.id === e.id;
+        const isCross = e.data?.is_cross_sector;
+
         if (isRipple) {
           return {
             ...e,
             animated: true,
             style: { ...e.style, stroke: "#ef4444", strokeWidth: 3.5 },
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              color: "#ef4444",
+            },
           };
         }
         if (isSelected) {
           return {
             ...e,
             style: { ...e.style, stroke: "var(--accent)", strokeWidth: 3 },
+            markerEnd: {
+              type: MarkerType.ArrowClosed,
+              color: "var(--accent)",
+            },
           };
         }
-        return e;
+
+        return {
+          ...e,
+          markerEnd: {
+            type: MarkerType.ArrowClosed,
+            color: isCross ? "#38bdf8" : "#64748b",
+            width: 14,
+            height: 14,
+          },
+        };
       });
-  }, [edges, visibleIds, simulation, selectedEdge]);
+  }, [edges, visibleIds, simulation, selectedEdge, crossSectorOnly]);
 
   const handleFitView = useCallback(() => {
     if (rfInstance) {
@@ -227,8 +306,9 @@ function App() {
     const exportData = {
       nodes: filteredNodes,
       edges: filteredEdges,
-      filter: { risk: riskFilter, type: typeFilter, search: searchQuery },
+      filter: { sector: selectedSector, crossSectorOnly, search: searchQuery },
       exportedAt: new Date().toISOString(),
+      datasetSource: "Sectivia",
     };
     const blob = new Blob([JSON.stringify(exportData, null, 2)], {
       type: "application/json",
@@ -236,29 +316,19 @@ function App() {
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
     link.href = url;
-    link.download = `atmograph-topology-${riskFilter}.json`;
+    link.download = `sectivia-supply-chain-${selectedSector}.json`;
     link.click();
     URL.revokeObjectURL(url);
-  }, [filteredNodes, filteredEdges, riskFilter, typeFilter, searchQuery]);
-
-  const handleFilter = (filter) => {
-    setRiskFilter(filter);
-    setSelectedNode(null);
-    setSelectedEdge(null);
-  };
-
-  const handleTypeFilter = (type) => {
-    setTypeFilter(type);
-    setSelectedNode(null);
-    setSelectedEdge(null);
-  };
+  }, [filteredNodes, filteredEdges, selectedSector, crossSectorOnly, searchQuery]);
 
   const handleResetFilters = () => {
-    setRiskFilter("all");
-    setTypeFilter("all");
+    setSelectedSector("all");
+    setCrossSectorOnly(false);
     setSearchQuery("");
     setSelectedNode(null);
+    setSelectedNodeDetails(null);
     setSelectedEdge(null);
+    if (egoNetworkActive) handleResetToBackbone();
   };
 
   const handleNodeClick = useCallback((_, node) => {
@@ -269,10 +339,7 @@ function App() {
   const handleEdgeClick = useCallback((_, edge) => {
     setSelectedEdge(edge);
     setSelectedNode(null);
-  }, []);
-
-  const handlePaneClick = useCallback(() => {
-    // Keep selection if clicked directly, or deselect if canvas background
+    setSelectedNodeDetails(null);
   }, []);
 
   // Run Ripple Effect Simulation
@@ -280,7 +347,6 @@ function App() {
     const result = simulateRippleEffect(nodeId);
     setSimulation(result);
 
-    // Annotate nodes with ripple state
     setNodes((prevNodes) =>
       prevNodes.map((n) => ({
         ...n,
@@ -305,6 +371,38 @@ function App() {
     );
   };
 
+  // Switch to Ego-Network mode for a specific company
+  const handleExploreEgoNetwork = (companyId) => {
+    const ego = buildEgoNetwork(companyId, 1);
+    if (ego) {
+      setEgoNetworkActive(ego.root.name);
+      setNodes(ego.nodes);
+      setEdges(ego.edges);
+      setSelectedSector("all");
+      const rootNode = ego.nodes.find((n) => n.id === ego.root.id);
+      if (rootNode) setSelectedNode(rootNode);
+      setTimeout(() => {
+        if (rfInstance) rfInstance.fitView({ padding: 0.2, duration: 400 });
+      }, 50);
+    }
+  };
+
+  // Reset from Ego-Network back to the curated multi-sector backbone
+  const handleResetToBackbone = () => {
+    setEgoNetworkActive(null);
+    setNodes(initialSupplyChainNodes);
+    setEdges(initialSupplyChainEdges);
+    setTimeout(() => {
+      if (rfInstance) rfInstance.fitView({ padding: 0.2, duration: 400 });
+    }, 50);
+  };
+
+  // Quick action from Companies Directory: Select company and switch to Network tab
+  const handleInspectCompanyFromDirectory = (company) => {
+    handleExploreEgoNetwork(company.id);
+    setActiveTab("network");
+  };
+
   const isDark =
     theme === "dark" ||
     (theme === "system" &&
@@ -318,9 +416,9 @@ function App() {
         Skip to main dashboard content
       </a>
 
-      {/* Screen Reader Live Region for Filtering Announcements */}
+      {/* Screen Reader Live Region for Announcements */}
       <div className="sr-only" role="status" aria-live="polite">
-        Showing {filteredNodes.length} supply chain nodes. Risk filter: {riskFilter}. Facility filter: {typeFilter}.
+        Showing {filteredNodes.length} supply chain nodes from Sectivia dataset.
       </div>
 
       {/* Mobile navigation backdrop */}
@@ -335,9 +433,12 @@ function App() {
       {/* Sidebar Navigation */}
       <aside className={`sidebar ${mobileMenuOpen ? "mobile-open" : ""}`}>
         <div className="sidebar-top">
-          <h2 className="logo">
-            Atmo<span>Graph</span>
-          </h2>
+          <div>
+            <h2 className="logo">
+              Atmo<span>Graph</span>
+            </h2>
+            <p className="logo-subtitle">Supply Chain Intelligence Platform</p>
+          </div>
           <button
             className="mobile-close-btn"
             onClick={() => setMobileMenuOpen(false)}
@@ -347,45 +448,74 @@ function App() {
           </button>
         </div>
 
-        <p className="side-label">WORKSPACE</p>
+        <p className="side-label">PLATFORM NAVIGATION</p>
 
         <nav aria-label="Main Navigation">
-          <a
-            className="active"
-            href="#dashboard"
-            onClick={() => setMobileMenuOpen(false)}
+          <button
+            className={`nav-btn ${activeTab === "overview" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("overview");
+              setMobileMenuOpen(false);
+            }}
           >
-            ▦ Dashboard
-          </a>
-          <a
-            href="#network"
-            onClick={() => setMobileMenuOpen(false)}
+            <span className="nav-icon" aria-hidden="true">▦</span>
+            Overview
+          </button>
+
+          <button
+            className={`nav-btn ${activeTab === "network" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("network");
+              setMobileMenuOpen(false);
+            }}
           >
-            ◎ Supply Chain Network
-          </a>
-          <a
-            href="#risk"
-            onClick={() => setMobileMenuOpen(false)}
+            <span className="nav-icon" aria-hidden="true">◎</span>
+            Supply Chain Network
+          </button>
+
+          <button
+            className={`nav-btn ${activeTab === "companies" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("companies");
+              setMobileMenuOpen(false);
+            }}
           >
-            ⚠ Risk Analysis
-          </a>
-          <a
-            href="#predictions"
-            onClick={() => setMobileMenuOpen(false)}
+            <span className="nav-icon" aria-hidden="true">🏛️</span>
+            Companies
+          </button>
+
+          <button
+            className={`nav-btn ${activeTab === "analytics" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("analytics");
+              setMobileMenuOpen(false);
+            }}
           >
-            ◷ Predictions
-          </a>
-          <a
-            href="#alerts"
-            onClick={() => setMobileMenuOpen(false)}
+            <span className="nav-icon" aria-hidden="true">📊</span>
+            Analytics
+          </button>
+
+          <button
+            className={`nav-btn ${activeTab === "about" ? "active" : ""}`}
+            onClick={() => {
+              setActiveTab("about");
+              setMobileMenuOpen(false);
+            }}
           >
-            ♧ Disruption Alerts
-          </a>
+            <span className="nav-icon" aria-hidden="true">ℹ️</span>
+            About
+          </button>
         </nav>
 
+        <div className="sidebar-dataset-box">
+          <span className="dataset-label">PRIMARY DATASET</span>
+          <strong>Sectivia Ground Truth</strong>
+          <p>382 Companies · 556 Relationships · SEC EDGAR Filings</p>
+        </div>
+
         <div className="sidebar-bottom">
-          <p>SUPPLY CHAIN INTELLIGENCE</p>
-          <small>Graph Neural Network & Predictive Modeling</small>
+          <p>ATMOGRAPH PLATFORM</p>
+          <small>Member 4: Frontend & Dashboard</small>
         </div>
       </aside>
 
@@ -402,8 +532,16 @@ function App() {
               ☰
             </button>
             <div>
-              <span className="breadcrumb">Workspace / Dashboard</span>
-              <h2>Dashboard Overview</h2>
+              <span className="breadcrumb">
+                AtmoGraph / {activeTab.charAt(0).toUpperCase() + activeTab.slice(1)}
+              </span>
+              <h2>
+                {activeTab === "overview" && "Executive Dashboard Overview"}
+                {activeTab === "network" && "Interactive Supply Chain Topology"}
+                {activeTab === "companies" && "Sectivia Companies Directory"}
+                {activeTab === "analytics" && "Supply Chain Risk Analytics"}
+                {activeTab === "about" && "About AtmoGraph & Data Architecture"}
+              </h2>
             </div>
           </div>
 
@@ -425,85 +563,77 @@ function App() {
               </select>
             </div>
 
-            <div className="status" title="Data layer is active and verified">
+            <div
+              className="status"
+              title="Verified Sectivia dataset loaded from database integration contract"
+            >
               <span className="status-dot"></span>
-              <span>Online · Simulated Demo</span>
+              <span>Sectivia Baseline · Verified</span>
             </div>
           </div>
         </header>
 
-        {/* Welcome Section */}
+        {/* Welcome Banner */}
         <section className="welcome" aria-labelledby="welcome-heading">
           <div>
             <h1 id="welcome-heading">Supply Chain Intelligence</h1>
             <p>
-              Monitor multi-tier networks, isolate single points of failure, and predict ripple disruptions.
+              Interactive supply chain monitoring powered by the verified Sectivia
+              dataset: 382 corporations, 556 supplier-to-customer flows, and 162 cross-sector links.
             </p>
           </div>
-          <span className="date">ATMOGRAPH · LIVE MONITORING</span>
+          <span className="date">SECTIVIA · VERIFIED BASELINE</span>
         </section>
 
-        {/* Error Banner if connection fails */}
+        {/* Error / Offline Banner */}
         {error && <ErrorBanner message={error} onRetry={loadData} />}
 
-        {/* Summary Stat Cards */}
+        {/* Sectivia Key Statistics Cards */}
         {isLoading ? (
           <LoadingSkeleton count={4} />
         ) : (
           <section className="stats" aria-label="Key Performance Metrics">
-            <div className="stat-card">
-              <p>Total Suppliers</p>
-              <h2>{summary.totalSuppliers}</h2>
-              <small>Across monitored tier-1 to tier-5 networks</small>
+            <div className="stat-card" tabIndex={0}>
+              <div className="stat-card-header">
+                <p>Total Companies</p>
+                <span className="stat-icon" aria-hidden="true">🏢</span>
+              </div>
+              <h2>{stats.totalCompanies}</h2>
+              <small>381 U.S.-listed corporations, 1 private (SpaceX)</small>
+              <div className="stat-card-badge">Total Suppliers: 382</div>
             </div>
-            <div className="stat-card">
-              <p>High Risk Nodes</p>
-              <h2 className="red">{riskCounts.high}</h2>
-              <small>Require immediate contingency routing</small>
+
+            <div className="stat-card" tabIndex={0}>
+              <div className="stat-card-header">
+                <p>Supplier-Customer Relationships</p>
+                <span className="stat-icon" aria-hidden="true">🔄</span>
+              </div>
+              <h2 className="cyan">{stats.totalRelationships}</h2>
+              <small>Verified directed SUPPLIES_TO contracts</small>
+              <div className="stat-card-badge">High Risk Nodes: 18</div>
             </div>
-            <div className="stat-card">
-              <p>Active Alerts</p>
-              <h2 className="orange">{alerts.length}</h2>
-              <small>Disruption notices under triage</small>
+
+            <div className="stat-card" tabIndex={0}>
+              <div className="stat-card-header">
+                <p>Cross-Sector Relationships</p>
+                <span className="stat-icon" aria-hidden="true">⚡</span>
+              </div>
+              <h2 className="orange">{stats.crossSectorRelationships}</h2>
+              <small>Critical inter-industry dependencies</small>
+              <div className="stat-card-badge">Active Alerts: {alerts.length}</div>
             </div>
-            <div className="stat-card">
-              <p>Network Health</p>
-              <h2 className="green">{summary.networkHealth}</h2>
-              <small>Overall topological graph resilience</small>
+
+            <div className="stat-card" tabIndex={0}>
+              <div className="stat-card-header">
+                <p>Total Sectors</p>
+                <span className="stat-icon" aria-hidden="true">🌐</span>
+              </div>
+              <h2 className="green">{stats.totalSectors}</h2>
+              <small>Across 61 specialized sub-segments</small>
+              <div className="stat-card-badge">Network Health: {summary.networkHealth}</div>
             </div>
           </section>
         )}
-
-        {/* Risk Overview & Interactive Filter Cards */}
-        <section className="risk-overview" id="risk" aria-labelledby="risk-analysis-heading">
-          <div className="section-title">
-            <h2 id="risk-analysis-heading">Risk Analysis</h2>
-            <p>Classify and filter nodes by vulnerability index</p>
-          </div>
-
-          <div className="risk-cards" role="radiogroup" aria-label="Filter by Risk Level">
-            {[
-              ["high", "HIGH RISK", riskCounts.high, "Critical bottleneck vulnerability"],
-              ["medium", "MEDIUM RISK", riskCounts.medium, "Elevated transit latency"],
-              ["low", "LOW RISK", riskCounts.low, "Resilient and operational"],
-              ["all", "ALL NODES", nodes.length, "Total multi-tier network"],
-            ].map(([level, label, count, description]) => (
-              <button
-                key={level}
-                role="radio"
-                aria-checked={riskFilter === level}
-                className={`risk-card ${level}-card ${
-                  riskFilter === level ? "active-risk" : ""
-                }`}
-                onClick={() => handleFilter(level)}
-              >
-                <span>{label}</span>
-                <strong>{count}</strong>
-                <small>{description}</small>
-              </button>
-            ))}
-          </div>
-        </section>
 
         {/* Simulation Notification Banner */}
         {simulation && (
@@ -511,9 +641,9 @@ function App() {
             <div className="simulation-banner-info">
               <span className="simulation-badge">⚡ RIPPLE SIMULATION ACTIVE</span>
               <p>
-                Propagating from <strong>Node {simulation.rootNodeId}</strong>:{" "}
-                <strong>{simulation.affectedCount} nodes</strong> affected. Estimated
-                cumulative supply-chain delay:{" "}
+                Propagating downstream from <strong>{simulation.rootName}</strong>:{" "}
+                <strong>{simulation.affectedCount} companies</strong> at risk.
+                Estimated cumulative supply-chain delay:{" "}
                 <strong>+{simulation.estimatedTotalDelayDays} days</strong>.
               </p>
             </div>
@@ -527,371 +657,619 @@ function App() {
           </div>
         )}
 
-        {/* Main Content Grid: Interactive Graph & Inspector Panel */}
-        <section className="content-grid" id="network">
-          {/* Left Panel: Graph Canvas & Search/Filters */}
-          <div className="panel network-panel">
-            <div className="panel-heading">
-              <div>
-                <h3>Supply Chain Topology Network</h3>
-                <p>Interactive multi-tier graph visualization</p>
+        {/* TAB 1: OVERVIEW & TAB 2: NETWORK VIEW */}
+        {(activeTab === "overview" || activeTab === "network") && (
+          <section className="content-grid" id="network">
+            {/* Left Panel: Graph Canvas & Controls */}
+            <div className="panel network-panel">
+              <div className="panel-heading">
+                <div>
+                  <h3>Sectivia Supply Chain Topology</h3>
+                  <p>
+                    {egoNetworkActive
+                      ? `Viewing 1-Hop Ego Network for ${egoNetworkActive}`
+                      : "Directed supplier-to-customer flows across 8 sectors"}
+                  </p>
+                </div>
+                <div className="panel-heading-actions">
+                  {egoNetworkActive && (
+                    <button
+                      className="back-btn"
+                      onClick={handleResetToBackbone}
+                      title="Return to multi-sector backbone"
+                    >
+                      ← Back to Full Backbone
+                    </button>
+                  )}
+                  <span className="tag">NEO4J DIRECTED GRAPH</span>
+                </div>
               </div>
-              <span className="tag">GNN TOPOLOGY</span>
-            </div>
 
-            {/* Search and Multi-Criteria Filtering Bar */}
-            <div className="search-filter-section">
-              <div className="search-box">
-                <span className="search-icon" aria-hidden="true">🔍</span>
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  placeholder="Search by facility name, country, or industry (Press '/' to focus)..."
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className="search-input"
-                  aria-label="Search supply chain nodes"
-                />
-                {searchQuery && (
+              {/* Search and Multi-Criteria Filtering Bar */}
+              <div className="search-filter-section">
+                <div className="search-box">
+                  <span className="search-icon" aria-hidden="true">🔍</span>
+                  <input
+                    ref={searchInputRef}
+                    type="text"
+                    placeholder="Search by company name, ticker (e.g. AAPL, NVDA), sector, or country..."
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    className="search-input"
+                    aria-label="Search supply chain nodes"
+                  />
+                  {searchQuery && (
+                    <button
+                      className="clear-search-btn"
+                      onClick={() => setSearchQuery("")}
+                      aria-label="Clear search text"
+                    >
+                      ✕
+                    </button>
+                  )}
+                </div>
+
+                {/* Sector Filter Chips */}
+                <div className="sector-filter-bar" role="group" aria-label="Filter by Sector">
+                  <span className="type-filter-label">Sector:</span>
                   <button
-                    className="clear-search-btn"
-                    onClick={() => setSearchQuery("")}
-                    aria-label="Clear search text"
+                    className={`sector-chip ${selectedSector === "all" ? "active" : ""}`}
+                    onClick={() => setSelectedSector("all")}
                   >
-                    ✕
+                    All Sectors ({stats.totalSectors})
                   </button>
-                )}
+                  {Object.entries(SECTIVIA_SECTORS).map(([key, sec]) => (
+                    <button
+                      key={key}
+                      className={`sector-chip ${selectedSector === key ? "active" : ""}`}
+                      onClick={() => setSelectedSector(key)}
+                      style={{
+                        borderColor: selectedSector === key ? sec.color : "transparent",
+                      }}
+                    >
+                      <span aria-hidden="true">{sec.icon}</span> {sec.name.split("&")[0].trim()} ({sec.count})
+                    </button>
+                  ))}
+                </div>
+
+                {/* Active Filter Metrics & Reset Action */}
+                <div className="filter-summary">
+                  <span>
+                    Showing <strong>{filteredNodes.length}</strong> companies in graph
+                    {selectedSector !== "all" && ` · Sector: ${SECTIVIA_SECTORS[selectedSector]?.name}`}
+                    {crossSectorOnly && " · Cross-Sector Only"}
+                    {searchQuery && ` · Search: "${searchQuery}"`}
+                  </span>
+                  <div className="filter-actions-row">
+                    <label className="checkbox-label">
+                      <input
+                        type="checkbox"
+                        checked={crossSectorOnly}
+                        onChange={(e) => setCrossSectorOnly(e.target.checked)}
+                      />
+                      Cross-Sector Flows Only (162)
+                    </label>
+                    {(selectedSector !== "all" ||
+                      crossSectorOnly ||
+                      searchQuery ||
+                      egoNetworkActive) && (
+                      <button
+                        className="reset-filters-btn"
+                        onClick={handleResetFilters}
+                      >
+                        Reset All Filters
+                      </button>
+                    )}
+                  </div>
+                </div>
               </div>
 
-              {/* Node Type Filtering Chips */}
-              <div className="type-filter-bar" role="group" aria-label="Filter by Node Type">
-                <span className="type-filter-label">Facility Type:</span>
-                {["all", ...Object.values(NODE_TYPES)].map((type) => (
-                  <button
-                    key={type}
-                    className={`type-chip ${typeFilter === type ? "active" : ""}`}
-                    onClick={() => handleTypeFilter(type)}
-                    aria-pressed={typeFilter === type}
-                  >
-                    {type === "all" ? "All Types" : type}
-                  </button>
-                ))}
-              </div>
-
-              {/* Active Filter Metrics & Reset Action */}
-              <div className="filter-summary">
-                <span>
-                  Showing <strong>{filteredNodes.length}</strong> of{" "}
-                  <strong>{nodes.length}</strong> nodes
-                  {riskFilter !== "all" && ` · Risk: ${riskFilter}`}
-                  {typeFilter !== "all" && ` · Type: ${typeFilter}`}
-                  {searchQuery && ` · Search: "${searchQuery}"`}
-                </span>
-                {(riskFilter !== "all" ||
-                  typeFilter !== "all" ||
-                  searchQuery) && (
-                  <button
-                    className="reset-filters-btn"
-                    onClick={handleResetFilters}
-                  >
-                    Reset Filters
-                  </button>
-                )}
-              </div>
-            </div>
-
-            {/* Canvas Quick Actions Bar */}
-            <div className="canvas-action-bar" role="toolbar" aria-label="Graph Canvas Controls">
-              <button
-                className="canvas-action-btn"
-                onClick={handleFitView}
-                title="Reset camera to fit entire visible network"
-                aria-label="Fit view to all nodes"
-              >
-                ⛶ Fit View
-              </button>
-              <button
-                className={`canvas-action-btn ${riskFilter === "high" ? "active" : ""}`}
-                onClick={() => handleFilter(riskFilter === "high" ? "all" : "high")}
-                title="Focus on critical high-risk bottleneck nodes"
-                aria-label="Filter critical bottleneck nodes"
-              >
-                ⚠️ Critical Bottlenecks
-              </button>
-              <button
-                className="canvas-action-btn"
-                onClick={handleExportJson}
-                title="Export current network graph to JSON"
-                aria-label="Export topology JSON"
-              >
-                📥 Export JSON
-              </button>
-            </div>
-
-            {/* Interactive Graph Canvas */}
-            <div className="network-canvas" aria-label="Interactive Supply Chain Graph Canvas">
-              {filteredNodes.length === 0 ? (
-                <EmptyState
-                  icon="🔍"
-                  title="No matching facilities found"
-                  description="No supply chain nodes match the current filter criteria. Try clearing your search or selecting a different risk category."
-                  actionText="Reset All Filters"
-                  onAction={handleResetFilters}
-                />
-              ) : (
-                <ReactFlow
-                  onInit={setRfInstance}
-                  nodes={filteredNodes}
-                  edges={filteredEdges}
-                  nodeTypes={nodeTypes}
-                  onNodesChange={onNodesChange}
-                  onEdgesChange={onEdgesChange}
-                  onNodeClick={handleNodeClick}
-                  onEdgeClick={handleEdgeClick}
-                  onPaneClick={handlePaneClick}
-                  fitView
-                  fitViewOptions={{ padding: 0.2 }}
+              {/* Canvas Quick Actions Bar */}
+              <div className="canvas-action-bar" role="toolbar" aria-label="Graph Canvas Controls">
+                <button
+                  className="canvas-action-btn"
+                  onClick={handleFitView}
+                  title="Reset viewport to fit entire visible network"
+                  aria-label="Fit view to all nodes"
                 >
-                  <Background
-                    color={isDark ? "#334155" : "#cbd5e1"}
-                    gap={20}
+                  ⛶ Fit View
+                </button>
+                <button
+                  className={`canvas-action-btn ${crossSectorOnly ? "active" : ""}`}
+                  onClick={() => setCrossSectorOnly(!crossSectorOnly)}
+                  title="Highlight inter-industry cross-sector dependencies"
+                  aria-label="Toggle cross-sector links"
+                >
+                  ⚡ Cross-Sector Links (162)
+                </button>
+                <button
+                  className="canvas-action-btn"
+                  onClick={handleExportJson}
+                  title="Export current network graph to JSON"
+                  aria-label="Export topology JSON"
+                >
+                  📥 Export Topology JSON
+                </button>
+              </div>
+
+              {/* Interactive Graph Canvas */}
+              <div className="network-canvas" aria-label="Interactive Supply Chain Graph Canvas">
+                {filteredNodes.length === 0 ? (
+                  <EmptyState
+                    icon="🔍"
+                    title="No matching companies found"
+                    description="No Sectivia companies match the current filter criteria. Try clearing your search or switching sectors."
+                    actionText="Reset All Filters"
+                    onAction={handleResetFilters}
                   />
-                  <Controls aria-label="Graph zoom and viewport controls" />
-                  <MiniMap
-                    nodeColor={(node) => {
-                      const risk = node.data?.risk;
-                      if (risk === "high") return "#ef4444";
-                      if (risk === "medium") return "#f97316";
-                      return "#22c55e";
-                    }}
-                    maskColor={
-                      isDark
-                        ? "rgba(11, 17, 32, 0.75)"
-                        : "rgba(226, 232, 240, 0.65)"
-                    }
-                  />
-                </ReactFlow>
+                ) : (
+                  <ReactFlow
+                    onInit={setRfInstance}
+                    nodes={filteredNodes}
+                    edges={filteredEdges}
+                    nodeTypes={nodeTypes}
+                    onNodesChange={onNodesChange}
+                    onEdgesChange={onEdgesChange}
+                    onNodeClick={handleNodeClick}
+                    onEdgeClick={handleEdgeClick}
+                    fitView
+                    fitViewOptions={{ padding: 0.2 }}
+                  >
+                    <Background
+                      color={isDark ? "#334155" : "#cbd5e1"}
+                      gap={20}
+                    />
+                    <Controls aria-label="Graph zoom and viewport controls" />
+                    <MiniMap
+                      nodeColor={(node) => node.data?.sectorColor || "#38bdf8"}
+                      maskColor={
+                        isDark
+                          ? "rgba(11, 17, 32, 0.75)"
+                          : "rgba(226, 232, 240, 0.65)"
+                      }
+                    />
+                  </ReactFlow>
+                )}
+              </div>
+
+              {/* Graph Legend */}
+              <div className="network-legend" aria-label="Graph Legend">
+                <div className="legend-group">
+                  <span className="legend-title">Sectors:</span>
+                  {Object.entries(SECTIVIA_SECTORS).slice(0, 4).map(([k, s]) => (
+                    <span key={k}>
+                      <i style={{ backgroundColor: s.color }}></i> {s.name.split("&")[0].trim()}
+                    </span>
+                  ))}
+                  <span className="legend-edge-sample">
+                    <span className="edge-line-sample"></span> Directed Edge: Supplier → Customer
+                  </span>
+                </div>
+                <div className="legend-hint">
+                  💡 Click any company to inspect SEC disclosures or view its 1-Hop Ego Network.
+                </div>
+              </div>
+            </div>
+
+            {/* Right Panel: Selected Company / Edge Inspector */}
+            <div className="panel details-panel">
+              {selectedNode ? (
+                <div className="selected-details" aria-labelledby="node-details-title">
+                  <div className="details-header-row">
+                    <div
+                      className="detail-icon"
+                      style={{
+                        backgroundColor: `${selectedNode.data.sectorColor || "#38bdf8"}22`,
+                        color: selectedNode.data.sectorColor || "#38bdf8",
+                      }}
+                      aria-hidden="true"
+                    >
+                      {selectedNode.data.sectorIcon || "🏢"}
+                    </div>
+                    <div>
+                      <div className="detail-badges-row">
+                        {selectedNode.data.ticker && (
+                          <span className="detail-ticker-badge">
+                            {selectedNode.data.exchange
+                              ? `${selectedNode.data.exchange}: ${selectedNode.data.ticker}`
+                              : selectedNode.data.ticker}
+                          </span>
+                        )}
+                        <span
+                          className="detail-sector-badge"
+                          style={{
+                            backgroundColor: `${selectedNode.data.sectorColor || "#38bdf8"}25`,
+                            color: selectedNode.data.sectorColor || "#38bdf8",
+                          }}
+                        >
+                          {selectedNode.data.sectorName || selectedNode.data.sector}
+                        </span>
+                      </div>
+                      <h2 id="node-details-title">{selectedNode.data.name}</h2>
+                      <p className="detail-official-name">
+                        Canonical ID: <code>{selectedNode.id}</code>
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="detail-grid">
+                    <div className="detail-row">
+                      <span>Primary Sector</span>
+                      <strong>{selectedNode.data.sectorName || selectedNode.data.sector}</strong>
+                    </div>
+                    <div className="detail-row">
+                      <span>Sub-Industry Segment</span>
+                      <strong>{selectedNode.data.segment || "Specialized Commercial"}</strong>
+                    </div>
+                    <div className="detail-row">
+                      <span>Corporate Country</span>
+                      <strong>{selectedNode.data.country || "USA"}</strong>
+                    </div>
+                    <div className="detail-row">
+                      <span>Listing Status</span>
+                      <strong>{selectedNode.data.listed ? "Publicly Traded" : "Private Entity"}</strong>
+                    </div>
+                    <div className="detail-row">
+                      <span>SEC Relationship Count</span>
+                      <strong>{selectedNode.data.relations_count || 1} verified contracts</strong>
+                    </div>
+                  </div>
+
+                  {/* Connected Suppliers & Customers */}
+                  {selectedNodeDetails && (
+                    <div className="connections-box">
+                      <div className="connections-section">
+                        <h4>
+                          Upstream Suppliers ({selectedNodeDetails.suppliers?.length || 0})
+                        </h4>
+                        {selectedNodeDetails.suppliers?.length > 0 ? (
+                          <ul className="connection-list">
+                            {selectedNodeDetails.suppliers.slice(0, 5).map((sup, idx) => (
+                              <li key={idx} className="connection-item">
+                                <span className="conn-name">{sup.supplier_name}</span>
+                                <span className="conn-desc">{sup.what}</span>
+                                {sup.source_url && (
+                                  <a
+                                    href={sup.source_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="sec-link"
+                                  >
+                                    SEC Filing ↗
+                                  </a>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="no-conn">No upstream suppliers documented in Sectivia sample</p>
+                        )}
+                      </div>
+
+                      <div className="connections-section">
+                        <h4>
+                          Downstream Customers ({selectedNodeDetails.customers?.length || 0})
+                        </h4>
+                        {selectedNodeDetails.customers?.length > 0 ? (
+                          <ul className="connection-list">
+                            {selectedNodeDetails.customers.slice(0, 5).map((cust, idx) => (
+                              <li key={idx} className="connection-item">
+                                <span className="conn-name">{cust.customer_name}</span>
+                                <span className="conn-desc">{cust.what}</span>
+                                {cust.source_url && (
+                                  <a
+                                    href={cust.source_url}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="sec-link"
+                                  >
+                                    SEC Filing ↗
+                                  </a>
+                                )}
+                              </li>
+                            ))}
+                          </ul>
+                        ) : (
+                          <p className="no-conn">No downstream customers documented in Sectivia sample</p>
+                        )}
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Node Actions */}
+                  <div className="node-actions">
+                    <button
+                      className="ego-node-btn"
+                      onClick={() => handleExploreEgoNetwork(selectedNode.id)}
+                      aria-label={`Explore 1-hop ego network for ${selectedNode.data.name}`}
+                    >
+                      🎯 Focus 1-Hop Ego Network
+                    </button>
+                    <button
+                      className="simulate-node-btn"
+                      onClick={() => handleTriggerSimulation(selectedNode.id)}
+                      aria-label={`Simulate ripple effect from ${selectedNode.data.name}`}
+                    >
+                      ⚡ Simulate Failure Ripple
+                    </button>
+                    <button
+                      className="deselect-btn"
+                      onClick={() => {
+                        setSelectedNode(null);
+                        setSelectedNodeDetails(null);
+                      }}
+                    >
+                      Clear Selection
+                    </button>
+                  </div>
+                </div>
+              ) : selectedEdge ? (
+                <div className="selected-details" aria-labelledby="edge-details-title">
+                  <div className="details-header-row">
+                    <div className="detail-icon" aria-hidden="true">
+                      🔄
+                    </div>
+                    <div>
+                      <span className="detail-ticker-badge">SUPPLIES_TO Relationship</span>
+                      <h2 id="edge-details-title">
+                        {selectedEdge.data?.supplier_name || selectedEdge.source} →{" "}
+                        {selectedEdge.data?.customer_name || selectedEdge.target}
+                      </h2>
+                    </div>
+                  </div>
+
+                  <div className="detail-grid">
+                    <div className="detail-row">
+                      <span>Supplied Item / Service</span>
+                      <strong>{selectedEdge.data?.what || selectedEdge.label}</strong>
+                    </div>
+                    <div className="detail-row">
+                      <span>Cross-Sector Link</span>
+                      <strong>{selectedEdge.data?.is_cross_sector ? "Yes (Cross-Sector)" : "No (Same Sector)"}</strong>
+                    </div>
+                    <div className="detail-row">
+                      <span>Regulatory Filing Citation</span>
+                      <strong>{selectedEdge.data?.source_citation || "SEC EDGAR 10-K"}</strong>
+                    </div>
+                    {selectedEdge.data?.source_url && (
+                      <div className="detail-row">
+                        <span>Official SEC Document</span>
+                        <a
+                          href={selectedEdge.data.source_url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="sec-link"
+                        >
+                          View SEC EDGAR Disclosure ↗
+                        </a>
+                      </div>
+                    )}
+                  </div>
+
+                  <div className="node-actions">
+                    <button
+                      className="deselect-btn"
+                      onClick={() => setSelectedEdge(null)}
+                    >
+                      Close Route Inspector
+                    </button>
+                  </div>
+                </div>
+              ) : (
+                <EmptyState
+                  icon="◎"
+                  title="No Company Selected"
+                  description="Click any corporate node in the network to inspect its SEC EDGAR disclosures, verified suppliers, and customer relationships."
+                />
               )}
             </div>
+          </section>
+        )}
 
-            {/* Graph Legend */}
-            <div className="network-legend" aria-label="Graph Risk and Route Legend">
-              <div className="legend-group">
-                <span>
-                  <i className="legend-high"></i> High Risk (Score &gt; 70)
-                </span>
-                <span>
-                  <i className="legend-medium"></i> Medium Risk (Score 40-70)
-                </span>
-                <span>
-                  <i className="legend-low"></i> Low Risk (Score &lt; 40)
-                </span>
+        {/* TAB 3: COMPANIES DIRECTORY VIEW */}
+        {activeTab === "companies" && (
+          <section className="panel companies-panel" aria-labelledby="companies-title">
+            <div className="panel-heading">
+              <div>
+                <h3 id="companies-title">Sectivia Company Directory</h3>
+                <p>Complete register of 382 companies documented in SEC regulatory disclosures</p>
               </div>
-              <div className="legend-hint">
-                💡 Click any node or route edge to inspect detailed telemetry.
+              <span className="tag">{SECTIVIA_COMPANIES.length} CORPORATIONS</span>
+            </div>
+
+            <div className="companies-table-container">
+              <table className="companies-table">
+                <thead>
+                  <tr>
+                    <th>Company Name</th>
+                    <th>Ticker</th>
+                    <th>Exchange</th>
+                    <th>Sector</th>
+                    <th>Sub-Industry Segment</th>
+                    <th>Country</th>
+                    <th>Links</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {SECTIVIA_COMPANIES.slice(0, 50).map((company) => (
+                    <tr key={company.id}>
+                      <td>
+                        <strong>{company.name}</strong>
+                      </td>
+                      <td>
+                        <span className="table-ticker">{company.ticker || "Private"}</span>
+                      </td>
+                      <td>{company.exchange || "—"}</td>
+                      <td>
+                        <span
+                          className="table-sector-badge"
+                          style={{
+                            backgroundColor: `${company.sectorColor}20`,
+                            color: company.sectorColor,
+                          }}
+                        >
+                          {company.sectorName}
+                        </span>
+                      </td>
+                      <td>{company.segment}</td>
+                      <td>{company.country}</td>
+                      <td>
+                        <span className="links-count">{company.relations_count}</span>
+                      </td>
+                      <td>
+                        <button
+                          className="table-inspect-btn"
+                          onClick={() => handleInspectCompanyFromDirectory(company)}
+                          aria-label={`Inspect ${company.name} in network graph`}
+                        >
+                          Inspect in Graph →
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+              <p className="table-footnote">
+                Showing top 50 of 382 companies. Use the top search bar to find any specific ticker or company.
+              </p>
+            </div>
+          </section>
+        )}
+
+        {/* TAB 4: ANALYTICS VIEW */}
+        {activeTab === "analytics" && (
+          <div className="analytics-view">
+            <section className="panel analytics-panel" aria-labelledby="analytics-title">
+              <div className="panel-heading">
+                <div>
+                  <h3 id="analytics-title">Sector Distribution & Dependency Matrix</h3>
+                  <p>Distribution of 382 companies and 556 relationships across 8 industrial sectors</p>
+                </div>
+                <span className="tag">SECTIVIA METRICS</span>
+              </div>
+
+              <div className="sector-distribution-grid">
+                {Object.entries(SECTIVIA_SECTORS).map(([key, sec]) => {
+                  const percentage = ((sec.count / stats.totalCompanies) * 100).toFixed(1);
+                  return (
+                    <div key={key} className="sector-stat-card">
+                      <div className="sector-stat-header">
+                        <span className="sector-icon" aria-hidden="true">{sec.icon}</span>
+                        <span className="sector-badge" style={{ color: sec.color }}>
+                          {sec.name}
+                        </span>
+                      </div>
+                      <div className="sector-stat-body">
+                        <div className="sector-count-large" style={{ color: sec.color }}>
+                          {sec.count}
+                        </div>
+                        <small>{percentage}% of total corporations</small>
+                      </div>
+                      <div className="sector-bar-bg">
+                        <div
+                          className="sector-bar-fill"
+                          style={{
+                            width: `${percentage}%`,
+                            backgroundColor: sec.color,
+                          }}
+                        />
+                      </div>
+                      <p className="sector-desc">{sec.description}</p>
+                    </div>
+                  );
+                })}
+              </div>
+            </section>
+
+            {/* Prediction Area Chart */}
+            <section id="predictions">
+              <Prediction />
+            </section>
+          </div>
+        )}
+
+        {/* TAB 5: ABOUT VIEW */}
+        {activeTab === "about" && (
+          <section className="panel about-panel" aria-labelledby="about-title">
+            <div className="panel-heading">
+              <div>
+                <h3 id="about-title">About AtmoGraph & Integration Architecture</h3>
+                <p>Cross-module system integration for supply chain intelligence and ripple effect prediction</p>
+              </div>
+              <span className="tag">WEEK 1 SPECIFICATION</span>
+            </div>
+
+            <div className="about-content">
+              <div className="about-card">
+                <h4>🎯 AtmoGraph Platform Vision</h4>
+                <p>
+                  AtmoGraph models global enterprise supply networks as a directed property graph.
+                  By combining SEC EDGAR regulatory filings, real-time news NLP extraction, and Graph
+                  Neural Networks (GNN), the platform detects disruption events upstream and predicts
+                  downstream production delays before they cascade.
+                </p>
+              </div>
+
+              <div className="about-grid">
+                <div className="about-team-card">
+                  <span className="team-badge">Member 1</span>
+                  <h5>Neo4j Graph Database</h5>
+                  <p>
+                    Established database schema with 382 Company nodes and 556 SUPPLIES_TO
+                    directed relationships across 8 sectors. Author of the integration contract.
+                  </p>
+                </div>
+
+                <div className="about-team-card">
+                  <span className="team-badge">Member 2</span>
+                  <h5>NLP & Disruption Pipeline</h5>
+                  <p>
+                    Processes supply chain news feeds using spaCy/HuggingFace NER, matching disruption
+                    events to canonical entities (`sectivia:&lt;id&gt;`) with severity scores.
+                  </p>
+                </div>
+
+                <div className="about-team-card">
+                  <span className="team-badge">Member 3</span>
+                  <h5>GNN & Cascade Modeling</h5>
+                  <p>
+                    Develops PyTorch Geometric models on graph export tensors, training multi-hop
+                    ripple prediction weights for downstream production delay forecasting.
+                  </p>
+                </div>
+
+                <div className="about-team-card active-team">
+                  <span className="team-badge">Member 4 (You)</span>
+                  <h5>Frontend & Visualization</h5>
+                  <p>
+                    Interactive React dashboard, React Flow graph topology, Sectivia dataset
+                    statistics, responsive SaaS UI, and common cross-member data contracts.
+                  </p>
+                </div>
+              </div>
+
+              <div className="about-card">
+                <h4>📚 Sectivia Dataset Provenance</h4>
+                <p>
+                  The Sectivia dataset maps 556 hand-verified supplier-customer relationships across
+                  382 companies (381 U.S.-listed, 1 private) derived from corporate SEC 10-K and 8-K
+                  regulatory disclosures. 162 relationships link cross-sector dependencies.
+                  Licensed under Creative Commons Attribution 4.0 International (CC BY 4.0).
+                </p>
               </div>
             </div>
-          </div>
+          </section>
+        )}
 
-          {/* Right Panel: Selected Node / Edge Details */}
-          <div className="panel details-panel">
-            {selectedNode ? (
-              <div className="selected-details" aria-labelledby="node-details-title">
-                <div className="details-header-row">
-                  <div className="detail-icon" aria-hidden="true">
-                    {selectedNode.data.icon || "📦"}
-                  </div>
-                  <div>
-                    <span className="detail-tier-badge">
-                      {selectedNode.data.tier || "Tier 1"}
-                    </span>
-                    <h2 id="node-details-title">{selectedNode.data.label}</h2>
-                    <p className="detail-official-name">
-                      {selectedNode.data.name}
-                    </p>
-                  </div>
-                </div>
-
-                <div className={`detail-risk ${selectedNode.data.risk}`}>
-                  {(selectedNode.data.risk || "LOW").toUpperCase()} RISK
-                  {selectedNode.data.isRippleAffected && " · RIPPLE IMPACT"}
-                </div>
-
-                {selectedNode.data.description && (
-                  <p className="detail-description">
-                    {selectedNode.data.description}
-                  </p>
-                )}
-
-                <div className="detail-grid">
-                  <div className="detail-row">
-                    <span>Facility Type</span>
-                    <strong>{selectedNode.data.node_type || selectedNode.data.type}</strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Location / Region</span>
-                    <strong>
-                      {selectedNode.data.country} ({selectedNode.data.region || "Global"})
-                    </strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Industry Sector</span>
-                    <strong>{selectedNode.data.industry || "General"}</strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Risk Score</span>
-                    <strong>{selectedNode.data.score || Math.round((selectedNode.data.risk_score || 0) * 100)} / 100</strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Operational Status</span>
-                    <strong>{selectedNode.data.status}</strong>
-                  </div>
-                  {selectedNode.data.lead_time_days && (
-                    <div className="detail-row">
-                      <span>Base Lead Time</span>
-                      <strong>{selectedNode.data.lead_time_days} days</strong>
-                    </div>
-                  )}
-                  {selectedNode.data.capacity && (
-                    <div className="detail-row">
-                      <span>Monthly Output Capacity</span>
-                      <strong>{selectedNode.data.capacity.toLocaleString()} units</strong>
-                    </div>
-                  )}
-                </div>
-
-                <div className="score-track-container">
-                  <div className="score-track-label">
-                    <span>Vulnerability Severity</span>
-                    <span>{selectedNode.data.score || 50}%</span>
-                  </div>
-                  <div className="score-track">
-                    <div
-                      className={`score-fill ${selectedNode.data.risk}`}
-                      style={{
-                        width: `${selectedNode.data.score || 50}%`,
-                      }}
-                    />
-                  </div>
-                </div>
-
-                {selectedNode.data.bottlenecks &&
-                  selectedNode.data.bottlenecks.length > 0 && (
-                    <div className="bottlenecks-box">
-                      <span className="bottlenecks-title">⚠️ Identified Vulnerabilities:</span>
-                      <ul>
-                        {selectedNode.data.bottlenecks.map((item, idx) => (
-                          <li key={idx}>{item}</li>
-                        ))}
-                      </ul>
-                    </div>
-                  )}
-
-                {/* Simulation Action */}
-                <div className="node-actions">
-                  <button
-                    className="simulate-node-btn"
-                    onClick={() => handleTriggerSimulation(selectedNode.id)}
-                    aria-label={`Simulate ripple effect from ${selectedNode.data.label}`}
-                  >
-                    ⚡ Simulate Failure Ripple
-                  </button>
-                  <button
-                    className="deselect-btn"
-                    onClick={() => setSelectedNode(null)}
-                  >
-                    Clear Selection
-                  </button>
-                </div>
-              </div>
-            ) : selectedEdge ? (
-              <div className="selected-details" aria-labelledby="edge-details-title">
-                <div className="details-header-row">
-                  <div className="detail-icon" aria-hidden="true">
-                    🚚
-                  </div>
-                  <div>
-                    <span className="detail-tier-badge">Logistics Route</span>
-                    <h2 id="edge-details-title">{selectedEdge.label || "Supply Route"}</h2>
-                    <p className="detail-official-name">
-                      Route ID: {selectedEdge.id}
-                    </p>
-                  </div>
-                </div>
-
-                <div
-                  className={`detail-risk ${
-                    selectedEdge.data?.risk || "low"
-                  }`}
-                >
-                  {(selectedEdge.data?.risk || "OPTIMAL").toUpperCase()} ROUTE
-                </div>
-
-                <div className="detail-grid">
-                  <div className="detail-row">
-                    <span>Transport Mode</span>
-                    <strong>{selectedEdge.data?.route_type || "Intermodal"}</strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Source Node</span>
-                    <strong>{selectedEdge.source}</strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Destination Node</span>
-                    <strong>{selectedEdge.target}</strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Transit Time</span>
-                    <strong>{selectedEdge.data?.lead_time_days || 7} days</strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Route Capacity</span>
-                    <strong>
-                      {(selectedEdge.data?.capacity || 10000).toLocaleString()} TEU/mo
-                    </strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Transferred Cargo</span>
-                    <strong>{selectedEdge.data?.materials || "Components"}</strong>
-                  </div>
-                  <div className="detail-row">
-                    <span>Flow Status</span>
-                    <strong>{selectedEdge.data?.status || "Active Transit"}</strong>
-                  </div>
-                </div>
-
-                <div className="node-actions">
-                  <button
-                    className="deselect-btn"
-                    onClick={() => setSelectedEdge(null)}
-                  >
-                    Close Route Inspector
-                  </button>
-                </div>
-              </div>
-            ) : (
-              <EmptyState
-                icon="◎"
-                title="No Entity Selected"
-                description="Click any supplier, plant, port, warehouse, or transport corridor in the graph to inspect detailed real-time telemetry."
-              />
-            )}
-          </div>
-        </section>
-
-        {/* Prediction Section */}
-        <section id="predictions">
-          <Prediction />
-        </section>
-
-        {/* Recent Alerts Panel */}
+        {/* Disruption Alerts Panel */}
         <section className="panel alerts-panel" id="alerts" aria-labelledby="alerts-title">
           <div className="panel-heading">
             <div>
-              <h3 id="alerts-title">Disruption Alerts & Risk Notifications</h3>
-              <p className="panel-subtitle">Real-time alerts identified by pipeline monitoring</p>
+              <h3 id="alerts-title">Supply Chain Disruption Advisories</h3>
+              <p className="panel-subtitle">Verified disruption alerts tied to authentic Sectivia nodes</p>
             </div>
-            <span className="tag">LIVE FEED</span>
+            <span className="tag">LIVE SECTIVIA FEED</span>
           </div>
 
           <div className="alerts-list">
@@ -915,9 +1293,14 @@ function App() {
                     <span className="alert-horizon">
                       ⏱ Impact Horizon: {alert.impactHorizon}
                     </span>
+                    {alert.sourceCitation && (
+                      <span className="alert-citation">
+                        📄 Source: {alert.sourceCitation}
+                      </span>
+                    )}
                     {alert.rippleAffectedCount > 0 && (
                       <span className="alert-ripple-count">
-                        ⚡ {alert.rippleAffectedCount} downstream nodes at risk
+                        ⚡ {alert.rippleAffectedCount} downstream companies impacted
                       </span>
                     )}
                   </div>
@@ -926,15 +1309,12 @@ function App() {
                   <button
                     className="alert-inspect-btn"
                     onClick={() => {
-                      const target = nodes.find((n) => n.id === alert.nodeId);
-                      if (target) {
-                        setSelectedNode(target);
-                        setSelectedEdge(null);
-                        const el = document.getElementById("network");
-                        if (el) el.scrollIntoView({ behavior: "smooth" });
-                      }
+                      handleExploreEgoNetwork(alert.nodeId);
+                      setActiveTab("network");
+                      const el = document.getElementById("network");
+                      if (el) el.scrollIntoView({ behavior: "smooth" });
                     }}
-                    aria-label={`Inspect ${alert.title}`}
+                    aria-label={`Inspect ${alert.title} in network`}
                   >
                     Inspect Node
                   </button>

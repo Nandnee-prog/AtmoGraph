@@ -1,75 +1,79 @@
-# AtmoGraph Frontend — Supply Chain Ripple Effect Dashboard
+# AtmoGraph Frontend — Supply Chain Intelligence Platform
 
-> **Member 4 Deliverable**: Interactive Supply Chain Intelligence & Risk Topology Dashboard
+> **Member 4 Deliverable**: Interactive Supply Chain Visualization & Dashboard Foundation
+> **Primary Dataset**: Sectivia (SEC EDGAR Regulatory Disclosures)
+> **Target Graph Database**: Neo4j (Member 1 Integration Contract)
 
-AtmoGraph is an intelligent supply chain monitoring platform designed to visualize multi-tier supplier networks, identify critical bottlenecks, simulate failure propagation (ripple effects), and forecast disruption risks across time horizons.
+AtmoGraph is an intelligent supply chain monitoring platform designed to visualize multi-tier corporate networks, map inter-industry cross-sector dependencies, simulate disruption propagation (ripple effects), and forecast disruption risks across time horizons.
+
+---
+
+## 📊 Sectivia Primary Dataset Baseline
+
+The frontend foundation strictly conforms to the verified **Sectivia** dataset implemented in Member 1's Neo4j database:
+
+| Metric | Verified Sectivia Count | Description |
+| :--- | :---:| :--- |
+| **Total Companies** | **382** | 381 U.S.-listed corporations, 1 private (SpaceX) |
+| **SUPPLIES_TO Relationships** | **556** | Directed commercial supply contracts documented in SEC filings |
+| **Cross-Sector Relationships** | **162** | Inter-industry commercial flows linking different sectors |
+| **Total Sectors** | **8** | AI, Energy, Finance, Health, Defense, Industrials, EV, Materials |
+| **Sub-Industry Segments** | **61** | Detailed sub-industry classifications |
+| **Corporate Headquarter Countries** | **3** | USA (377), Ireland (4), United Kingdom (1) |
+| **Referential Integrity** | **100%** | 0 orphan nodes; all nodes belong to weakly connected components |
+
+### 8 Industrial Sectors:
+1. `ai` — **AI & Digital Infrastructure** (89 companies)
+2. `energi` — **Energy, Grid & Critical Infrastructure** (63 companies)
+3. `finans` — **Banks, Payments & Capital Markets** (56 companies)
+4. `medicin` — **Life Science & Healthcare** (55 companies)
+5. `forsvar` — **Defense, Security & Space** (53 companies)
+6. `industri` — **Industrials & Reshoring** (31 companies)
+7. `raavarer` — **Materials & Critical Minerals** (18 companies)
+8. `elbil` — **EVs & Batteries** (17 companies)
 
 ---
 
 ## 🚀 Key Features
 
-### 1. System-Adaptive Light & Dark Theme
-- **Zero-Flicker Automatic Adaptation**: Reads user OS preferences via `prefers-color-scheme: dark`.
-- **Manual Override**: Toggle between **System (Auto)**, **Light Mode**, and **Dark Mode** via the topbar selector.
-- **Persistent State**: Theme preference saved in `localStorage`.
-- **Theme Variables**: Engineered entirely with CSS variables (`var(--bg)`, `var(--surface)`, `var(--border)`, `var(--text)`, `var(--accent)`, `var(--muted)`), guaranteeing consistent contrast and readability across all panels, charts, and graph nodes.
+### 1. Modern Commercial SaaS Interface
+- **Dark Navy / Charcoal Theme**: Designed with custom CSS variables (`--bg: #0b1120`, `--surface: #111c2e`, `--border: #263244`, `--accent: #38bdf8`) with cyan and purple accents.
+- **System-Adaptive Mode**: Automatic OS preference detection (`prefers-color-scheme: dark`) with manual toggle (System, Light, Dark).
+- **Executive KPI Cards**: Real-time display of Sectivia verified ground truth (382 Companies, 556 Relationships, 162 Cross-Sector Relationships, 8 Sectors).
 
-### 2. Multi-Tier Interactive Topology Graph
-- Powered by `@xyflow/react` (React Flow) with customized nodes and edges.
-- Conforms to the project data contract (`config/schema.yaml`):
-  - **Node Types**: `Supplier`, `Manufacturer`, `Port`, `Warehouse`, `Retailer`.
-  - **Risk Tiers**: High (`#ef4444`), Medium (`#f97316`), Low (`#16a34a`).
-  - **Route Modes**: Maritime, Air, Rail, Road.
-- Interactive features:
-  - **MiniMap**: Real-time overview with risk-coded entity markers.
-  - **Canvas Controls**: Zoom in/out, fit view, and interactive panning.
-  - **Quick Actions Toolbar**: Single-click "Fit View", "Critical Bottlenecks" focus, and "Export JSON" snapshot.
+### 2. Five-Section Functional Navigation
+1. **Overview (`▦`)**: Executive statistics, curated multi-sector topology canvas preview, active disruption notices, and status indicators.
+2. **Supply Chain Network (`◎`)**: Full-height interactive React Flow canvas with sector filtering, cross-sector dependency filters, ego-network inspection, and detailed node/edge inspector panels.
+3. **Companies (`🏛️`)**: Searchable directory of all 382 Sectivia corporations with tickers, exchanges, segments, countries, and direct *"Inspect in Graph"* one-click routing.
+4. **Analytics (`📊`)**: Sector breakdown distribution bar chart, cross-sector dependency analysis, and the interactive SVG risk prediction trend component.
+5. **About (`ℹ️`)**: Architectural integration blueprint, data provenance, and cross-module roadmap for Members 1, 2, 3, and 4.
 
-### 3. Multi-Criteria Search & Filtering
-- **Faceted Risk Filters**: All, High Risk, Medium Risk, Low Risk with dynamic counts.
-- **Facility Type Chips**: Filter by Supplier, Manufacturer, Port, Warehouse, or Retailer.
-- **Instant Search Input**: Real-time filtering by facility name, country, or industry.
-- **Active Filter Summary**: Displays matching count vs total nodes, with a single-click "Reset All Filters" button.
+### 3. Interactive Supply Chain Graph (`@xyflow/react`)
+- **Directed Edges**: Graph edges strictly represent directed flows:
+  $$\text{Upstream Supplier} \xrightarrow{\text{SUPPLIES\_TO}} \text{Downstream Customer}$$
+- **Arrowheads**: Distinct closed arrowheads indicating commercial flow direction.
+- **Cross-Sector Dependency Filtering**: One-click filter isolating the 162 inter-industry supply links with animated indicators.
+- **1-Hop Ego Network Explorer**: Selecting any company allows expanding into its dedicated 1-hop supply chain neighborhood (`database/docs/integration_contract.md § 3.1`).
+- **Canvas Controls**: Full zoom, pan, MiniMap with sector color coding, and viewport auto-fit.
+- **Export Topology**: One-click JSON export of visible subgraphs with active filters and metadata.
 
-### 4. Failure Ripple Disruption Simulator
-- Select any facility in the network and trigger **"Simulate Failure Ripple"**.
-- Uses Breadth-First-Search (BFS) propagation along downstream supply edges.
-- Highlights affected downstream nodes with a pulsing ripple alert animation (`@keyframes pulseRipple`) and animated high-risk red edges.
-- Calculates and presents cumulative supply chain delay days and downstream impact metrics in an accessible status banner.
+### 4. Company & Relationship Inspector Panels
+- **Company Inspector**: Displays legal corporate name, stock ticker, exchange, country, sector badge, sub-industry segment, listing status, and verified SEC EDGAR filing citations. Lists direct upstream suppliers and downstream customers with links to official SEC EDGAR disclosure filings.
+- **Relationship Inspector**: Surfaces supplied materials/services (`what`), cross-sector classification, and SEC filing citations.
 
-### 5. Facility & Route Inspector Panels
-- **Node Inspector**: Displays facility type, geographic location/region, industry sector, risk score progress bar, monthly capacity, base lead time, and identified vulnerabilities.
-- **Route Inspector**: Clicking any transport route edge surfaces transport mode, transit lead time (days), capacity (TEU/month), cargo description, and flow status.
+### 5. Failure Ripple Disruption Simulator
+- Implements Breadth-First-Search (BFS) propagation along downstream `SUPPLIES_TO` edges starting from an affected company node (`database/docs/integration_contract.md § 3.2`).
+- Highlights affected downstream companies with pulsing ripple badges and animated high-risk red edges.
+- Calculates estimated cumulative supply chain delay days based on graph topology.
 
-### 6. Disruption Trend Predictions
-- Responsive SVG area chart with gradient fill and interactive hover tooltips.
-- Switchable forecast horizons: **7 Days**, **14 Days**, and **30 Days**.
-- Displays projected average risk, forecast horizon, and peak risk window.
-
-### 7. Real-Time Alert Notification Feed
-- Chronological list of supply chain warnings and logistics advisories.
-- Severity dots (High, Medium, Low) and impact horizon estimates.
-- **"Inspect Node"** action button: Automatically scrolls to the graph and selects the affected node.
-
-### 8. Accessibility (a11y) & Usability
-- **Skip to Content Link**: Top-level link allowing keyboard and screen-reader users to jump straight to `#dashboard`.
-- **Keyboard Shortcuts**:
-  - `Escape`: Deselects current node/route and resets active ripple simulations.
-  - `/` or `Ctrl+K`: Focuses the supply chain search bar.
-  - `Enter` / `Space`: Activates and selects focused graph nodes.
-- **Screen Reader Support**: Hidden `sr-only` `aria-live="polite"` region announcing live filter results.
-- **Reduced Motion Support**: Respects `@media (prefers-reduced-motion: reduce)`.
-
----
-
-## 🛠 Tech Stack
-
-- **Runtime & UI Library**: React 18.3.1
-- **Build Tool**: Vite 5.4.0
-- **Graph Visualization**: `@xyflow/react` 12.0.0
-- **Data Visualization**: D3 7.9.0 & Responsive SVG
-- **HTTP Client**: Axios 1.7.0
-- **Testing Framework**: Vitest 2.1.9, `@testing-library/react` 16.3.3, `@testing-library/jest-dom` 8.0.0, `jsdom` 31.0.1
+### 6. Accessibility & Usability (a11y)
+- **Skip-to-Content Link**: `#dashboard` jump link for screen readers.
+- **Keyboard Navigation**:
+  - `Escape`: Deselects active company/route and clears ripple simulations.
+  - `/` or `Ctrl+K`: Focuses the supply chain search bar from anywhere.
+  - `Enter` / `Space`: Activates focused graph nodes.
+- **Screen Reader Support**: `aria-live="polite"` live announcements for filtered node counts.
+- **Reduced Motion**: Respects `@media (prefers-reduced-motion: reduce)`.
 
 ---
 
@@ -82,8 +86,8 @@ frontend/
 ├── vite.config.js               # Vite build and Vitest configuration
 ├── src/
 │   ├── main.jsx                 # React root mount
-│   ├── App.jsx                  # Main dashboard layout, state & orchestration
-│   ├── App.css                  # Adaptive theme, layout & component styling
+│   ├── App.jsx                  # Main dashboard layout, state & tab orchestration
+│   ├── App.css                  # Commercial SaaS theme, responsive grid & component styles
 │   ├── index.css                # Global resets & typography
 │   ├── Prediction.jsx           # SVG risk forecast trend component
 │   ├── Prediction.css          # Theme-adaptive prediction styling
@@ -93,38 +97,66 @@ frontend/
 │   │   ├── EmptyState.jsx       # Reusable empty state view
 │   │   └── Components.css       # Shared component animations & styles
 │   ├── data/
-│   │   └── mockData.js          # Multi-tier mock supply chain dataset (schema-compliant)
+│   │   ├── sectiviaData.js      # Authentic Sectivia dataset (382 companies, 556 relations)
+│   │   └── commonFormat.js      # Cross-member schema definitions & validation contracts
 │   ├── services/
-│   │   └── api.js               # API service abstraction with mock fallback
+│   │   └── api.js               # Centralized API service with Sectivia offline fallback
 │   └── test/
 │       ├── setup.js             # Vitest test setup (matchMedia & ResizeObserver mocks)
-│       ├── App.test.jsx         # App integration tests (theming, stats, search, a11y)
+│       ├── App.test.jsx         # App integration tests (branding, stats, navigation, a11y)
 │       ├── Prediction.test.jsx  # Prediction component unit tests
-│       └── api.test.js          # API service and BFS simulation unit tests
+│       └── api.test.js          # API service and Sectivia data layer unit tests
 ```
 
 ---
 
-## 🔌 API Service Layer & Backend Contract
+## 🤝 Cross-Member Common Data Contract (`src/data/commonFormat.js`)
 
-The frontend includes a decoupled API service layer in `src/services/api.js`.
+All four team members work concurrently against this common contract:
 
-### Environment Configuration
-Configure the backend endpoint in `.env`:
-```env
-VITE_API_BASE_URL=http://localhost:8000/api/v1
+### 1. Company Node Format (`CompanyNode`)
+```json
+{
+  "id": "sectivia:aapl",
+  "raw_id": "aapl",
+  "name": "Apple",
+  "ticker": "AAPL",
+  "exchange": "NASDAQ",
+  "country": "USA",
+  "sector": "ai",
+  "sectorName": "AI & Digital Infrastructure",
+  "segment": "Devices & electronics manufacturing",
+  "listed": true,
+  "relations_count": 14,
+  "dataset_source": "sectivia"
+}
 ```
 
-### Endpoints Specification
-| Method | Endpoint | Description | Frontend Fallback |
-|---|---|---|---|
-| `GET` | `/health` | Backend status check | Reports offline mode |
-| `GET` | `/network/graph` | Returns `{ nodes, edges, summary }` | Uses `mockData.js` |
-| `GET` | `/nodes/:id` | Returns full facility details | Finds node in mock dataset |
-| `GET` | `/predictions?horizon=7+Days` | Returns prediction array for horizon | Returns sample forecast |
-| `GET` | `/alerts` | Returns recent disruption alerts list | Returns initial alerts |
+### 2. Relationship Format (`SuppliesToRelationship`)
+```json
+{
+  "id": "rel_7",
+  "source": "sectivia:adi",
+  "target": "sectivia:aapl",
+  "type": "SUPPLIES_TO",
+  "supplier_name": "Analog Devices",
+  "customer_name": "Apple",
+  "supplier_ticker": "ADI",
+  "customer_ticker": "AAPL",
+  "supplier_sector": "ai",
+  "customer_sector": "ai",
+  "supplier_segment": "Chips & accelerators",
+  "customer_segment": "Devices & electronics manufacturing",
+  "is_cross_sector": false,
+  "what": "Chips for Apple products, on Apple's official supplier list",
+  "source_citation": "Apple Supplier List (fiscal 2023), April 2024",
+  "source_url": "https://s203.q4cdn.com/367071867/files/doc_downloads/2024/04/Apple-Supplier-List.pdf"
+}
+```
 
-If the backend server is offline or not yet initialized, the API layer gracefully falls back to the internal mock dataset with a clear status indicator: `"Online · Simulated Demo"`.
+### 3. Future Extensibility Hooks:
+- **Member 2 (NLP & Disruption Pipeline):** Accepts `entity_id` (`sectivia:<id>`), `disruption_type`, `severity_score` [0.0 - 1.0], `confidence`, and `source_headline`.
+- **Member 3 (GNN Prediction Engine):** Accepts `origin_id`, `hop_depth`, `impacted_id`, `predicted_delay_days`, and `cascade_probability`.
 
 ---
 
@@ -138,7 +170,7 @@ cd D:\AtmoGraph\frontend
 # Install dependencies
 npm install
 
-# Run Vitest test suite
+# Run Vitest test suite (15 passed tests)
 npm run test
 
 # Run tests in watch mode
@@ -150,10 +182,3 @@ npm run build
 # Preview production build locally
 npm run preview
 ```
-
----
-
-## 🤝 Coordination with Team Members
-- **Member 1 (GNN Modeling)**: The mock dataset and node schema match `config/schema.yaml` (`[Supplier, Manufacturer, Port, Warehouse, Retailer]`, `risk_score` float [0.0 - 1.0]).
-- **Member 2 (NLP & Alerts)**: The `fetchAlerts()` interface accepts structured news/disruption alerts with timestamps, severity flags, and node references.
-- **Member 3 (Neo4j Graph Database)**: Node coordinates, edge connectivity (`source` / `target`), and route types (`Maritime`, `Air`, `Rail`, `Road`) mirror graph relationships.
