@@ -1,6 +1,7 @@
 def detect_disruption(text):
     keywords = {
         "flood": "Natural Disaster",
+        "flooding": "Natural Disaster",
         "earthquake": "Natural Disaster",
         "fire": "Fire",
         "strike": "Labor Disruption",
@@ -14,8 +15,13 @@ def detect_disruption(text):
 
     text = text.lower()
 
-    for keyword, category in keywords.items():
-        if keyword in text:
-            return category
+    detected_disruptions = []
 
-    return "No disruption detected"
+    for keyword, category in keywords.items():
+        if keyword in text and category not in detected_disruptions:
+            detected_disruptions.append(category)
+
+    if detected_disruptions:
+        return detected_disruptions
+
+    return ["No disruption detected"]
