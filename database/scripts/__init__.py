@@ -1,1 +1,0 @@
-# AtmoGraph Database Scripts Package
