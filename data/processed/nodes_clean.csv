@@ -1,0 +1,301 @@
+node_id,name,node_type,country,region,industry,risk_score,data_source
+S0001,Toronto Metals S0001,Supplier,Canada,North America,Industrial Machinery,0.0,SYNTHETIC
+S0002,Eindhoven Textiles S0002,Supplier,Netherlands,Europe,Industrial Machinery,0.0,SYNTHETIC
+S0003,Manzanillo Textiles S0003,Supplier,Mexico,North America,Consumer Electronics,0.0,SYNTHETIC
+S0004,Taipei Materials S0004,Supplier,Taiwan,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0005,Warsaw Chemicals S0005,Supplier,Poland,Europe,Apparel,0.0,SYNTHETIC
+S0006,Seoul Textiles S0006,Supplier,South Korea,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0007,Sao Paulo Materials S0007,Supplier,Brazil,South America,Apparel,0.0,SYNTHETIC
+S0008,Monterrey Components S0008,Supplier,Mexico,North America,Industrial Machinery,0.0,SYNTHETIC
+S0009,Durban Chemicals S0009,Supplier,South Africa,Africa,Food & Beverage,0.0,SYNTHETIC
+S0010,Hanoi Components S0010,Supplier,Vietnam,Asia,Apparel,0.0,SYNTHETIC
+S0011,Rotterdam Chemicals S0011,Supplier,Netherlands,Europe,Pharmaceuticals,0.0,SYNTHETIC
+S0012,Colombo Plastics S0012,Supplier,Sri Lanka,Asia,Pharmaceuticals,0.0,SYNTHETIC
+S0013,Bangkok Metals S0013,Supplier,Thailand,Asia,Consumer Electronics,0.0,SYNTHETIC
+S0014,Osaka Textiles S0014,Supplier,Japan,Asia,Food & Beverage,0.0,SYNTHETIC
+S0015,Ho Chi Minh City Textiles S0015,Supplier,Vietnam,Asia,Food & Beverage,0.0,SYNTHETIC
+S0016,Laem Chabang Metals S0016,Supplier,Thailand,Asia,Food & Beverage,0.0,SYNTHETIC
+S0017,Singapore Materials S0017,Supplier,Singapore,Asia,Automotive,0.0,SYNTHETIC
+S0018,Port Klang Materials S0018,Supplier,Malaysia,Asia,Food & Beverage,0.0,SYNTHETIC
+S0019,Atlanta Textiles S0019,Supplier,USA,North America,Pharmaceuticals,0.0,SYNTHETIC
+S0020,Manzanillo Metals S0020,Supplier,Mexico,North America,Apparel,0.0,SYNTHETIC
+S0021,Taipei Components S0021,Supplier,Taiwan,Asia,Pharmaceuticals,0.0,SYNTHETIC
+S0022,Port Klang Textiles S0022,Supplier,Malaysia,Asia,Consumer Electronics,0.0,SYNTHETIC
+S0023,Genoa Textiles S0023,Supplier,Italy,Europe,Consumer Electronics,0.0,SYNTHETIC
+S0024,Hsinchu Components S0024,Supplier,Taiwan,Asia,Pharmaceuticals,0.0,SYNTHETIC
+S0025,Seoul Metals S0025,Supplier,South Korea,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0026,Singapore Chemicals S0026,Supplier,Singapore,Asia,Consumer Electronics,0.0,SYNTHETIC
+S0027,Colombo Materials S0027,Supplier,Sri Lanka,Asia,Pharmaceuticals,0.0,SYNTHETIC
+S0028,Le Havre Chemicals S0028,Supplier,France,Europe,Industrial Machinery,0.0,SYNTHETIC
+S0029,Penang Chemicals S0029,Supplier,Malaysia,Asia,Automotive,0.0,SYNTHETIC
+S0030,Hanoi Components S0030,Supplier,Vietnam,Asia,Food & Beverage,0.0,SYNTHETIC
+S0031,Laem Chabang Components S0031,Supplier,Thailand,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0032,Taipei Chemicals S0032,Supplier,Taiwan,Asia,Pharmaceuticals,0.0,SYNTHETIC
+S0033,Seoul Materials S0033,Supplier,South Korea,Asia,Food & Beverage,0.0,SYNTHETIC
+S0034,Port Klang Components S0034,Supplier,Malaysia,Asia,Pharmaceuticals,0.0,SYNTHETIC
+S0035,Dubai Metals S0035,Supplier,UAE,Middle East,Industrial Machinery,0.0,SYNTHETIC
+S0036,Birmingham Chemicals S0036,Supplier,UK,Europe,Industrial Machinery,0.0,SYNTHETIC
+S0037,Dallas Chemicals S0037,Supplier,USA,North America,Pharmaceuticals,0.0,SYNTHETIC
+S0038,Shenzhen Metals S0038,Supplier,China,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0039,Bangkok Chemicals S0039,Supplier,Thailand,Asia,Automotive,0.0,SYNTHETIC
+S0040,Birmingham Metals S0040,Supplier,UK,Europe,Industrial Machinery,0.0,SYNTHETIC
+S0041,Vancouver Textiles S0041,Supplier,Canada,North America,Pharmaceuticals,0.0,SYNTHETIC
+S0042,Rotterdam Components S0042,Supplier,Netherlands,Europe,Apparel,0.0,SYNTHETIC
+S0043,Bangkok Chemicals S0043,Supplier,Thailand,Asia,Consumer Electronics,0.0,SYNTHETIC
+S0044,Hanoi Textiles S0044,Supplier,Vietnam,Asia,Consumer Electronics,0.0,SYNTHETIC
+S0045,Ho Chi Minh City Chemicals S0045,Supplier,Vietnam,Asia,Automotive,0.0,SYNTHETIC
+S0046,Durban Textiles S0046,Supplier,South Africa,Africa,Pharmaceuticals,0.0,SYNTHETIC
+S0047,Warsaw Materials S0047,Supplier,Poland,Europe,Consumer Electronics,0.0,SYNTHETIC
+S0048,Dubai Metals S0048,Supplier,UAE,Middle East,Pharmaceuticals,0.0,SYNTHETIC
+S0049,Bangkok Metals S0049,Supplier,Thailand,Asia,Food & Beverage,0.0,SYNTHETIC
+S0050,Dubai Components S0050,Supplier,UAE,Middle East,Apparel,0.0,SYNTHETIC
+S0051,Singapore Materials S0051,Supplier,Singapore,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0052,Nagoya Metals S0052,Supplier,Japan,Asia,Automotive,0.0,SYNTHETIC
+S0053,Sao Paulo Components S0053,Supplier,Brazil,South America,Industrial Machinery,0.0,SYNTHETIC
+S0054,Nagoya Materials S0054,Supplier,Japan,Asia,Consumer Electronics,0.0,SYNTHETIC
+S0055,Eindhoven Materials S0055,Supplier,Netherlands,Europe,Apparel,0.0,SYNTHETIC
+S0056,Manzanillo Materials S0056,Supplier,Mexico,North America,Consumer Electronics,0.0,SYNTHETIC
+S0057,Durban Materials S0057,Supplier,South Africa,Africa,Automotive,0.0,SYNTHETIC
+S0058,Stuttgart Metals S0058,Supplier,Germany,Europe,Automotive,0.0,SYNTHETIC
+S0059,Santos Plastics S0059,Supplier,Brazil,South America,Automotive,0.0,SYNTHETIC
+S0060,Jebel Ali Materials S0060,Supplier,UAE,Middle East,Apparel,0.0,SYNTHETIC
+S0061,Hsinchu Plastics S0061,Supplier,Taiwan,Asia,Automotive,0.0,SYNTHETIC
+S0062,Hanoi Metals S0062,Supplier,Vietnam,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0063,Santos Components S0063,Supplier,Brazil,South America,Food & Beverage,0.0,SYNTHETIC
+S0064,Sao Paulo Plastics S0064,Supplier,Brazil,South America,Consumer Electronics,0.0,SYNTHETIC
+S0065,Taipei Chemicals S0065,Supplier,Taiwan,Asia,Pharmaceuticals,0.0,SYNTHETIC
+S0066,Port Klang Components S0066,Supplier,Malaysia,Asia,Food & Beverage,0.0,SYNTHETIC
+S0067,Bangkok Plastics S0067,Supplier,Thailand,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0068,Mumbai Chemicals S0068,Supplier,India,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0069,Hanoi Textiles S0069,Supplier,Vietnam,Asia,Food & Beverage,0.0,SYNTHETIC
+S0070,Singapore Materials S0070,Supplier,Singapore,Asia,Automotive,0.0,SYNTHETIC
+S0071,Atlanta Metals S0071,Supplier,USA,North America,Apparel,0.0,SYNTHETIC
+S0072,Colombo Components S0072,Supplier,Sri Lanka,Asia,Automotive,0.0,SYNTHETIC
+S0073,Mumbai Chemicals S0073,Supplier,India,Asia,Industrial Machinery,0.0,SYNTHETIC
+S0074,Ho Chi Minh City Chemicals S0074,Supplier,Vietnam,Asia,Food & Beverage,0.0,SYNTHETIC
+S0075,Hsinchu Chemicals S0075,Supplier,Taiwan,Asia,Consumer Electronics,0.0,SYNTHETIC
+S0076,Manzanillo Components S0076,Supplier,Mexico,North America,Pharmaceuticals,0.0,SYNTHETIC
+S0077,Johannesburg Components S0077,Supplier,South Africa,Africa,Pharmaceuticals,0.0,SYNTHETIC
+S0078,Hanoi Textiles S0078,Supplier,Vietnam,Asia,Apparel,0.0,SYNTHETIC
+S0079,Jebel Ali Materials S0079,Supplier,UAE,Middle East,Industrial Machinery,0.0,SYNTHETIC
+S0080,Colombo Textiles S0080,Supplier,Sri Lanka,Asia,Apparel,0.0,SYNTHETIC
+S0081,Barcelona Chemicals S0081,Supplier,Spain,Europe,Consumer Electronics,0.0,SYNTHETIC
+S0082,Suzhou Components S0082,Supplier,China,Asia,Apparel,0.0,SYNTHETIC
+S0083,Durban Chemicals S0083,Supplier,South Africa,Africa,Pharmaceuticals,0.0,SYNTHETIC
+S0084,Vancouver Components S0084,Supplier,Canada,North America,Apparel,0.0,SYNTHETIC
+S0085,Sao Paulo Materials S0085,Supplier,Brazil,South America,Food & Beverage,0.0,SYNTHETIC
+S0086,Nagoya Chemicals S0086,Supplier,Japan,Asia,Apparel,0.0,SYNTHETIC
+S0087,Santos Textiles S0087,Supplier,Brazil,South America,Automotive,0.0,SYNTHETIC
+S0088,Busan Metals S0088,Supplier,South Korea,Asia,Consumer Electronics,0.0,SYNTHETIC
+S0089,Santos Materials S0089,Supplier,Brazil,South America,Pharmaceuticals,0.0,SYNTHETIC
+S0090,Mumbai Plastics S0090,Supplier,India,Asia,Food & Beverage,0.0,SYNTHETIC
+M0001,Monterrey Fabrication M0001,Manufacturer,Mexico,North America,Consumer Electronics,0.0,SYNTHETIC
+M0002,Warsaw Assembly Works M0002,Manufacturer,Poland,Europe,Automotive,0.0,SYNTHETIC
+M0003,Singapore Fabrication M0003,Manufacturer,Singapore,Asia,Consumer Electronics,0.0,SYNTHETIC
+M0004,Santos Assembly Works M0004,Manufacturer,Brazil,South America,Consumer Electronics,0.0,SYNTHETIC
+M0005,Chennai Assembly Works M0005,Manufacturer,India,Asia,Apparel,0.0,SYNTHETIC
+M0006,Shenzhen Assembly Works M0006,Manufacturer,China,Asia,Food & Beverage,0.0,SYNTHETIC
+M0007,Stuttgart Industries M0007,Manufacturer,Germany,Europe,Food & Beverage,0.0,SYNTHETIC
+M0008,Nagoya Industries M0008,Manufacturer,Japan,Asia,Food & Beverage,0.0,SYNTHETIC
+M0009,Manzanillo Assembly Works M0009,Manufacturer,Mexico,North America,Pharmaceuticals,0.0,SYNTHETIC
+M0010,Hanoi Assembly Works M0010,Manufacturer,Vietnam,Asia,Apparel,0.0,SYNTHETIC
+M0011,Taipei Assembly Works M0011,Manufacturer,Taiwan,Asia,Consumer Electronics,0.0,SYNTHETIC
+M0012,Warsaw Fabrication M0012,Manufacturer,Poland,Europe,Consumer Electronics,0.0,SYNTHETIC
+M0013,Chicago Manufacturing M0013,Manufacturer,USA,North America,Industrial Machinery,0.0,SYNTHETIC
+M0014,Singapore Fabrication M0014,Manufacturer,Singapore,Asia,Food & Beverage,0.0,SYNTHETIC
+M0015,Durban Manufacturing M0015,Manufacturer,South Africa,Africa,Food & Beverage,0.0,SYNTHETIC
+M0016,Vancouver Industries M0016,Manufacturer,Canada,North America,Food & Beverage,0.0,SYNTHETIC
+M0017,Singapore Industries M0017,Manufacturer,Singapore,Asia,Automotive,0.0,SYNTHETIC
+M0018,Vancouver Manufacturing M0018,Manufacturer,Canada,North America,Food & Beverage,0.0,SYNTHETIC
+M0019,Warsaw Assembly Works M0019,Manufacturer,Poland,Europe,Automotive,0.0,SYNTHETIC
+M0020,Seoul Assembly Works M0020,Manufacturer,South Korea,Asia,Pharmaceuticals,0.0,SYNTHETIC
+M0021,Osaka Industries M0021,Manufacturer,Japan,Asia,Pharmaceuticals,0.0,SYNTHETIC
+M0022,Seoul Assembly Works M0022,Manufacturer,South Korea,Asia,Food & Beverage,0.0,SYNTHETIC
+M0023,Laem Chabang Industries M0023,Manufacturer,Thailand,Asia,Industrial Machinery,0.0,SYNTHETIC
+M0024,Milan Manufacturing M0024,Manufacturer,Italy,Europe,Apparel,0.0,SYNTHETIC
+M0025,Vancouver Assembly Works M0025,Manufacturer,Canada,North America,Food & Beverage,0.0,SYNTHETIC
+M0026,Genoa Assembly Works M0026,Manufacturer,Italy,Europe,Automotive,0.0,SYNTHETIC
+M0027,Chicago Industries M0027,Manufacturer,USA,North America,Food & Beverage,0.0,SYNTHETIC
+M0028,Monterrey Fabrication M0028,Manufacturer,Mexico,North America,Apparel,0.0,SYNTHETIC
+M0029,Port Klang Industries M0029,Manufacturer,Malaysia,Asia,Consumer Electronics,0.0,SYNTHETIC
+M0030,Santos Assembly Works M0030,Manufacturer,Brazil,South America,Industrial Machinery,0.0,SYNTHETIC
+M0031,Monterrey Industries M0031,Manufacturer,Mexico,North America,Pharmaceuticals,0.0,SYNTHETIC
+M0032,Manzanillo Fabrication M0032,Manufacturer,Mexico,North America,Consumer Electronics,0.0,SYNTHETIC
+M0033,Antwerp Assembly Works M0033,Manufacturer,Belgium,Europe,Consumer Electronics,0.0,SYNTHETIC
+M0034,Eindhoven Assembly Works M0034,Manufacturer,Netherlands,Europe,Apparel,0.0,SYNTHETIC
+M0035,Birmingham Industries M0035,Manufacturer,UK,Europe,Apparel,0.0,SYNTHETIC
+M0036,Manzanillo Industries M0036,Manufacturer,Mexico,North America,Pharmaceuticals,0.0,SYNTHETIC
+M0037,Rotterdam Fabrication M0037,Manufacturer,Netherlands,Europe,Consumer Electronics,0.0,SYNTHETIC
+M0038,Bangkok Manufacturing M0038,Manufacturer,Thailand,Asia,Apparel,0.0,SYNTHETIC
+M0039,Colombo Fabrication M0039,Manufacturer,Sri Lanka,Asia,Automotive,0.0,SYNTHETIC
+M0040,Port Klang Fabrication M0040,Manufacturer,Malaysia,Asia,Food & Beverage,0.0,SYNTHETIC
+M0041,Laem Chabang Manufacturing M0041,Manufacturer,Thailand,Asia,Apparel,0.0,SYNTHETIC
+M0042,Nagoya Assembly Works M0042,Manufacturer,Japan,Asia,Consumer Electronics,0.0,SYNTHETIC
+M0043,Colombo Industries M0043,Manufacturer,Sri Lanka,Asia,Pharmaceuticals,0.0,SYNTHETIC
+M0044,Dallas Fabrication M0044,Manufacturer,USA,North America,Industrial Machinery,0.0,SYNTHETIC
+M0045,Toronto Assembly Works M0045,Manufacturer,Canada,North America,Pharmaceuticals,0.0,SYNTHETIC
+M0046,Melbourne Industries M0046,Manufacturer,Australia,Oceania,Industrial Machinery,0.0,SYNTHETIC
+M0047,Colombo Manufacturing M0047,Manufacturer,Sri Lanka,Asia,Industrial Machinery,0.0,SYNTHETIC
+M0048,Eindhoven Manufacturing M0048,Manufacturer,Netherlands,Europe,Apparel,0.0,SYNTHETIC
+M0049,Birmingham Assembly Works M0049,Manufacturer,UK,Europe,Pharmaceuticals,0.0,SYNTHETIC
+M0050,Toronto Fabrication M0050,Manufacturer,Canada,North America,Pharmaceuticals,0.0,SYNTHETIC
+M0051,Shanghai Industries M0051,Manufacturer,China,Asia,Industrial Machinery,0.0,SYNTHETIC
+M0052,Toronto Manufacturing M0052,Manufacturer,Canada,North America,Industrial Machinery,0.0,SYNTHETIC
+M0053,Monterrey Fabrication M0053,Manufacturer,Mexico,North America,Industrial Machinery,0.0,SYNTHETIC
+M0054,Port Klang Assembly Works M0054,Manufacturer,Malaysia,Asia,Apparel,0.0,SYNTHETIC
+M0055,Lyon Industries M0055,Manufacturer,France,Europe,Industrial Machinery,0.0,SYNTHETIC
+M0056,Mumbai Manufacturing M0056,Manufacturer,India,Asia,Consumer Electronics,0.0,SYNTHETIC
+M0057,Monterrey Assembly Works M0057,Manufacturer,Mexico,North America,Industrial Machinery,0.0,SYNTHETIC
+M0058,Athens Assembly Works M0058,Manufacturer,Greece,Europe,Consumer Electronics,0.0,SYNTHETIC
+M0059,Singapore Industries M0059,Manufacturer,Singapore,Asia,Industrial Machinery,0.0,SYNTHETIC
+M0060,Singapore Manufacturing M0060,Manufacturer,Singapore,Asia,Industrial Machinery,0.0,SYNTHETIC
+P0001,Port of Rotterdam,Port,Netherlands,Europe,Logistics,0.0,SYNTHETIC
+P0002,Port of Hamburg,Port,Germany,Europe,Logistics,0.0,SYNTHETIC
+P0003,Port of Antwerp,Port,Belgium,Europe,Logistics,0.0,SYNTHETIC
+P0004,Port of Shanghai,Port,China,Asia,Logistics,0.0,SYNTHETIC
+P0005,Port of Shenzhen,Port,China,Asia,Logistics,0.0,SYNTHETIC
+P0006,Port of Ningbo,Port,China,Asia,Logistics,0.0,SYNTHETIC
+P0007,Port of Singapore,Port,Singapore,Asia,Logistics,0.0,SYNTHETIC
+P0008,Port of Busan,Port,South Korea,Asia,Logistics,0.0,SYNTHETIC
+P0009,Port of Tokyo,Port,Japan,Asia,Logistics,0.0,SYNTHETIC
+P0010,Port of Los Angeles,Port,USA,North America,Logistics,0.0,SYNTHETIC
+P0011,Port of Long Beach,Port,USA,North America,Logistics,0.0,SYNTHETIC
+P0012,Port of New York,Port,USA,North America,Logistics,0.0,SYNTHETIC
+P0013,Port of Savannah,Port,USA,North America,Logistics,0.0,SYNTHETIC
+P0014,Port of Vancouver,Port,Canada,North America,Logistics,0.0,SYNTHETIC
+P0015,Port of Santos,Port,Brazil,South America,Logistics,0.0,SYNTHETIC
+P0016,Port of Mumbai,Port,India,Asia,Logistics,0.0,SYNTHETIC
+P0017,Port of Chennai,Port,India,Asia,Logistics,0.0,SYNTHETIC
+P0018,Port of Jebel Ali,Port,UAE,Middle East,Logistics,0.0,SYNTHETIC
+P0019,Port of Felixstowe,Port,UK,Europe,Logistics,0.0,SYNTHETIC
+P0020,Port of Valencia,Port,Spain,Europe,Logistics,0.0,SYNTHETIC
+P0021,Port of Piraeus,Port,Greece,Europe,Logistics,0.0,SYNTHETIC
+P0022,Port of Colombo,Port,Sri Lanka,Asia,Logistics,0.0,SYNTHETIC
+P0023,Port of Port Klang,Port,Malaysia,Asia,Logistics,0.0,SYNTHETIC
+P0024,Port of Laem Chabang,Port,Thailand,Asia,Logistics,0.0,SYNTHETIC
+P0025,Port of Durban,Port,South Africa,Africa,Logistics,0.0,SYNTHETIC
+P0026,Port of Sydney,Port,Australia,Oceania,Logistics,0.0,SYNTHETIC
+P0027,Port of Manzanillo,Port,Mexico,North America,Logistics,0.0,SYNTHETIC
+P0028,Port of Genoa,Port,Italy,Europe,Logistics,0.0,SYNTHETIC
+P0029,Port of Le Havre,Port,France,Europe,Logistics,0.0,SYNTHETIC
+P0030,Port of Ho Chi Minh City,Port,Vietnam,Asia,Logistics,0.0,SYNTHETIC
+W0001,Manzanillo Logistics Park W0001,Warehouse,Mexico,North America,Industrial Machinery,0.0,SYNTHETIC
+W0002,Singapore Logistics Park W0002,Warehouse,Singapore,Asia,Food & Beverage,0.0,SYNTHETIC
+W0003,Monterrey Distribution Hub W0003,Warehouse,Mexico,North America,Consumer Electronics,0.0,SYNTHETIC
+W0004,Rotterdam Logistics Park W0004,Warehouse,Netherlands,Europe,Apparel,0.0,SYNTHETIC
+W0005,Jebel Ali Storage Centre W0005,Warehouse,UAE,Middle East,Consumer Electronics,0.0,SYNTHETIC
+W0006,Shenzhen Distribution Hub W0006,Warehouse,China,Asia,Automotive,0.0,SYNTHETIC
+W0007,Hsinchu Logistics Park W0007,Warehouse,Taiwan,Asia,Apparel,0.0,SYNTHETIC
+W0008,Dallas Distribution Hub W0008,Warehouse,USA,North America,Consumer Electronics,0.0,SYNTHETIC
+W0009,Sao Paulo Logistics Park W0009,Warehouse,Brazil,South America,Pharmaceuticals,0.0,SYNTHETIC
+W0010,Atlanta Distribution Hub W0010,Warehouse,USA,North America,Pharmaceuticals,0.0,SYNTHETIC
+W0011,Piraeus Logistics Park W0011,Warehouse,Greece,Europe,Automotive,0.0,SYNTHETIC
+W0012,Penang Distribution Hub W0012,Warehouse,Malaysia,Asia,Automotive,0.0,SYNTHETIC
+W0013,Athens Storage Centre W0013,Warehouse,Greece,Europe,Apparel,0.0,SYNTHETIC
+W0014,Penang Logistics Park W0014,Warehouse,Malaysia,Asia,Consumer Electronics,0.0,SYNTHETIC
+W0015,Rotterdam Storage Centre W0015,Warehouse,Netherlands,Europe,Industrial Machinery,0.0,SYNTHETIC
+W0016,Vancouver Distribution Hub W0016,Warehouse,Canada,North America,Industrial Machinery,0.0,SYNTHETIC
+W0017,Antwerp Storage Centre W0017,Warehouse,Belgium,Europe,Pharmaceuticals,0.0,SYNTHETIC
+W0018,Busan Logistics Park W0018,Warehouse,South Korea,Asia,Pharmaceuticals,0.0,SYNTHETIC
+W0019,Barcelona Logistics Park W0019,Warehouse,Spain,Europe,Apparel,0.0,SYNTHETIC
+W0020,Athens Distribution Hub W0020,Warehouse,Greece,Europe,Pharmaceuticals,0.0,SYNTHETIC
+W0021,Eindhoven Distribution Hub W0021,Warehouse,Netherlands,Europe,Apparel,0.0,SYNTHETIC
+W0022,Le Havre Storage Centre W0022,Warehouse,France,Europe,Apparel,0.0,SYNTHETIC
+W0023,Penang Distribution Hub W0023,Warehouse,Malaysia,Asia,Food & Beverage,0.0,SYNTHETIC
+W0024,Eindhoven Storage Centre W0024,Warehouse,Netherlands,Europe,Apparel,0.0,SYNTHETIC
+W0025,Piraeus Logistics Park W0025,Warehouse,Greece,Europe,Food & Beverage,0.0,SYNTHETIC
+W0026,Sao Paulo Logistics Park W0026,Warehouse,Brazil,South America,Industrial Machinery,0.0,SYNTHETIC
+W0027,Birmingham Logistics Park W0027,Warehouse,UK,Europe,Automotive,0.0,SYNTHETIC
+W0028,Dubai Storage Centre W0028,Warehouse,UAE,Middle East,Pharmaceuticals,0.0,SYNTHETIC
+W0029,Chicago Logistics Park W0029,Warehouse,USA,North America,Industrial Machinery,0.0,SYNTHETIC
+W0030,Detroit Storage Centre W0030,Warehouse,USA,North America,Pharmaceuticals,0.0,SYNTHETIC
+W0031,Monterrey Distribution Hub W0031,Warehouse,Mexico,North America,Food & Beverage,0.0,SYNTHETIC
+W0032,Vancouver Logistics Park W0032,Warehouse,Canada,North America,Industrial Machinery,0.0,SYNTHETIC
+W0033,Milan Distribution Hub W0033,Warehouse,Italy,Europe,Apparel,0.0,SYNTHETIC
+W0034,Toronto Storage Centre W0034,Warehouse,Canada,North America,Industrial Machinery,0.0,SYNTHETIC
+W0035,Johannesburg Logistics Park W0035,Warehouse,South Africa,Africa,Pharmaceuticals,0.0,SYNTHETIC
+W0036,Osaka Logistics Park W0036,Warehouse,Japan,Asia,Food & Beverage,0.0,SYNTHETIC
+W0037,Osaka Distribution Hub W0037,Warehouse,Japan,Asia,Food & Beverage,0.0,SYNTHETIC
+W0038,Eindhoven Distribution Hub W0038,Warehouse,Netherlands,Europe,Food & Beverage,0.0,SYNTHETIC
+W0039,Dubai Logistics Park W0039,Warehouse,UAE,Middle East,Industrial Machinery,0.0,SYNTHETIC
+W0040,Rotterdam Logistics Park W0040,Warehouse,Netherlands,Europe,Industrial Machinery,0.0,SYNTHETIC
+W0041,Toronto Logistics Park W0041,Warehouse,Canada,North America,Pharmaceuticals,0.0,SYNTHETIC
+W0042,Manzanillo Distribution Hub W0042,Warehouse,Mexico,North America,Pharmaceuticals,0.0,SYNTHETIC
+W0043,Athens Distribution Hub W0043,Warehouse,Greece,Europe,Automotive,0.0,SYNTHETIC
+W0044,Santos Distribution Hub W0044,Warehouse,Brazil,South America,Apparel,0.0,SYNTHETIC
+W0045,Antwerp Distribution Hub W0045,Warehouse,Belgium,Europe,Pharmaceuticals,0.0,SYNTHETIC
+W0046,Bangkok Distribution Hub W0046,Warehouse,Thailand,Asia,Consumer Electronics,0.0,SYNTHETIC
+W0047,Manzanillo Logistics Park W0047,Warehouse,Mexico,North America,Apparel,0.0,SYNTHETIC
+W0048,Busan Logistics Park W0048,Warehouse,South Korea,Asia,Food & Beverage,0.0,SYNTHETIC
+W0049,Monterrey Logistics Park W0049,Warehouse,Mexico,North America,Apparel,0.0,SYNTHETIC
+W0050,Piraeus Distribution Hub W0050,Warehouse,Greece,Europe,Pharmaceuticals,0.0,SYNTHETIC
+W0051,Port Klang Storage Centre W0051,Warehouse,Malaysia,Asia,Apparel,0.0,SYNTHETIC
+R0001,Melbourne Mart R0001,Retailer,Australia,Oceania,Consumer Electronics,0.0,SYNTHETIC
+R0002,Valencia Stores R0002,Retailer,Spain,Europe,Industrial Machinery,0.0,SYNTHETIC
+R0003,Toronto Stores R0003,Retailer,Canada,North America,Industrial Machinery,0.0,SYNTHETIC
+R0004,Colombo Stores R0004,Retailer,Sri Lanka,Asia,Automotive,0.0,SYNTHETIC
+R0005,Antwerp Retail Group R0005,Retailer,Belgium,Europe,Automotive,0.0,SYNTHETIC
+R0006,Melbourne Mart R0006,Retailer,Australia,Oceania,Pharmaceuticals,0.0,SYNTHETIC
+R0007,Dallas Mart R0007,Retailer,USA,North America,Consumer Electronics,0.0,SYNTHETIC
+R0008,Dallas Mart R0008,Retailer,USA,North America,Apparel,0.0,SYNTHETIC
+R0009,Durban Mart R0009,Retailer,South Africa,Africa,Industrial Machinery,0.0,SYNTHETIC
+R0010,Busan Trading R0010,Retailer,South Korea,Asia,Apparel,0.0,SYNTHETIC
+R0011,Jebel Ali Mart R0011,Retailer,UAE,Middle East,Food & Beverage,0.0,SYNTHETIC
+R0012,Melbourne Retail Group R0012,Retailer,Australia,Oceania,Apparel,0.0,SYNTHETIC
+R0013,Genoa Mart R0013,Retailer,Italy,Europe,Industrial Machinery,0.0,SYNTHETIC
+R0014,Durban Retail Group R0014,Retailer,South Africa,Africa,Industrial Machinery,0.0,SYNTHETIC
+R0015,Manzanillo Trading R0015,Retailer,Mexico,North America,Food & Beverage,0.0,SYNTHETIC
+R0016,Munich Stores R0016,Retailer,Germany,Europe,Consumer Electronics,0.0,SYNTHETIC
+R0017,Colombo Stores R0017,Retailer,Sri Lanka,Asia,Industrial Machinery,0.0,SYNTHETIC
+R0018,Athens Trading R0018,Retailer,Greece,Europe,Automotive,0.0,SYNTHETIC
+R0019,Busan Retail Group R0019,Retailer,South Korea,Asia,Automotive,0.0,SYNTHETIC
+R0020,Santos Stores R0020,Retailer,Brazil,South America,Industrial Machinery,0.0,SYNTHETIC
+R0021,Sao Paulo Retail Group R0021,Retailer,Brazil,South America,Consumer Electronics,0.0,SYNTHETIC
+R0022,Toronto Retail Group R0022,Retailer,Canada,North America,Industrial Machinery,0.0,SYNTHETIC
+R0023,Port Klang Trading R0023,Retailer,Malaysia,Asia,Consumer Electronics,0.0,SYNTHETIC
+R0024,Singapore Stores R0024,Retailer,Singapore,Asia,Food & Beverage,0.0,SYNTHETIC
+R0025,Monterrey Retail Group R0025,Retailer,Mexico,North America,Apparel,0.0,SYNTHETIC
+R0026,Sao Paulo Retail Group R0026,Retailer,Brazil,South America,Industrial Machinery,0.0,SYNTHETIC
+R0027,Hsinchu Retail Group R0027,Retailer,Taiwan,Asia,Food & Beverage,0.0,SYNTHETIC
+R0028,Melbourne Mart R0028,Retailer,Australia,Oceania,Food & Beverage,0.0,SYNTHETIC
+R0029,Vancouver Mart R0029,Retailer,Canada,North America,Pharmaceuticals,0.0,SYNTHETIC
+R0030,Santos Stores R0030,Retailer,Brazil,South America,Food & Beverage,0.0,SYNTHETIC
+R0031,Lyon Stores R0031,Retailer,France,Europe,Apparel,0.0,SYNTHETIC
+R0032,Manzanillo Retail Group R0032,Retailer,Mexico,North America,Food & Beverage,0.0,SYNTHETIC
+R0033,Osaka Trading R0033,Retailer,Japan,Asia,Apparel,0.0,SYNTHETIC
+R0034,Manzanillo Stores R0034,Retailer,Mexico,North America,Apparel,0.0,SYNTHETIC
+R0035,Eindhoven Trading R0035,Retailer,Netherlands,Europe,Industrial Machinery,0.0,SYNTHETIC
+R0036,Milan Stores R0036,Retailer,Italy,Europe,Pharmaceuticals,0.0,SYNTHETIC
+R0037,Athens Retail Group R0037,Retailer,Greece,Europe,Consumer Electronics,0.0,SYNTHETIC
+R0038,Toronto Retail Group R0038,Retailer,Canada,North America,Apparel,0.0,SYNTHETIC
+R0039,Hamburg Mart R0039,Retailer,Germany,Europe,Industrial Machinery,0.0,SYNTHETIC
+R0040,Warsaw Trading R0040,Retailer,Poland,Europe,Industrial Machinery,0.0,SYNTHETIC
+R0041,Hsinchu Trading R0041,Retailer,Taiwan,Asia,Automotive,0.0,SYNTHETIC
+R0042,Melbourne Retail Group R0042,Retailer,Australia,Oceania,Apparel,0.0,SYNTHETIC
+R0043,Melbourne Stores R0043,Retailer,Australia,Oceania,Apparel,0.0,SYNTHETIC
+R0044,Chennai Mart R0044,Retailer,India,Asia,Apparel,0.0,SYNTHETIC
+R0045,Monterrey Stores R0045,Retailer,Mexico,North America,Automotive,0.0,SYNTHETIC
+R0046,Vancouver Retail Group R0046,Retailer,Canada,North America,Automotive,0.0,SYNTHETIC
+R0047,Antwerp Trading R0047,Retailer,Belgium,Europe,Apparel,0.0,SYNTHETIC
+R0048,Valencia Stores R0048,Retailer,Spain,Europe,Industrial Machinery,0.0,SYNTHETIC
+R0049,Colombo Stores R0049,Retailer,Sri Lanka,Asia,Food & Beverage,0.0,SYNTHETIC
+R0050,Melbourne Trading R0050,Retailer,Australia,Oceania,Pharmaceuticals,0.0,SYNTHETIC
+R0051,Eindhoven Retail Group R0051,Retailer,Netherlands,Europe,Pharmaceuticals,0.0,SYNTHETIC
+R0052,Jebel Ali Trading R0052,Retailer,UAE,Middle East,Apparel,0.0,SYNTHETIC
+R0053,Eindhoven Trading R0053,Retailer,Netherlands,Europe,Industrial Machinery,0.0,SYNTHETIC
+R0054,Chicago Retail Group R0054,Retailer,USA,North America,Automotive,0.0,SYNTHETIC
+R0055,Monterrey Stores R0055,Retailer,Mexico,North America,Apparel,0.0,SYNTHETIC
+R0056,Chicago Trading R0056,Retailer,USA,North America,Consumer Electronics,0.0,SYNTHETIC
+R0057,Milan Trading R0057,Retailer,Italy,Europe,Food & Beverage,0.0,SYNTHETIC
+R0058,Monterrey Stores R0058,Retailer,Mexico,North America,Pharmaceuticals,0.0,SYNTHETIC
+R0059,Eindhoven Stores R0059,Retailer,Netherlands,Europe,Consumer Electronics,0.0,SYNTHETIC
+R0060,Sao Paulo Retail Group R0060,Retailer,Brazil,South America,Consumer Electronics,0.0,SYNTHETIC
+R0061,Birmingham Stores R0061,Retailer,UK,Europe,Pharmaceuticals,0.0,SYNTHETIC
+R0062,Seoul Trading R0062,Retailer,South Korea,Asia,Apparel,0.0,SYNTHETIC
+R0063,Dallas Retail Group R0063,Retailer,USA,North America,Industrial Machinery,0.0,SYNTHETIC
+R0064,Seoul Retail Group R0064,Retailer,South Korea,Asia,Food & Beverage,0.0,SYNTHETIC
+R0065,Melbourne Stores R0065,Retailer,Australia,Oceania,Consumer Electronics,0.0,SYNTHETIC
+R0066,Valencia Retail Group R0066,Retailer,Spain,Europe,Consumer Electronics,0.0,SYNTHETIC
+R0067,Chicago Retail Group R0067,Retailer,USA,North America,Industrial Machinery,0.0,SYNTHETIC
+R0068,Monterrey Trading R0068,Retailer,Mexico,North America,Consumer Electronics,0.0,SYNTHETIC
+R0069,Manzanillo Stores R0069,Retailer,Mexico,North America,Automotive,0.0,SYNTHETIC

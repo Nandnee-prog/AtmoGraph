@@ -1,0 +1,12 @@
+{
+  "nodes": {
+    "rows_in": 300,
+    "nulls_before": {},
+    "rows_out": 300
+  },
+  "edges": {
+    "rows_in": 528,
+    "nulls_before": {},
+    "rows_out": 528
+  }
+}
