@@ -18,6 +18,7 @@ import { LoadingSkeleton } from "./components/LoadingSkeleton";
 import { ErrorBanner } from "./components/ErrorBanner";
 import { EmptyState } from "./components/EmptyState";
 import {
+  checkBackendHealth,
   fetchNetworkGraph,
   fetchAlerts,
   fetchAllCompanies,
@@ -46,9 +47,8 @@ function CustomNode({ data, selected }) {
 
   return (
     <div
-      className={`custom-node ${data.risk || "low"} ${selected ? "selected" : ""} ${
-        isRipple ? "ripple-affected" : ""
-      } ${data.isRoot ? "root-node" : ""}`}
+      className={`custom-node ${data.risk || "low"} ${selected ? "selected" : ""} ${isRipple ? "ripple-affected" : ""
+        } ${data.isRoot ? "root-node" : ""}`}
       style={{
         borderLeft: `4px solid ${sectorColor}`,
       }}
@@ -131,7 +131,7 @@ function App() {
   const [edges, setEdges, onEdgesChange] = useEdgesState(initialSupplyChainEdges);
   const [alerts, setAlerts] = useState(initialAlerts);
   const [summary, setSummary] = useState(initialSummary);
-  const [stats, setStats] = useState(SECTIVIA_STATS);
+  const [baseStats, setBaseStats] = useState(SECTIVIA_STATS);
 
   // Filters & exploration
   const [selectedSector, setSelectedSector] = useState("all");
@@ -148,7 +148,66 @@ function App() {
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [backendStatus, setBackendStatus] = useState({
+    live: false,
+    mode: "Sectivia Baseline (Offline Reference)",
+    dataLabel: "SECTIVIA · VERIFIED BASELINE",
+    nNodes: null,
+    nEdges: null,
+  });
   const searchInputRef = useRef(null);
+  const isFetchingRef = useRef(false);
+  const isMountedRef = useRef(true);
+
+  // Dynamic Statistics Calculation:
+  // In Backend Live mode, calculate statistics dynamically from the active graph.
+  // In Offline mode, preserve verified Sectivia baseline statistics.
+  const stats = useMemo(() => {
+    if (backendStatus.live) {
+      const totalCompanies = Array.isArray(nodes) ? nodes.length : 0;
+      const totalRelationships = Array.isArray(edges) ? edges.length : 0;
+
+      // Handle optional or missing properties safely for cross-sector detection
+      const crossSectorRelationships = Array.isArray(edges)
+        ? edges.filter((e) => {
+          if (!e) return false;
+          if (e.data?.is_cross_sector !== undefined) {
+            return Boolean(e.data.is_cross_sector);
+          }
+          return Boolean(e.is_cross_sector);
+        }).length
+        : 0;
+
+      // Calculate unique sectors safely across diverse node schemas
+      const sectorSet = new Set();
+      if (Array.isArray(nodes)) {
+        for (const n of nodes) {
+          const s =
+            n?.data?.sector ||
+            n?.data?.industry ||
+            n?.data?.node_type ||
+            n?.sector ||
+            n?.industry;
+          if (s && typeof s === "string") {
+            sectorSet.add(s.toLowerCase().trim());
+          }
+        }
+      }
+      const totalSectors = sectorSet.size > 0 ? sectorSet.size : 1;
+
+      return {
+        totalCompanies,
+        totalRelationships,
+        crossSectorRelationships,
+        totalSectors,
+        verified: false,
+        source: "FastAPI Backend Telemetry",
+      };
+    }
+
+    // In Offline Sectivia Baseline mode, preserve verified statistics
+    return baseStats && baseStats.verified ? baseStats : SECTIVIA_STATS;
+  }, [backendStatus.live, nodes, edges, baseStats]);
 
   // Theme preference
   const [theme, setTheme] = useState(
@@ -184,27 +243,105 @@ function App() {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [simulation]);
 
-  // Load data via API service
+  // Cleanup mount tracking ref
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+    };
+  }, []);
+
+  // Load data safely via API service without duplicate in-flight requests
   const loadData = useCallback(() => {
+    if (isFetchingRef.current) return;
+    isFetchingRef.current = true;
+
     setIsLoading(true);
     setError(null);
 
-    Promise.all([fetchNetworkGraph(), fetchAlerts()])
-      .then(([graphData, alertsData]) => {
-        if (graphData && graphData.nodes) {
-          setNodes(graphData.nodes);
-          setEdges(graphData.edges);
-          if (graphData.summary) setSummary(graphData.summary);
-          if (graphData.stats) setStats(graphData.stats);
+    Promise.allSettled([
+      checkBackendHealth(),
+      fetchNetworkGraph(),
+      fetchAlerts(),
+    ])
+      .then(([healthResult, graphResult, alertsResult]) => {
+        if (!isMountedRef.current) return;
+
+        // Process health check safely
+        const health =
+          healthResult.status === "fulfilled" ? healthResult.value : null;
+        const isLive = Boolean(health?.live);
+
+        // Process network graph safely (contains Sectivia fallback on rejection)
+        const graphData =
+          graphResult.status === "fulfilled" ? graphResult.value : null;
+
+        // Process alerts safely
+        const alertsData =
+          alertsResult.status === "fulfilled" ? alertsResult.value : null;
+
+        const rawLabel = String(
+          health?.dataLabel ||
+          graphData?.datasetSource ||
+          ""
+        ).toLowerCase();
+
+        let resolvedLabel = "SECTIVIA · VERIFIED BASELINE";
+        if (isLive) {
+          if (rawLabel.includes("anonnet")) {
+            resolvedLabel = "ANONNET · ANONYMIZED BENCHMARK";
+          } else if (rawLabel.includes("synthetic") || rawLabel.includes("simulated")) {
+            resolvedLabel = "SYNTHETIC · SIMULATED DATA";
+          } else if (rawLabel.includes("sectivia")) {
+            resolvedLabel = "SECTIVIA · VERIFIED BASELINE";
+          } else {
+            resolvedLabel = health?.dataLabel || graphData?.datasetSource || "FASTAPI · LIVE TELEMETRY";
+          }
         }
-        if (alertsData) setAlerts(alertsData);
+
+        setBackendStatus({
+          live: isLive,
+          mode: isLive
+            ? "Backend Live (FastAPI)"
+            : "Sectivia Baseline (Offline Reference)",
+          dataLabel: resolvedLabel,
+          nNodes: health?.nNodes ?? graphData?.stats?.totalCompanies ?? null,
+          nEdges: health?.nEdges ?? graphData?.stats?.totalRelationships ?? null,
+        });
+
+        if (graphData && graphData.nodes && graphData.nodes.length > 0) {
+          setNodes(graphData.nodes);
+          setEdges(graphData.edges || []);
+          if (graphData.summary) setSummary(graphData.summary);
+          if (graphData.stats) setBaseStats(graphData.stats);
+        }
+
+        if (alertsData) {
+          setAlerts(alertsData);
+        }
+
+        // If graph data completely failed to provide nodes
+        if (!graphData || !graphData.nodes || graphData.nodes.length === 0) {
+          setError("Failed to load supply chain network graph. Please retry.");
+        }
       })
       .catch((err) => {
+        if (!isMountedRef.current) return;
         console.warn("API Service running in fallback Sectivia mode:", err);
+        setBackendStatus({
+          live: false,
+          mode: "Sectivia Baseline (Offline Reference)",
+          dataLabel: "SECTIVIA · VERIFIED BASELINE",
+          nNodes: null,
+          nEdges: null,
+        });
         setError("Operating in Sectivia Baseline mode (backend server offline).");
       })
       .finally(() => {
-        setIsLoading(false);
+        isFetchingRef.current = false;
+        if (isMountedRef.current) {
+          setIsLoading(false);
+        }
       });
   }, [setNodes, setEdges]);
 
@@ -242,6 +379,107 @@ function App() {
       return matchesSector && matchesSearch;
     });
   }, [nodes, selectedSector, searchQuery]);
+
+  // Derive active dataset type from backend health and loaded graph metadata
+  const activeDatasetType = useMemo(() => {
+    if (!backendStatus.live) {
+      return "sectivia";
+    }
+
+    const raw = (
+      backendStatus.dataLabel ||
+      nodes[0]?.data?.data_source ||
+      nodes[0]?.data?.dataset_source ||
+      ""
+    ).toLowerCase();
+
+    if (raw.includes("anonnet")) {
+      return "anonnet";
+    }
+    if (raw.includes("synthetic") || raw.includes("simulated")) {
+      return "synthetic";
+    }
+    if (raw.includes("sectivia")) {
+      return "sectivia";
+    }
+
+    // Secondary check on node ID formats
+    const sampleId = nodes[0]?.id || "";
+    if (sampleId.startsWith("anonnet:")) {
+      return "anonnet";
+    }
+    if (sampleId.startsWith("sectivia:")) {
+      return "sectivia";
+    }
+    if (
+      sampleId.startsWith("synthetic:") ||
+      /^S\d{4}$/.test(sampleId) ||
+      /^M\d{4}$/.test(sampleId)
+    ) {
+      return "synthetic";
+    }
+
+    return "backend";
+  }, [backendStatus.live, backendStatus.dataLabel, nodes]);
+
+  // Dynamic provenance descriptors
+  const provenanceInfo = useMemo(() => {
+    switch (activeDatasetType) {
+      case "synthetic":
+        return {
+          badge: "SYNTHETIC · SIMULATED DATA",
+          topologyHeading: "Synthetic Logistics Topology",
+          topologyTag: "FASTAPI SIMULATED TOPOLOGY",
+          sidebarLabel: "ACTIVE DATASET",
+          sidebarTitle: "Synthetic Infrastructure Graph",
+          sidebarDesc: `${stats.totalCompanies} Nodes · ${stats.totalRelationships} Edges · GNN Disruption Model`,
+          welcomeText: `Interactive logistics and disruption simulation powered by synthetic infrastructure graph: ${stats.totalCompanies} nodes, ${stats.totalRelationships} freight flows, and precomputed GNN cascade predictions.`,
+          screenReader: `Showing ${filteredNodes.length} supply chain nodes from Synthetic simulated dataset.`,
+        };
+      case "anonnet":
+        return {
+          badge: "ANONNET · ANONYMIZED BENCHMARK",
+          topologyHeading: "AnonNet Benchmark Topology",
+          topologyTag: "ANONNET SCALABILITY GRAPH",
+          sidebarLabel: "ACTIVE DATASET",
+          sidebarTitle: "AnonNet Scalability Graph",
+          sidebarDesc: `${stats.totalCompanies} Nodes · ${stats.totalRelationships} Edges · Anonymized Performance Benchmark`,
+          welcomeText: `High-volume benchmark network for scalability testing: ${stats.totalCompanies} anonymized nodes and ${stats.totalRelationships} dependency edges.`,
+          screenReader: `Showing ${filteredNodes.length} supply chain nodes from AnonNet benchmark dataset.`,
+        };
+      case "backend":
+        return {
+          badge: backendStatus.dataLabel || "FASTAPI · LIVE TELEMETRY",
+          topologyHeading: "Active Supply Chain Topology",
+          topologyTag: "FASTAPI DIRECTED TOPOLOGY",
+          sidebarLabel: "ACTIVE DATASET",
+          sidebarTitle: "FastAPI Live Telemetry",
+          sidebarDesc: `${stats.totalCompanies} Nodes · ${stats.totalRelationships} Edges · Live Pipeline`,
+          welcomeText: `Interactive supply chain monitoring powered by active FastAPI backend: ${stats.totalCompanies} corporate nodes, ${stats.totalRelationships} supplier flows, and ${stats.crossSectorRelationships} cross-sector dependencies.`,
+          screenReader: `Showing ${filteredNodes.length} supply chain nodes from active backend topology.`,
+        };
+      case "sectivia":
+      default:
+        return {
+          badge: "SECTIVIA · VERIFIED BASELINE",
+          topologyHeading: "Sectivia Supply Chain Topology",
+          topologyTag: "NEO4J DIRECTED GRAPH",
+          sidebarLabel: "PRIMARY DATASET",
+          sidebarTitle: "Sectivia Ground Truth",
+          sidebarDesc: "382 Companies · 556 Relationships · SEC EDGAR Filings",
+          welcomeText:
+            "Interactive supply chain monitoring powered by the verified Sectivia dataset: 382 corporations, 556 supplier-to-customer flows, and 162 cross-sector links.",
+          screenReader: `Showing ${filteredNodes.length} supply chain nodes from Sectivia dataset.`,
+        };
+    }
+  }, [
+    activeDatasetType,
+    backendStatus.dataLabel,
+    stats.totalCompanies,
+    stats.totalRelationships,
+    stats.crossSectorRelationships,
+    filteredNodes.length,
+  ]);
 
   const visibleIds = useMemo(
     () => new Set(filteredNodes.map((n) => n.id)),
@@ -418,7 +656,7 @@ function App() {
 
       {/* Screen Reader Live Region for Announcements */}
       <div className="sr-only" role="status" aria-live="polite">
-        Showing {filteredNodes.length} supply chain nodes from Sectivia dataset.
+        {provenanceInfo.screenReader}
       </div>
 
       {/* Mobile navigation backdrop */}
@@ -508,9 +746,9 @@ function App() {
         </nav>
 
         <div className="sidebar-dataset-box">
-          <span className="dataset-label">PRIMARY DATASET</span>
-          <strong>Sectivia Ground Truth</strong>
-          <p>382 Companies · 556 Relationships · SEC EDGAR Filings</p>
+          <span className="dataset-label">{provenanceInfo.sidebarLabel}</span>
+          <strong>{provenanceInfo.sidebarTitle}</strong>
+          <p>{provenanceInfo.sidebarDesc}</p>
         </div>
 
         <div className="sidebar-bottom">
@@ -564,11 +802,15 @@ function App() {
             </div>
 
             <div
-              className="status"
-              title="Verified Sectivia dataset loaded from database integration contract"
+              className={`status ${backendStatus.live ? "live" : "offline"}`}
+              title={
+                backendStatus.live
+                  ? `Connected to FastAPI Backend (${backendStatus.nNodes || stats.totalCompanies} nodes, ${backendStatus.nEdges || stats.totalRelationships} edges)`
+                  : "FastAPI server offline; running on verified Sectivia dataset"
+              }
             >
               <span className="status-dot"></span>
-              <span>Sectivia Baseline · Verified</span>
+              <span>{backendStatus.mode}</span>
             </div>
           </div>
         </header>
@@ -577,12 +819,9 @@ function App() {
         <section className="welcome" aria-labelledby="welcome-heading">
           <div>
             <h1 id="welcome-heading">Supply Chain Intelligence</h1>
-            <p>
-              Interactive supply chain monitoring powered by the verified Sectivia
-              dataset: 382 corporations, 556 supplier-to-customer flows, and 162 cross-sector links.
-            </p>
+            <p>{provenanceInfo.welcomeText}</p>
           </div>
-          <span className="date">SECTIVIA · VERIFIED BASELINE</span>
+          <span className="date">{provenanceInfo.badge}</span>
         </section>
 
         {/* Error / Offline Banner */}
@@ -599,8 +838,12 @@ function App() {
                 <span className="stat-icon" aria-hidden="true">🏢</span>
               </div>
               <h2>{stats.totalCompanies}</h2>
-              <small>381 U.S.-listed corporations, 1 private (SpaceX)</small>
-              <div className="stat-card-badge">Total Suppliers: 382</div>
+              <small>
+                {backendStatus.live
+                  ? `${stats.totalCompanies} active corporate entities from backend`
+                  : "381 U.S.-listed corporations, 1 private (SpaceX)"}
+              </small>
+              <div className="stat-card-badge">Total Suppliers: {stats.totalCompanies}</div>
             </div>
 
             <div className="stat-card" tabIndex={0}>
@@ -609,8 +852,12 @@ function App() {
                 <span className="stat-icon" aria-hidden="true">🔄</span>
               </div>
               <h2 className="cyan">{stats.totalRelationships}</h2>
-              <small>Verified directed SUPPLIES_TO contracts</small>
-              <div className="stat-card-badge">High Risk Nodes: 18</div>
+              <small>
+                {backendStatus.live
+                  ? "Active directed topology contracts"
+                  : "Verified directed SUPPLIES_TO contracts"}
+              </small>
+              <div className="stat-card-badge">High Risk Nodes: {summary.highRiskNodes ?? 18}</div>
             </div>
 
             <div className="stat-card" tabIndex={0}>
@@ -619,7 +866,11 @@ function App() {
                 <span className="stat-icon" aria-hidden="true">⚡</span>
               </div>
               <h2 className="orange">{stats.crossSectorRelationships}</h2>
-              <small>Critical inter-industry dependencies</small>
+              <small>
+                {backendStatus.live
+                  ? "Inter-sectoral dependency links"
+                  : "Critical inter-industry dependencies"}
+              </small>
               <div className="stat-card-badge">Active Alerts: {alerts.length}</div>
             </div>
 
@@ -629,7 +880,11 @@ function App() {
                 <span className="stat-icon" aria-hidden="true">🌐</span>
               </div>
               <h2 className="green">{stats.totalSectors}</h2>
-              <small>Across 61 specialized sub-segments</small>
+              <small>
+                {backendStatus.live
+                  ? "Industry clusters in active topology"
+                  : "Across 61 specialized sub-segments"}
+              </small>
               <div className="stat-card-badge">Network Health: {summary.networkHealth}</div>
             </div>
           </section>
@@ -664,11 +919,11 @@ function App() {
             <div className="panel network-panel">
               <div className="panel-heading">
                 <div>
-                  <h3>Sectivia Supply Chain Topology</h3>
+                  <h3>{provenanceInfo.topologyHeading}</h3>
                   <p>
                     {egoNetworkActive
                       ? `Viewing 1-Hop Ego Network for ${egoNetworkActive}`
-                      : "Directed supplier-to-customer flows across 8 sectors"}
+                      : `Directed supplier-to-customer flows across ${stats.totalSectors} sectors`}
                   </p>
                 </div>
                 <div className="panel-heading-actions">
@@ -681,7 +936,7 @@ function App() {
                       ← Back to Full Backbone
                     </button>
                   )}
-                  <span className="tag">NEO4J DIRECTED GRAPH</span>
+                  <span className="tag">{provenanceInfo.topologyTag}</span>
                 </div>
               </div>
 
@@ -753,13 +1008,13 @@ function App() {
                       crossSectorOnly ||
                       searchQuery ||
                       egoNetworkActive) && (
-                      <button
-                        className="reset-filters-btn"
-                        onClick={handleResetFilters}
-                      >
-                        Reset All Filters
-                      </button>
-                    )}
+                        <button
+                          className="reset-filters-btn"
+                          onClick={handleResetFilters}
+                        >
+                          Reset All Filters
+                        </button>
+                      )}
                   </div>
                 </div>
               </div>
