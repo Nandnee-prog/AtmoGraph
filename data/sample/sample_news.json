@@ -1,0 +1,12 @@
+[
+  {"id": "s1", "source": "SAMPLE (hand-written for testing)", "headline": "Dockworkers begin indefinite strike at Port of Rotterdam, halting container operations", "expected": {"event_type": "strike", "ports": ["rotterdam"]}},
+  {"id": "s2", "source": "SAMPLE (hand-written for testing)", "headline": "Typhoon forces Shanghai port to suspend operations for three days", "expected": {"event_type": "weather", "ports": ["shanghai"]}},
+  {"id": "s3", "source": "SAMPLE (hand-written for testing)", "headline": "Severe congestion at Los Angeles and Long Beach ports delays shipments by weeks", "expected": {"event_type": "congestion", "ports": ["los angeles", "long beach"]}},
+  {"id": "s4", "source": "SAMPLE (hand-written for testing)", "headline": "Cyberattack disrupts Hamburg terminal systems, some loading delayed", "expected": {"event_type": "cyber", "ports": ["hamburg"]}},
+  {"id": "s5", "source": "SAMPLE (hand-written for testing)", "headline": "Fire at Jebel Ali port warehouse causes brief closure", "expected": {"event_type": "accident", "ports": ["jebel ali"]}},
+  {"id": "s6", "source": "SAMPLE (hand-written for testing)", "headline": "Singapore port reports record container throughput this quarter", "expected": {"event_type": null, "ports": []}},
+  {"id": "s7", "source": "SAMPLE (hand-written for testing)", "headline": "Export restrictions on chips in South Korea threaten electronics supply", "expected": {"event_type": "geopolitical", "ports": ["busan"]}},
+  {"id": "s8", "source": "SAMPLE (hand-written for testing)", "headline": "Retailers launch new smartphone line ahead of holiday season", "expected": {"event_type": null, "ports": []}},
+  {"id": "s9", "source": "SAMPLE (hand-written for testing)", "headline": "Strike at Antwerp port enters second week as shipping lines reroute vessels", "expected": {"event_type": "strike", "ports": ["antwerp"]}},
+  {"id": "s10", "source": "SAMPLE (hand-written for testing)", "headline": "Drought restricts ship transits at Panama Canal", "expected": {"event_type": "weather", "ports": []}}
+]

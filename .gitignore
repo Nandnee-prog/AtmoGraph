@@ -21,3 +21,5 @@ Thumbs.db
 .vscode/
 
 data/processed/gnn_dataset.npz
+
+data/processed/nlp_results.json
